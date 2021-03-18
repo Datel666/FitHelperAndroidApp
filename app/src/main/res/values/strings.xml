@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">CookBook</string>
+    <string name="search_your_recipes">Поиск рецептов</string>
+    <string name="meal_categories">Еда по категориям</string>
+    <string name="category">Категория</string>
+    <string name="country">Страна</string>
+    <string name="instructions">Инструкции</string>
+    <string name="dot_loading">...</string>
+    <string name="Ingredients">Ингридиенты</string>
+    <string name="favorites">Избранное</string>
+    <string name="recipes">Рецепты</string>
+    <string name="cookwith">Приготовить из</string>
+    <string name="mealplanner">Планировать приёмы пищи</string>
+    <string name="shoppingcart">Список покупок</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+</resources>
