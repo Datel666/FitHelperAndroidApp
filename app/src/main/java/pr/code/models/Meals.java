@@ -2,20 +2,20 @@ package pr.code.models;
 
 import java.util.List;
 
-public class Recipes {
+public class Meals {
 
-    public List<Recipe> getRecipes() {
-        return recipes;
+
+    private List<Meal> meals;
+
+    public List<Meal> getMeals() {
+        return meals;
     }
 
-    public void setRecipes(List<Recipe> recipes) {
-        this.recipes = recipes;
+    public void setMeals(List<Meal> meals) {
+        this.meals = meals;
     }
 
-    private List<Recipe> recipes = null;
-
-
-    public static class Recipe{
+    public static class Meal{
         private String idMeal;
         private String strMeal;
         private String strCategory;
@@ -27,46 +27,6 @@ public class Recipes {
         private String strMeasures;
         private String strMealInfo;
         private String strCookTime;
-
-
-        public String getStrIngredients() {
-            return strIngredients;
-        }
-
-        public void setStrIngredients(String strIngredients) {
-            this.strIngredients = strIngredients;
-        }
-
-
-
-        public String getStrMeasures() {
-            return strMeasures;
-        }
-
-        public void setStrMeasures(String strMeasures) {
-            this.strMeasures = strMeasures;
-        }
-
-        public String getStrMealInfo() {
-            return strMealInfo;
-        }
-
-        public void setStrMealInfo(String strMealInfo) {
-            this.strMealInfo = strMealInfo;
-        }
-
-        public String getStrCookTime() {
-            return strCookTime;
-        }
-
-        public void setStrCookTime(String strCookTime) {
-            this.strCookTime = strCookTime;
-        }
-
-
-
-
-
 
         public String getIdMeal() {
             return idMeal;
@@ -124,8 +84,36 @@ public class Recipes {
             this.strTags = strTags;
         }
 
+        public String getStrIngredients() {
+            return strIngredients;
+        }
 
+        public void setStrIngredients(String strIngredients) {
+            this.strIngredients = strIngredients;
+        }
 
+        public String getStrMeasures() {
+            return strMeasures;
+        }
 
+        public void setStrMeasures(String strMeasures) {
+            this.strMeasures = strMeasures;
+        }
+
+        public String getStrMealInfo() {
+            return strMealInfo;
+        }
+
+        public void setStrMealInfo(String strMealInfo) {
+            this.strMealInfo = strMealInfo;
+        }
+
+        public String getStrCookTime() {
+            return strCookTime;
+        }
+
+        public void setStrCookTime(String strCookTime) {
+            this.strCookTime = strCookTime;
+        }
     }
 }

@@ -7,11 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pr.code.models.Categories;
-import pr.code.models.Ingredients;
-import pr.code.models.Recipes;
+import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
-import pr.code.utils.Util;
-import retrofit2.Call;
 
 
 public class RecipesPresenter {
@@ -55,8 +52,8 @@ public class RecipesPresenter {
 
     }
 
-    List<Recipes.Recipe> loadRecipes(SQLiteDatabase database) {
-        List<Recipes.Recipe> res = new ArrayList<>();
+    List<Meals.Meal> loadRecipes(SQLiteDatabase database) {
+        List<Meals.Meal> res = new ArrayList<>();
 
         Cursor cursor = database.rawQuery("SELECT * from " + DBHelper.TABLE_RECIPES, null);
 
@@ -74,7 +71,7 @@ public class RecipesPresenter {
             int cooktime = cursor.getColumnIndex(DBHelper.KEY_COOKTIME);
 
             do {
-                Recipes.Recipe tempRecipe = new Recipes.Recipe();
+                Meals.Meal tempRecipe = new Meals.Meal();
 
 
                 tempRecipe.setIdMeal(cursor.getString(idMeal));
@@ -88,7 +85,7 @@ public class RecipesPresenter {
                 tempRecipe.setStrCookTime(cursor.getString(cooktime));
                 tempRecipe.setStrIngredients(cursor.getString(ingredients));
                 tempRecipe.setStrMeasures(cursor.getString(measures));
-
+                res.add(tempRecipe);
             }
             while (cursor.moveToNext());
         } else {
@@ -110,7 +107,7 @@ public class RecipesPresenter {
             int strCategoryDescription = cursor.getColumnIndex(DBHelper.KEY_DESCRIPTIONCATEGORY);
 
             do {
-                List<Categories.Category> tempCategorylist = new ArrayList<>();
+
 
                 Categories.Category tempCategory = new Categories.Category();
                 tempCategory.setIdCategory(cursor.getString(idCategory));
@@ -119,7 +116,7 @@ public class RecipesPresenter {
                 tempCategory.setStrCategoryDescription(cursor.getString(strCategoryDescription));
 
 
-                tempCategorylist.add(tempCategory);
+                res.add(tempCategory);
 
             }
             while (cursor.moveToNext());

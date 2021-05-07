@@ -19,15 +19,15 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import pr.code.R;
-import pr.code.models.Recipes;
+import pr.code.models.Meals;
 
 public class ViewPagerHeaderAdapter extends PagerAdapter {
 
-    private List<Recipes.Recipe> recipes;
+    private List<Meals.Meal> recipes;
     private Context context;
     private static  ClickListener clickListener;
 
-    public ViewPagerHeaderAdapter(List<Recipes.Recipe> recipes, Context context) {
+    public ViewPagerHeaderAdapter(List<Meals.Meal> recipes, Context context) {
         this.recipes = recipes;
         this.context = context;
     }

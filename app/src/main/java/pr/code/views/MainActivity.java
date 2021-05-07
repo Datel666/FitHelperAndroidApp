@@ -12,23 +12,29 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.Window;
+import android.widget.Button;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import pr.code.R;
+import pr.code.api.FoodClient;
 import pr.code.models.Categories;
-import pr.code.models.Ingredients;
-import pr.code.models.Recipes;
-import pr.code.models.Version;
+import pr.code.models.Meals;
+
+import pr.code.models.Versions;
 import pr.code.utils.DBHelper;
 import pr.code.utils.Util;
 import pr.code.views.recipes.RecipesFragment;
@@ -42,33 +48,91 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Context context;
     private DBHelper helper;
     private SQLiteDatabase db;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = getApplicationContext();
+        context = this;
+
         initValues();
+
         int dec = makeDecision();
-        if(dec ==0){
 
-        }
-
-        showStartDialog();
-        /*if(firstStart) {
+        if (dec == 0) {
             showStartDialog();
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("firstStart",false);
-            editor.apply();
+        } else if (dec == 1) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setCancelable(false);
+            builder.setTitle("Возникла ошибка");
+            builder.setMessage("Не удалось подключиться к удалённому серверу. Возможно отсутствует интернет соединение.");
+            builder.setPositiveButton("Закрыть приложение", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finishAffinity();
+                    System.exit(0);
+                }
+            });
+            AlertDialog dialog1 = builder.create();
+            dialog1.show();
+        } else if (dec == 2) {
+            SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+            boolean autoupdate = prefs.getBoolean("autoupdate", true);
+            if (autoupdate) {
+                versionComparison();
+            }
+        } else if (dec == 3) {
+            SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+            boolean autoupdate = prefs.getBoolean("autoupdate", true);
+            if (autoupdate) {
+
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("Обновление базы данных рецептов")
+                        .setMessage("Невозможно проверить наличие обновлений. Включите интернет")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                versionComparison();
+                            }
+                        })
+                        .create();
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    private static final int AUTO_DISMISS_MILLIS = 5000;
+
+                    @Override
+                    public void onShow(final DialogInterface dialog) {
+                        final Button defaultButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                        final CharSequence negativeButtonText = defaultButton.getText();
+                        new CountDownTimer(AUTO_DISMISS_MILLIS, 100) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                defaultButton.setText(String.format(
+                                        Locale.getDefault(), "%s (%d)",
+                                        negativeButtonText,
+                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) + 1 //add one so it never displays zero
+                                ));
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                if (((AlertDialog) dialog).isShowing()) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        }.start();
+                    }
+                });
+                dialog.show();
+            }
         }
 
-        */
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -84,30 +148,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void initValues(){
-        helper = new DBHelper(context);
+    private void initValues() {
+        helper = DBHelper.getInstance(context);
         db = helper.getWritableDatabase();
     }
 
-    private int makeDecision(){
+    private int makeDecision() {
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
         boolean firstStart = prefs.getBoolean("firstStart", true);
-        if(firstStart)
-        {
-            if(isInternetAvailable())
-            {
+        if (firstStart) {
+            if (isGoogleAvailable()) {
                 return 0;
-            }
-            else{
+            } else {
                 return 1;
             }
-        }
-        else {
-            if(isInternetAvailable()){
+        } else {
+            if (isGoogleAvailable()) {
+                return 2;
+            } else {
                 return 3;
-            }
-            else{
-                return 4;
             }
         }
     }
@@ -154,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void showStartDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Обновление базы данных рецептов").setCancelable(false)
-                .setMessage("Произвести обновление базы данных? Это необходимо для дальнейшей работы приложения" + "\n"+
+                .setMessage("Произвести обновление базы данных? Это необходимо для дальнейшей работы приложения" + "\n" +
                         "При отказе работа приложения будет приостановлена")
                 .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
@@ -164,10 +223,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         AlertDialog dialog1 = builder.create();
                         dialog1.show();
 
+                        getVersions();
                         getRecipes();
                         getCategories();
 
                         dialog1.dismiss();
+
+                        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putBoolean("firstStart", false);
+                        editor.apply();
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new RecipesFragment()).commit();
+                        navigationView.setCheckedItem(R.id.nav_home);
 
                     }
                 }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
@@ -185,16 +254,82 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .create().show();
     }
 
-    void versionComparison(){
+    private void versionComparison() {
 
-        Call<Version> versionCall = Util.getApi().getVersion();
-        versionCall.enqueue(new Callback<Version>() {
+        Call<Versions> versionCall = Util.getApi().getVersion();
+        versionCall.enqueue(new Callback<Versions>() {
             @Override
-            public void onResponse(@NonNull Call<Version> call,@NonNull Response<Version> response) {
-                if(response.isSuccessful() && response.body() !=null){
-                    if(response.body().getVersion() > DBHelper.DATABASE_VERSION)
-                    {
+            public void onResponse(@NonNull Call<Versions> call, @NonNull Response<Versions> response) {
+                if (response.isSuccessful() && response.body() != null) {
 
+                    int responseid = -1;
+                    List<Versions.Version> versionList = new ArrayList<>();
+
+                    versionList = response.body().getVersions();
+
+                    for (Versions.Version r : versionList) {
+                        responseid  = r.getIdversion();
+                    }
+
+
+
+                    int dbversion = -1;
+                    Cursor c = db.rawQuery("SELECT " + DBHelper.KEY_IDVER + " FROM " + DBHelper.TABLE_VERSIONS + " WHERE " + DBHelper.KEY_IDVER + " = (SELECT MAX(" + DBHelper.KEY_IDVER + ") FROM " + DBHelper.TABLE_VERSIONS + ")", null);
+                    if (c.moveToFirst()) {
+                        do {
+                            // Passing values
+                            dbversion = c.getInt(0);
+
+
+                        } while (c.moveToNext());
+                    }
+                    c.close();
+
+                    if (responseid > dbversion) {
+                        new AlertDialog.Builder(context)
+                                .setTitle("Обновление базы данных рецептов").setCancelable(false)
+                                .setMessage("Ваша база данных рецептов устарела. Осуществить обновление до актуальной версии?" + "\n" +
+                                        "При отказе в дальнейшем вы сможете обновить базу данных используя соответствующий пункт в меню настроек")
+                                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                        builder.setView(R.layout.loading_dialog).setCancelable(false);
+                                        AlertDialog dialog1 = builder.create();
+                                        dialog1.show();
+
+                                        DBHelper.forceUpgrade(db);
+
+                                        getVersions();
+                                        getRecipes();
+                                        getCategories();
+
+
+                                        dialog1.dismiss();
+
+                                        AlertDialog.Builder builder2 = new AlertDialog.Builder(context);
+                                        builder.setTitle("Обновление базы данных рецептов").setCancelable(false)
+                                                .setMessage("База данных рецептов была успешно обновлена").setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        });
+                                        AlertDialog dialog2 = builder.create();
+                                        dialog2.show();
+
+                                    }
+                                }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putBoolean("autoupdate", false);
+                                editor.apply();
+                            }
+                        })
+                                .create().show();
                     }
 
 
@@ -202,51 +337,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
             @Override
-            public void onFailure(Call<Version> call, Throwable t) {
-
-            }
-        });
-    }
-
-    void getRecipes(){
-
-        Call<Recipes> recipesCall = Util.getApi().getRecipes();
-        recipesCall.enqueue(new Callback<Recipes>() {
-            @Override
-            public void onResponse(@NonNull Call<Recipes> call, @NonNull Response<Recipes> response) {
-                if(response.isSuccessful() && response.body() != null)
-                {
-                    List<Recipes.Recipe> recipesList = new ArrayList<>();
-                    recipesList = response.body().getRecipes();
-                    try {
-                        db.beginTransaction();
-                        for (Recipes.Recipe r : recipesList) {
-                            ContentValues cv = new ContentValues();
-                            cv.put(DBHelper.KEY_NAMERECIPE, r.getStrMeal());
-                            cv.put(DBHelper.KEY_CATEGORYRECIPE, r.getStrCategory());
-                            cv.put(DBHelper.KEY_AREARECIPE, r.getStrArea());
-                            cv.put(DBHelper.KEY_INSTRUCTIONSRECIPE, r.getStrInstructions());
-                            cv.put(DBHelper.KEY_PHOTORECIPE, r.getStrMealThumb());
-                            cv.put(DBHelper.KEY_TAGSRECIPE, r.getStrTags());
-                            cv.put(DBHelper.KEY_MEASURESRECIPE, r.getStrMeasures());
-                            cv.put(DBHelper.KEY_INGREDIENTSRECIPE, r.getStrIngredients());
-                            cv.put(DBHelper.KEY_MEALINFO, r.getStrMealInfo());
-                            cv.put(DBHelper.KEY_COOKTIME, r.getStrCookTime());
-                            db.insert(DBHelper.TABLE_RECIPES, null, cv);
-                        }
-                        db.setTransactionSuccessful();
-                    }
-                    catch(Exception ex){
-
-                    }
-                    finally{
-                        db.endTransaction();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Recipes> call, Throwable t) {
+            public void onFailure(Call<Versions> call, Throwable t) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setCancelable(false);
                 builder.setTitle("Возникла ошибка");
@@ -264,14 +355,130 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    void getCategories(){
+    void getVersions() {
+
+        Call<Versions> versionCall = Util.getApi().getVersion();
+        versionCall.enqueue(new Callback<Versions>() {
+            @Override
+            public void onResponse(Call<Versions> call, Response<Versions> response) {
+                if (response.isSuccessful() && response.body() != null) {
+
+                    int dbversion = -1;
+                    Cursor c = db.rawQuery("SELECT " + DBHelper.KEY_IDVER + " FROM " + DBHelper.TABLE_VERSIONS + " WHERE " +
+                            DBHelper.KEY_IDVER + " = (SELECT MAX(" + DBHelper.KEY_IDVER + ") FROM " + DBHelper.TABLE_VERSIONS + ")", null);
+                    if (c.moveToFirst()) {
+                        do {
+                            // Passing values
+                            dbversion = c.getInt(0);
+                        } while (c.moveToNext());
+                    }
+                    c.close();
+
+                    List<Versions.Version> versionList = new ArrayList<>();
+
+                    versionList = response.body().getVersions();
+                    try {
+                        db.beginTransaction();
+                        for (Versions.Version r : versionList) {
+                            ContentValues cv = new ContentValues();
+                            cv.put(DBHelper.KEY_IDDATE, r.getDate());
+                            cv.put(DBHelper.KEY_IDVER, r.getIdversion());
+
+                            db.insert(DBHelper.TABLE_VERSIONS, null, cv);
+                            Log.d("Insert", "Ya vstavlyau v versii");
+                        }
+                        db.setTransactionSuccessful();
+
+                    } catch (Exception ex) {
+                    } finally {
+                        db.endTransaction();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Versions> call, Throwable t) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setCancelable(false);
+                builder.setTitle("Возникла ошибка");
+                builder.setMessage(t.getLocalizedMessage());
+                builder.setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishAffinity();
+                        System.exit(0);
+                    }
+                });
+                AlertDialog dialog1 = builder.create();
+                dialog1.show();
+            }
+        });
+    }
+
+
+    void getRecipes() {
+
+        Call<Meals> recipesCall = Util.getApi().getMeals();
+        recipesCall.enqueue(new Callback<Meals>() {
+            @Override
+            public void onResponse(Call<Meals> call, Response<Meals> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Meals.Meal> recipesList = new ArrayList<>();
+
+                    recipesList = response.body().getMeals();
+                    try {
+                        db.beginTransaction();
+                        for (Meals.Meal r : recipesList) {
+                            ContentValues cv = new ContentValues();
+                            cv.put(DBHelper.KEY_NAMERECIPE, r.getStrMeal());
+                            cv.put(DBHelper.KEY_CATEGORYRECIPE, r.getStrCategory());
+                            cv.put(DBHelper.KEY_AREARECIPE, r.getStrArea());
+                            cv.put(DBHelper.KEY_INSTRUCTIONSRECIPE, r.getStrInstructions());
+                            cv.put(DBHelper.KEY_PHOTORECIPE, r.getStrMealThumb());
+                            cv.put(DBHelper.KEY_TAGSRECIPE, r.getStrTags());
+                            cv.put(DBHelper.KEY_MEASURESRECIPE, r.getStrMeasures());
+                            cv.put(DBHelper.KEY_INGREDIENTSRECIPE, r.getStrIngredients());
+                            cv.put(DBHelper.KEY_MEALINFO, r.getStrMealInfo());
+                            cv.put(DBHelper.KEY_COOKTIME, r.getStrCookTime());
+                            db.insert(DBHelper.TABLE_RECIPES, null, cv);
+                            Log.d("Insert", "Ya v receptah");
+                        }
+                        db.setTransactionSuccessful();
+                    } catch (Exception ex) {
+
+                    } finally {
+                        db.endTransaction();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Meals> call, Throwable t) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setCancelable(false);
+                builder.setTitle("Возникла ошибка");
+                builder.setMessage(t.getLocalizedMessage());
+                builder.setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishAffinity();
+                        System.exit(0);
+                    }
+                });
+                AlertDialog dialog1 = builder.create();
+                dialog1.show();
+            }
+        });
+    }
+
+    void getCategories() {
 
         Call<Categories> categoriesCall = Util.getApi().getCategories();
         categoriesCall.enqueue(new Callback<Categories>() {
             @Override
             public void onResponse(@NonNull Call<Categories> call, @NonNull Response<Categories> response) {
-                if(response.isSuccessful() && response.body() != null)
-                {
+                if (response.isSuccessful() && response.body() != null) {
                     List<Categories.Category> categoryList = new ArrayList<>();
                     categoryList = response.body().getCategories();
                     try {
@@ -279,17 +486,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         for (Categories.Category r : categoryList) {
                             ContentValues cv = new ContentValues();
                             cv.put(DBHelper.KEY_NAMECATEGORY, r.getStrCategory());
-                            cv.put(DBHelper.KEY_PHOTOCATEGORY,r.getStrCategoryThumb());
-                            cv.put(DBHelper.KEY_DESCRIPTIONCATEGORY,r.getStrCategoryDescription());
+                            cv.put(DBHelper.KEY_PHOTOCATEGORY, r.getStrCategoryThumb());
+                            cv.put(DBHelper.KEY_DESCRIPTIONCATEGORY, r.getStrCategoryDescription());
 
                             db.insert(DBHelper.TABLE_CATEGORIES, null, cv);
+
                         }
                         db.setTransactionSuccessful();
-                    }
-                    catch(Exception ex){
+                    } catch (Exception ex) {
 
-                    }
-                    finally{
+                    } finally {
                         db.endTransaction();
                     }
                 }
@@ -314,70 +520,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    void getIngredients(){
 
-        Call<Recipes> recipesCall = Util.getApi().getRecipes();
-        recipesCall.enqueue(new Callback<Recipes>() {
-            @Override
-            public void onResponse(@NonNull Call<Recipes> call, @NonNull Response<Recipes> response) {
-                if(response.isSuccessful() && response.body() != null)
-                {
-                    List<Recipes.Recipe> recipesList = new ArrayList<>();
-                    recipesList = response.body().getRecipes();
-                    try {
-                        db.beginTransaction();
-                        for (Recipes.Recipe r : recipesList) {
-                            ContentValues cv = new ContentValues();
-                            cv.put(DBHelper.KEY_NAMERECIPE, r.getStrMeal());
-                            cv.put(DBHelper.KEY_CATEGORYRECIPE, r.getStrCategory());
-                            cv.put(DBHelper.KEY_AREARECIPE, r.getStrArea());
-                            cv.put(DBHelper.KEY_INSTRUCTIONSRECIPE, r.getStrInstructions());
-                            cv.put(DBHelper.KEY_PHOTORECIPE, r.getStrMealThumb());
-                            cv.put(DBHelper.KEY_TAGSRECIPE, r.getStrTags());
-                            cv.put(DBHelper.KEY_MEASURESRECIPE, r.getStrMeasures());
-                            cv.put(DBHelper.KEY_INGREDIENTSRECIPE, r.getStrIngredients());
-                            cv.put(DBHelper.KEY_MEALINFO, r.getStrMealInfo());
-                            cv.put(DBHelper.KEY_COOKTIME, r.getStrCookTime());
-                            db.insert(DBHelper.TABLE_RECIPES, null, cv);
-                        }
-                        db.setTransactionSuccessful();
-                    }
-                    catch(Exception ex){
-
-                    }
-                    finally{
-                        db.endTransaction();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Recipes> call, Throwable t) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setCancelable(false);
-                builder.setTitle("При загрузке данных возникла ошибка");
-                builder.setMessage(t.getLocalizedMessage());
-                builder.setPositiveButton("Закрыть приложение", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finishAffinity();
-                        System.exit(0);
-                    }
-                });
-                AlertDialog dialog1 = builder.create();
-                dialog1.show();
-            }
-        });
-    }
     public boolean isInternetAvailable() {
         try {
-            InetAddress ipAddr = InetAddress.getByName("google.com");
-            //You can replace it with your name
-            return !ipAddr.equals("");
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+            return isConnected;
 
         } catch (Exception e) {
+            Log.d("url", e.getLocalizedMessage());
             return false;
         }
     }
+
+    public boolean isGoogleAvailable() {
+        try {
+            String url = FoodClient.getBaseUrl();
+            String command = "ping -i 1 -c 1 10.0.2.2";
+            return Runtime.getRuntime().exec(command).waitFor() == 0;
+        } catch (Exception e) {
+            Log.d("url", e.getMessage());
+            return false;
+        }
+    }
+
 
 }

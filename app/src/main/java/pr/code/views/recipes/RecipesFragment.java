@@ -2,14 +2,12 @@ package pr.code.views.recipes;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,7 +22,7 @@ import pr.code.R;
 import pr.code.adapters.RecyclerViewRecipesAdapter;
 import pr.code.adapters.ViewPagerHeaderAdapter;
 import pr.code.models.Categories;
-import pr.code.models.Recipes;
+import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
 import pr.code.utils.Util;
 
@@ -67,12 +65,12 @@ public class RecipesFragment extends Fragment  implements RecipesView{
     }
 
     public void initValues(){
-        helper = new DBHelper(act);
+        helper = DBHelper.getInstance(getContext());
         database = helper.getReadableDatabase();
     }
 
     @Override
-    public void setMeal(List<Recipes.Recipe> recipe) {
+    public void setMeal(List<Meals.Meal> recipe) {
         ViewPagerHeaderAdapter headerAdapter = new ViewPagerHeaderAdapter(recipe,act);
         viewPagerMeal.setAdapter(headerAdapter);
         viewPagerMeal.setPadding(20,0,150,0);

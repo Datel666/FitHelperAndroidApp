@@ -10,7 +10,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FoodClient {
 
-    private static final String BASE_URL = "http://10.0.2.2:8080/cookbook/api/";
+    private static final String BASE_URL = "http://10.0.2.2:8080/";
+
+    public static String getBaseUrl() {
+        return BASE_URL;
+    }
 
     public static Retrofit getFoodClient(){
         return new Retrofit.Builder().baseUrl(BASE_URL)
@@ -25,9 +29,9 @@ public class FoodClient {
 
     private static OkHttpClient provideOkHttp(){
         return new OkHttpClient.Builder()
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30,TimeUnit.SECONDS)
-                .readTimeout(30,TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10,TimeUnit.SECONDS)
+                .readTimeout(10,TimeUnit.SECONDS)
                 .addNetworkInterceptor(provideLoggingInterceptor())
                 .build();
 
