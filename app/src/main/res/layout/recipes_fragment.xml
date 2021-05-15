@@ -43,9 +43,9 @@
                     android:text="@string/search_your_recipes"
                     android:textColor="@color/colorPrimaryLight"
                     android:gravity="center_vertical"
-                    android:drawableLeft="@drawable/ic_search_primary_light"
-                    android:drawableStart="@drawable/ic_search_primary_light"
-                    android:drawablePadding="10dp"/>
+                    android:drawablePadding="10dp"
+                    app:drawableLeftCompat="@drawable/ic_search_primary_light"
+                    app:drawableStartCompat="@drawable/ic_search_primary_light" />
             </androidx.cardview.widget.CardView>
 
             <androidx.viewpager.widget.ViewPager

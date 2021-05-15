@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     public void onClick(DialogInterface dialog, int which) {
                                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                                         builder.setView(R.layout.loading_dialog).setCancelable(false);
-                                        AlertDialog dialog1 = builder.create();
+                                        final AlertDialog dialog1 = builder.create();
                                         dialog1.show();
 
                                         DBHelper.forceUpgrade(db);
@@ -305,17 +305,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                         getCategories();
 
 
-                                        dialog1.dismiss();
+                                        dialog1.cancel();
 
                                         AlertDialog.Builder builder2 = new AlertDialog.Builder(context);
-                                        builder.setTitle("Обновление базы данных рецептов").setCancelable(false)
+                                        builder2.setTitle("Обновление базы данных рецептов").setCancelable(false)
                                                 .setMessage("База данных рецептов была успешно обновлена").setPositiveButton("Ок", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
 
                                             }
                                         });
-                                        AlertDialog dialog2 = builder.create();
+                                        AlertDialog dialog2 = builder2.create();
                                         dialog2.show();
 
                                     }

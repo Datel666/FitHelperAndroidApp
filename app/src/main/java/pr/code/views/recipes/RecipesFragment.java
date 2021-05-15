@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,6 +28,7 @@ import pr.code.models.Categories;
 import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
 import pr.code.utils.Util;
+import pr.code.views.categories.CategoryActivity;
 
 public class RecipesFragment extends Fragment  implements RecipesView{
 
@@ -77,7 +81,7 @@ public class RecipesFragment extends Fragment  implements RecipesView{
         headerAdapter.notifyDataSetChanged();
 
         headerAdapter.setOnItemClickListener((v,position)->{
-
+            Toast.makeText(act,recipe.get(position).getStrMeal(),Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -92,7 +96,10 @@ public class RecipesFragment extends Fragment  implements RecipesView{
         recipesAdapter.notifyDataSetChanged();
 
         recipesAdapter.setOnItemClickListener((view,position)->{
-
+            Intent intent = new Intent(act, CategoryActivity.class);
+            intent.putExtra(EXTRA_CATEGORY,(Serializable) category);
+            intent.putExtra(EXTRA_POSITION,position);
+            startActivity(intent);
         });
     }
 

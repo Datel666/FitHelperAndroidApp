@@ -88,7 +88,7 @@ public class RecyclerViewRecipesAdapter extends RecyclerView.Adapter<RecyclerVie
 
         @Override
         public void onClick(View v) {
-            RecyclerViewRecipesAdapter.clickListener = clickListener;
+            clickListener.onClick(v,getAdapterPosition());
         }
     }
 

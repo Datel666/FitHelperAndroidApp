@@ -1,10 +1,15 @@
 package pr.code.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class Meals {
+public class Meals implements Serializable {
 
-
+    @SerializedName("meals")
+    @Expose
     private List<Meal> meals;
 
     public List<Meal> getMeals() {
@@ -15,17 +20,39 @@ public class Meals {
         this.meals = meals;
     }
 
-    public static class Meal{
+    public static class Meal implements Serializable{
+        @SerializedName("idMeal")
+        @Expose
         private String idMeal;
+        @SerializedName("strMeal")
+        @Expose
         private String strMeal;
+        @SerializedName("strCategory")
+        @Expose
         private String strCategory;
+        @SerializedName("strArea")
+        @Expose
         private String strArea;
+        @SerializedName("strInstructions")
+        @Expose
         private String strInstructions;
+        @SerializedName("strMealThumb")
+        @Expose
         private String strMealThumb;
+        @SerializedName("strTags")
+        @Expose
         private String strTags;
+        @SerializedName("strIngredients")
+        @Expose
         private String strIngredients;
+        @SerializedName("strMeasures")
+        @Expose
         private String strMeasures;
+        @SerializedName("strMealInfo")
+        @Expose
         private String strMealInfo;
+        @SerializedName("strCookTime")
+        @Expose
         private String strCookTime;
 
         public String getIdMeal() {

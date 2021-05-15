@@ -19,7 +19,7 @@
             android:title="@string/mealplanner" />
         <item
             android:id="@+id/nav_favorites"
-            android:icon="@drawable/ic_favorites"
+            android:icon="@drawable/ic_favorite"
             android:title="@string/favorites" />
         <item
             android:id="@+id/nav_shoppingcart"
