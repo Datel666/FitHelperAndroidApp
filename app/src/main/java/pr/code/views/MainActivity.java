@@ -14,8 +14,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -24,6 +22,10 @@ import android.widget.Button;
 
 import com.google.android.material.navigation.NavigationView;
 
+
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DBHelper helper;
     private SQLiteDatabase db;
     private NavigationView navigationView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,19 +81,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             AlertDialog dialog1 = builder.create();
             dialog1.show();
         } else if (dec == 2) {
+            Log.d("10.0.2.2","dec 2");
             SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
             boolean autoupdate = prefs.getBoolean("autoupdate", true);
             if (autoupdate) {
                 versionComparison();
             }
         } else if (dec == 3) {
+            Log.d("10.0.2.2","dec 3");
             SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
             boolean autoupdate = prefs.getBoolean("autoupdate", true);
             if (autoupdate) {
 
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Обновление базы данных рецептов")
-                        .setMessage("Невозможно проверить наличие обновлений. Включите интернет")
+                        .setMessage("Невозможно проверить наличие обновлений. Соединение с сервером не установлено. Возможно отсутствует интернет-соединение.")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -149,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initValues() {
+
         helper = DBHelper.getInstance(context);
         db = helper.getWritableDatabase();
     }
@@ -156,14 +163,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int makeDecision() {
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
         boolean firstStart = prefs.getBoolean("firstStart", true);
+
+
+
+        boolean net = isGoogleAvailable();
+
+
         if (firstStart) {
-            if (isGoogleAvailable()) {
+            if (net) {
                 return 0;
             } else {
                 return 1;
             }
         } else {
-            if (isGoogleAvailable()) {
+            if (net) {
                 return 2;
             } else {
                 return 3;
@@ -521,30 +534,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    public boolean isInternetAvailable() {
-        try {
-            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-            return isConnected;
 
-        } catch (Exception e) {
-            Log.d("url", e.getLocalizedMessage());
+
+    public static boolean isHostAvailable(final String host, final int port, final int timeout) {
+        try (final Socket socket = new Socket()) {
+            final InetAddress inetAddress = InetAddress.getByName(host);
+            final InetSocketAddress inetSocketAddress = new InetSocketAddress(inetAddress, port);
+
+            socket.connect(inetSocketAddress, timeout);
+            return true;
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
             return false;
         }
     }
 
+
     public boolean isGoogleAvailable() {
         try {
             String url = FoodClient.getBaseUrl();
-            String command = "ping -i 1 -c 1 10.0.2.2";
+            String command = "ping -i 1 -c 1 10.0.2.2" ;
             return Runtime.getRuntime().exec(command).waitFor() == 0;
         } catch (Exception e) {
             Log.d("url", e.getMessage());
             return false;
         }
     }
+
+
+
 
 
 }

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -29,6 +30,7 @@ import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
 import pr.code.utils.Util;
 import pr.code.views.categories.CategoryActivity;
+import pr.code.views.recipedetails.DetailsActivity;
 
 public class RecipesFragment extends Fragment  implements RecipesView{
 
@@ -80,8 +82,11 @@ public class RecipesFragment extends Fragment  implements RecipesView{
         viewPagerMeal.setPadding(20,0,150,0);
         headerAdapter.notifyDataSetChanged();
 
-        headerAdapter.setOnItemClickListener((v,position)->{
-            Toast.makeText(act,recipe.get(position).getStrMeal(),Toast.LENGTH_SHORT).show();
+        headerAdapter.setOnItemClickListener((view,position)->{
+            TextView mealname = view.findViewById(R.id.mealName);
+            Intent intent = new Intent(act, DetailsActivity.class);
+            intent.putExtra(EXTRA_DETAIL, mealname.getText().toString());
+            startActivity(intent);
         });
     }
 

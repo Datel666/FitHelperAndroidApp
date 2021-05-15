@@ -12,6 +12,8 @@ public class FoodClient {
 
     private static final String BASE_URL = "http://10.0.2.2:8080/";
 
+
+
     public static String getBaseUrl() {
         return BASE_URL;
     }
@@ -29,9 +31,9 @@ public class FoodClient {
 
     private static OkHttpClient provideOkHttp(){
         return new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10,TimeUnit.SECONDS)
-                .readTimeout(10,TimeUnit.SECONDS)
+                .connectTimeout(3, TimeUnit.SECONDS)
+                .writeTimeout(5,TimeUnit.SECONDS)
+                .readTimeout(5,TimeUnit.SECONDS)
                 .addNetworkInterceptor(provideLoggingInterceptor())
                 .build();
 

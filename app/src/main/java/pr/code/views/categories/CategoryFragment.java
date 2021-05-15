@@ -2,6 +2,7 @@ package pr.code.views.categories;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
@@ -33,6 +34,9 @@ import pr.code.adapters.RecyclerViewRecipesByCategory;
 import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
 import pr.code.utils.Util;
+import pr.code.views.recipedetails.DetailsActivity;
+
+import static pr.code.views.recipes.RecipesFragment.EXTRA_DETAIL;
 
 
 public class CategoryFragment extends Fragment implements CategoryView {
@@ -125,7 +129,10 @@ public class CategoryFragment extends Fragment implements CategoryView {
         adapter.notifyDataSetChanged();
 
         adapter.setOnitemClickListener(((view, position) -> {
-
+            TextView mealname = view.findViewById(R.id.mealName);
+            Intent intent = new Intent(con, DetailsActivity.class);
+            intent.putExtra(EXTRA_DETAIL, mealname.getText().toString());
+            startActivity(intent);
         }));
     }
 
