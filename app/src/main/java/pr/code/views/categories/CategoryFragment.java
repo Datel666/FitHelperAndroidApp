@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,8 +105,14 @@ public class CategoryFragment extends Fragment implements CategoryView {
                     });
 
             initvalues();
+
+
+
+
+            Log.d("norecipes", "onViewCreated:  ya doshel do presentera");
             CategoryPresenter presenter = new CategoryPresenter(this);
             presenter.getMealByCategory(getArguments().getString("EXTRA_DATA_NAME"),database);
+            Log.d("norecipes", "onViewCreated:  ya zaprosil dannie u presentera");
 
         }
     }
@@ -122,7 +129,7 @@ public class CategoryFragment extends Fragment implements CategoryView {
 
     @Override
     public void setMeals(List<Meals.Meal> meals) {
-        RecyclerViewRecipesByCategory adapter = new RecyclerViewRecipesByCategory(con,meals);
+        RecyclerViewRecipesByCategory adapter = new RecyclerViewRecipesByCategory(getActivity(),meals);
         recyclerView.setLayoutManager(new GridLayoutManager(con,2));
         recyclerView.setClipToPadding(false);
         recyclerView.setAdapter(adapter);

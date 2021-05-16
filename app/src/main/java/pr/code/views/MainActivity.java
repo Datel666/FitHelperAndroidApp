@@ -23,23 +23,21 @@ import android.widget.Button;
 import com.google.android.material.navigation.NavigationView;
 
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import pr.code.R;
-import pr.code.api.FoodClient;
 import pr.code.models.Categories;
 import pr.code.models.Meals;
 
 import pr.code.models.Versions;
 import pr.code.utils.DBHelper;
+import pr.code.utils.PingAsync;
 import pr.code.utils.Util;
 import pr.code.views.recipes.RecipesFragment;
+import pr.code.views.shoppingcart.ShoppingCartFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DBHelper helper;
     private SQLiteDatabase db;
     private NavigationView navigationView;
-
+    public static boolean net;
 
 
     @Override
@@ -81,14 +79,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             AlertDialog dialog1 = builder.create();
             dialog1.show();
         } else if (dec == 2) {
-            Log.d("10.0.2.2","dec 2");
+            Log.d("dec", "2");
             SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
             boolean autoupdate = prefs.getBoolean("autoupdate", true);
             if (autoupdate) {
                 versionComparison();
             }
         } else if (dec == 3) {
-            Log.d("10.0.2.2","dec 3");
+            Log.d("dec", "3");
             SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
             boolean autoupdate = prefs.getBoolean("autoupdate", true);
             if (autoupdate) {
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                versionComparison();
+
                             }
                         })
                         .create();
@@ -155,19 +153,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initValues() {
-
+        net = false;
         helper = DBHelper.getInstance(context);
         db = helper.getWritableDatabase();
     }
 
     private int makeDecision() {
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+
         boolean firstStart = prefs.getBoolean("firstStart", true);
+        boolean net = false;
+
+        try {
+            //Log.d("dec", "Ping async : " );
+            PingAsync ping = new PingAsync();
+            Boolean res =  ping.execute().get();
+            //Log.d("dec", "Ping done , getting result : " );
+            net = res;
+
+        }
+        catch (Exception ex){
+            //Log.d("dec", "Process exception : " + ex.getMessage());
+            net = false;
+        }
 
 
-
-        boolean net = isGoogleAvailable();
-
+        //Log.d("dec", "Checkin process result: ");
 
         if (firstStart) {
             if (net) {
@@ -281,9 +292,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     versionList = response.body().getVersions();
 
                     for (Versions.Version r : versionList) {
-                        responseid  = r.getIdversion();
+                        responseid = r.getIdversion();
                     }
-
 
 
                     int dbversion = -1;
@@ -398,7 +408,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             cv.put(DBHelper.KEY_IDVER, r.getIdversion());
 
                             db.insert(DBHelper.TABLE_VERSIONS, null, cv);
-                            Log.d("Insert", "Ya vstavlyau v versii");
+                            //Log.d("Insert", "Ya vstavlyau v versii");
                         }
                         db.setTransactionSuccessful();
 
@@ -455,7 +465,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             cv.put(DBHelper.KEY_MEALINFO, r.getStrMealInfo());
                             cv.put(DBHelper.KEY_COOKTIME, r.getStrCookTime());
                             db.insert(DBHelper.TABLE_RECIPES, null, cv);
-                            Log.d("Insert", "Ya v receptah");
+                            //Log.d("Insert", "Ya v receptah");
                         }
                         db.setTransactionSuccessful();
                     } catch (Exception ex) {
@@ -534,36 +544,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
-
-
-    public static boolean isHostAvailable(final String host, final int port, final int timeout) {
-        try (final Socket socket = new Socket()) {
-            final InetAddress inetAddress = InetAddress.getByName(host);
-            final InetSocketAddress inetSocketAddress = new InetSocketAddress(inetAddress, port);
-
-            socket.connect(inetSocketAddress, timeout);
-            return true;
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    public boolean isGoogleAvailable() {
-        try {
-            String url = FoodClient.getBaseUrl();
-            String command = "ping -i 1 -c 1 10.0.2.2" ;
-            return Runtime.getRuntime().exec(command).waitFor() == 0;
-        } catch (Exception e) {
-            Log.d("url", e.getMessage());
-            return false;
-        }
-    }
-
-
-
-
-
 }
+
+
+

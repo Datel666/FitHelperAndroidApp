@@ -2,6 +2,7 @@ package pr.code.views.categories;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class CategoryPresenter {
     List<Meals.Meal> loadMealsByCategory(String category, SQLiteDatabase database){
         List<Meals.Meal> res = new ArrayList<>();
 
-        Cursor cursor = database.rawQuery("SELECT * from " + DBHelper.TABLE_RECIPES + " WHERE " + DBHelper.KEY_CATEGORYRECIPE + " = " + category, null);
+        Cursor cursor = database.rawQuery("SELECT * from " + DBHelper.TABLE_RECIPES + " WHERE " + DBHelper.KEY_CATEGORYRECIPE + " = '" + category +"'", null);
 
         if (cursor.moveToFirst()) {
             int idMeal = cursor.getColumnIndex(DBHelper.KEY_IDRECIPE);
@@ -68,6 +69,7 @@ public class CategoryPresenter {
                 tempRecipe.setStrIngredients(cursor.getString(ingredients));
                 tempRecipe.setStrMeasures(cursor.getString(measures));
                 res.add(tempRecipe);
+
             }
             while (cursor.moveToNext());
         } else {

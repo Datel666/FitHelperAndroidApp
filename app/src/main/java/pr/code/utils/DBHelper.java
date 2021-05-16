@@ -50,14 +50,19 @@ public class DBHelper extends SQLiteOpenHelper  {
     public static final String KEY_MEASURESRECIPE = "strMeasures";
     public static final String KEY_MEALINFO = "strMealInfo";
     public static final String KEY_COOKTIME = "strCookTime";
+
+
+    public static final String TABLE_SHOPPINGLIST = "shoppinglist";
+    public static final String KEY_SHOPLISTITEMID = "itemid";
+    public static final String KEY_SHOPLISTITEMNAME = "itemname";
+    public static final String KEY_SHOPLISTITEMQUANTITY = "itemquantity";
     //endregion
+
+
 
 
     public static DBHelper getInstance(Context ctx) {
 
-        // Use the application context, which will ensure that you
-        // don't accidentally leak an Activity's context.
-        // See this article for more information: http://bit.ly/6LRzfx
         if (mInstance == null) {
             mInstance = new DBHelper(ctx.getApplicationContext());
         }
@@ -103,6 +108,20 @@ public class DBHelper extends SQLiteOpenHelper  {
                 + KEY_IDVER + " integer,"
                 + KEY_IDDATE + " text " + ")");
 
+        db.execSQL("create table "
+                + TABLE_SHOPPINGLIST + "("
+                + KEY_SHOPLISTITEMID + " integer primary key autoincrement, "
+                + KEY_SHOPLISTITEMNAME + " text,"
+                + KEY_SHOPLISTITEMQUANTITY + " text " + ")");
+
+
+
+        db.execSQL("create table "
+                + TABLE_SHOPPINGLIST + "("
+                + KEY_SHOPLISTITEMID + " integer primary key autoincrement, "
+                + KEY_SHOPLISTITEMNAME + " text,"
+                + KEY_SHOPLISTITEMQUANTITY + " text " + ")");
+
         try {
             db.beginTransaction();
             ContentValues values = new ContentValues();
@@ -123,6 +142,7 @@ public class DBHelper extends SQLiteOpenHelper  {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_VERSIONS);
+
 
         db.execSQL("create table "
                 + TABLE_CATEGORIES + "("
@@ -151,6 +171,8 @@ public class DBHelper extends SQLiteOpenHelper  {
                 + KEY_IDVER + " integer,"
                 + KEY_IDDATE + " text " + ")");
 
+
+
         try {
             db.beginTransaction();
             ContentValues values = new ContentValues();
@@ -171,7 +193,7 @@ public class DBHelper extends SQLiteOpenHelper  {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_VERSIONS);
-
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPINGLIST);
 
         onCreate(db);
     }
