@@ -94,7 +94,6 @@ public class RecipesPresenter {
     }
 
 
-
     List<Categories.Category> loadCategories(SQLiteDatabase database) {
         List<Categories.Category> res = new ArrayList<>();
 
@@ -124,4 +123,7 @@ public class RecipesPresenter {
         }
         return res;
     }
+
+
+
 }

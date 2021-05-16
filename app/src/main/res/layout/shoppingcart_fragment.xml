@@ -12,29 +12,44 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="160dp"
         android:layout_marginLeft="18dp"
         android:layout_marginRight="18dp"
+
         android:id="@+id/header"
         android:background="#F1FEFF"
         >
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:ems="10"
-            android:hint="Название продукта"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
 
-            android:layout_centerInParent="true"
-            android:id="@+id/input"/>
+            android:layout_marginTop="10dp"
+            android:hint="Название продукта"
+            android:layout_centerHorizontal="true"
+
+            android:id="@+id/inputname"/>
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+
+            android:hint="Количество"
+            android:layout_below="@id/inputname"
+
+            android:id="@+id/inputquantity"/>
+
         <ImageView
+            android:id="@+id/enter"
             android:layout_width="40sp"
             android:layout_height="40sp"
-            android:layout_toRightOf="@id/input"
-            android:layout_marginLeft="7sp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/add_item"
-            android:id="@+id/enter"
-            />
+
+            android:layout_below="@id/inputquantity"
+            android:layout_marginLeft="250dp"
+            android:layout_marginTop="13dp"
+
+            android:adjustViewBounds="false"
+            android:src="@drawable/add_item" />
 
     </RelativeLayout>
     
@@ -43,6 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/header"
+        android:background="@color/colorWhiteDark"
         />
 
 

@@ -14,7 +14,7 @@ public class CartItems {
         this.cartItems = cartItems;
     }
 
-    public class CartItem {
+    public static class CartItem {
 
         private String itemid;
         private String itemname;

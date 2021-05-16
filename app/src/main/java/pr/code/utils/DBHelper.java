@@ -53,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper  {
 
 
     public static final String TABLE_SHOPPINGLIST = "shoppinglist";
-    public static final String KEY_SHOPLISTITEMID = "itemid";
+    public static final String KEY_SHOPLISTITEMID = "iditem";
     public static final String KEY_SHOPLISTITEMNAME = "itemname";
     public static final String KEY_SHOPLISTITEMQUANTITY = "itemquantity";
     //endregion
@@ -115,12 +115,6 @@ public class DBHelper extends SQLiteOpenHelper  {
                 + KEY_SHOPLISTITEMQUANTITY + " text " + ")");
 
 
-
-        db.execSQL("create table "
-                + TABLE_SHOPPINGLIST + "("
-                + KEY_SHOPLISTITEMID + " integer primary key autoincrement, "
-                + KEY_SHOPLISTITEMNAME + " text,"
-                + KEY_SHOPLISTITEMQUANTITY + " text " + ")");
 
         try {
             db.beginTransaction();
