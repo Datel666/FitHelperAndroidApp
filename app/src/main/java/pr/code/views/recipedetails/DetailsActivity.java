@@ -36,6 +36,7 @@ import pr.code.R;
 import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
 import pr.code.utils.Util;
+import pr.code.views.categories.CategoryFragment;
 import pr.code.views.recipes.RecipesFragment;
 
 public class DetailsActivity extends AppCompatActivity implements DetailsView{
@@ -70,22 +71,37 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
-    SQLiteDatabase database;
+
+    boolean isfavorite;
+    String id;
+    static SQLiteDatabase database;
+    static DetailsPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_recipe_details);
         ButterKnife.bind(this);
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         initvalues();
         setupActionBar();
+
+
 
         Intent intent = getIntent();
 
         String mealname = intent.getStringExtra(RecipesFragment.EXTRA_DETAIL);
-        Log.d("Details",mealname);
-        DetailsPresenter presenter = new DetailsPresenter(this);
+
+
+        presenter = new DetailsPresenter(this);
         presenter.getMealById(mealname,database);
 
     }
@@ -126,10 +142,20 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_detail,menu);
         MenuItem favoriteItem = menu.findItem(R.id.favorite);
+
         Drawable favoriteItemColor = favoriteItem.getIcon();
         setupColorActionBarIcon(favoriteItemColor);
+
+        if(isfavorite){
+            favoriteItem.setIcon(R.drawable.ic_favorite);
+        }
+        else{
+            favoriteItem.setIcon(R.drawable.ic_favorite_border);
+        }
+
         return true;
     }
 
@@ -139,10 +165,23 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.favorite:
+                if(isfavorite) {
+                    removeFromFavorite(id);
+                    item.setIcon(R.drawable.ic_favorite_border);
+                    isfavorite = false;
+                }
+                else{
+                    addToFavorite(id);
+                    item.setIcon(R.drawable.ic_favorite);
+                    isfavorite = true;
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 
     @Override
     public void showLoading() {
@@ -155,7 +194,11 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
     }
 
     @Override
-    public void setMeal(Meals.Meal meal) {
+    public void setMeal(Meals.Meal meal,boolean infavorites) {
+
+        isfavorite = infavorites;
+        id = meal.getIdMeal();
+
         Picasso.get().load(meal.getStrMealThumb()).networkPolicy(NetworkPolicy.OFFLINE)
                 .into(mealThumb, new Callback() {
                     @Override
@@ -166,6 +209,8 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
                                 .into(mealThumb);
                     }
                 });
+
+
 
         collapsingToolbarLayout.setTitle(meal.getStrMeal());
         category.setText(meal.getStrCategory());
@@ -193,7 +238,14 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
             }
         }
 
+    }
 
+    public void addToFavorite(String id){
+        presenter.addToFavorites(database,id);
+    }
+
+    public void removeFromFavorite(String id){
+        presenter.removeFromFavorites(database,id);
     }
 
     @Override

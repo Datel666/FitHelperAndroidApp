@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -42,7 +43,7 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
     List<CartItems.CartItem> items;
     EditText input;
     EditText quantity;
-    ImageView enter;
+    Button enter;
     Toast t;
     static SQLiteDatabase database;
     static ShoppingCartPresenter presenter;
@@ -78,9 +79,9 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                String name = items.get(position).getItemname();
-                String quantity = items.get(position).getItemquantity();
-                showQuantity("Полное наименование товара: \n" + name + "\n Необходимое количество: " + quantity);
+                String name = items.get(position).getItemname().trim();
+                String quantity = items.get(position).getItemquantity().trim();
+                showQuantity("Полное наименование товара: \n" + name + "\nНеобходимое количество: " + quantity);
                 return false;
             }
         });

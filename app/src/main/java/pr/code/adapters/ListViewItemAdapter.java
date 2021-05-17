@@ -56,7 +56,7 @@ public class ListViewItemAdapter extends ArrayAdapter<CartItems.CartItem> {
             info.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ShoppingCartFragment.showQuantity("Полное наименование товара: \n" + list.get(position).getItemname() + "\n Необходимое количество: " + list.get(position).getItemquantity());
+                    ShoppingCartFragment.showQuantity("Полное наименование товара: \n" + list.get(position).getItemname().trim() + "\nНеобходимое количество: " + list.get(position).getItemquantity().trim());
 
                 }
             });

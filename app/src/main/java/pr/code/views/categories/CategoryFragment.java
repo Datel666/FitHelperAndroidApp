@@ -55,7 +55,9 @@ public class CategoryFragment extends Fragment implements CategoryView {
 
     AlertDialog.Builder descDialog;
     Context con;
-    SQLiteDatabase database;
+
+    static SQLiteDatabase database;
+    static CategoryPresenter presenter;
 
 
     @Override
@@ -66,14 +68,17 @@ public class CategoryFragment extends Fragment implements CategoryView {
         return view;
     }
 
+
+
     @Override
     public void onAttach(@NonNull Context context) {
         con = context;
         super.onAttach(context);
     }
 
-    void initvalues(){
+    void initvalues(CategoryFragment view){
         database = DBHelper.getInstance(con).getReadableDatabase();
+        presenter = new CategoryPresenter(view);
     }
 
     @Override
@@ -104,15 +109,15 @@ public class CategoryFragment extends Fragment implements CategoryView {
                         }
                     });
 
-            initvalues();
+            initvalues(this);
 
 
 
 
-            Log.d("norecipes", "onViewCreated:  ya doshel do presentera");
-            CategoryPresenter presenter = new CategoryPresenter(this);
+
+
             presenter.getMealByCategory(getArguments().getString("EXTRA_DATA_NAME"),database);
-            Log.d("norecipes", "onViewCreated:  ya zaprosil dannie u presentera");
+
 
         }
     }
@@ -128,8 +133,8 @@ public class CategoryFragment extends Fragment implements CategoryView {
     }
 
     @Override
-    public void setMeals(List<Meals.Meal> meals) {
-        RecyclerViewRecipesByCategory adapter = new RecyclerViewRecipesByCategory(getActivity(),meals);
+    public void setMeals(List<Meals.Meal> meals,List<String> favlist) {
+        RecyclerViewRecipesByCategory adapter = new RecyclerViewRecipesByCategory(getActivity(),meals,favlist);
         recyclerView.setLayoutManager(new GridLayoutManager(con,2));
         recyclerView.setClipToPadding(false);
         recyclerView.setAdapter(adapter);
@@ -155,6 +160,14 @@ public class CategoryFragment extends Fragment implements CategoryView {
         descDialog.setPositiveButton("ЗАКРЫТЬ",((dialog, which) -> dialog.dismiss()));
         AlertDialog ad = descDialog.create();
         ad.show();
+    }
+
+    public static void addToFavorite(String id){
+        presenter.addToFavorites(database,id);
+    }
+
+    public static void removeFromFavorite(String id){
+        presenter.removeFromFavorites(database,id);
     }
 
 

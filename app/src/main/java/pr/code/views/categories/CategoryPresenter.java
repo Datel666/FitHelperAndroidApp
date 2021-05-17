@@ -1,5 +1,6 @@
 package pr.code.views.categories;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -25,7 +26,7 @@ public class CategoryPresenter {
 
         try {
 
-            view.setMeals(loadMealsByCategory(category,database));
+            view.setMeals(loadMealsByCategory(category,database),loadFavoritesList(database));
         }
         catch(Exception ex){
             view.onErrorLoading(ex.getMessage());
@@ -75,6 +76,69 @@ public class CategoryPresenter {
         } else {
         }
         return res;
+    }
+
+    List<String> loadFavoritesList(SQLiteDatabase database){
+        List<String> favorites = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery("SELECT * from " + DBHelper.TABLE_FAVORITES, null);
+
+        if (cursor.moveToFirst()) {
+            int idRecipe = cursor.getColumnIndex(DBHelper.Key_FAVORITERECIPEID);
+
+
+            do {
+
+                favorites.add(cursor.getString(idRecipe));
+
+            }
+            while (cursor.moveToNext());
+        } else {
+        }
+
+        return favorites;
+    }
+
+    boolean addToFavorites(SQLiteDatabase db, String id){
+        try{
+            db.beginTransaction();
+
+            ContentValues cv = new ContentValues();
+            cv.put(DBHelper.Key_FAVORITERECIPEID,id);
+
+            db.insert(DBHelper.TABLE_FAVORITES,null,cv);
+
+            db.setTransactionSuccessful();
+            return true;
+        }
+        catch (Exception ex){
+
+        }
+        finally {
+            db.endTransaction();
+        }
+        return false;
+    }
+
+    boolean removeFromFavorites(SQLiteDatabase db, String id){
+        try{
+            db.beginTransaction();
+
+
+            db.delete(DBHelper.TABLE_FAVORITES
+                    ,DBHelper.Key_FAVORITERECIPEID + "=?"
+                    ,new String[]{id});
+
+            db.setTransactionSuccessful();
+            return true;
+        }
+        catch (Exception ex){
+
+        }
+        finally {
+            db.endTransaction();
+        }
+        return false;
     }
 
 }

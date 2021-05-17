@@ -472,6 +472,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     } finally {
                         db.endTransaction();
+                        
                     }
                 }
             }

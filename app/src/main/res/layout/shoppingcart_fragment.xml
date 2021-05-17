@@ -12,52 +12,95 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="200dp"
         android:layout_marginLeft="18dp"
         android:layout_marginRight="18dp"
 
         android:id="@+id/header"
         android:background="#F1FEFF"
         >
-        <EditText
-            android:layout_width="250dp"
-            android:layout_height="40dp"
 
-            android:layout_marginTop="10dp"
-            android:hint="Название продукта"
-            android:layout_centerHorizontal="true"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardbelow"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
 
-            android:id="@+id/inputname"/>
-        <EditText
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
+        >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
 
-            android:hint="Количество"
-            android:layout_below="@id/inputname"
+                android:layout_marginTop="10dp"
+                android:hint="Название продукта"
+                android:layout_centerHorizontal="true"
 
-            android:id="@+id/inputquantity"/>
+                android:id="@+id/inputname"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
 
-        <ImageView
-            android:id="@+id/enter"
-            android:layout_width="40sp"
-            android:layout_height="40sp"
+                android:hint="Количество"
+                android:layout_below="@id/inputname"
 
-            android:layout_below="@id/inputquantity"
-            android:layout_marginLeft="250dp"
-            android:layout_marginTop="13dp"
+                android:id="@+id/inputquantity"/>
 
-            android:adjustViewBounds="false"
-            android:src="@drawable/add_item" />
+                <Button
+                    android:id="@+id/enter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40sp"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="8sp"
+                    android:layout_marginRight="4sp"
+                    android:text="Добавить"
+                    android:textColor="@color/colorPrimaryDark"
+
+
+                    android:adjustViewBounds="false"
+
+                     />
+
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Список Покупок"
+            android:textAlignment="center"
+            android:layout_below="@id/cardbelow"
+
+
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+
+             />
+
+
 
     </RelativeLayout>
-    
+
+
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/header"
+
         android:background="@color/colorWhiteDark"
         />
 

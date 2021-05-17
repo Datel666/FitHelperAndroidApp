@@ -40,11 +40,18 @@ public class CategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+
 
 
         initActionBar();
         initIntent();
-
     }
 
     private void initIntent() {

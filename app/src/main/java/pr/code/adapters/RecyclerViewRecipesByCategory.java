@@ -20,15 +20,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.models.Meals;
+import pr.code.views.categories.CategoryFragment;
 
 public class RecyclerViewRecipesByCategory extends RecyclerView.Adapter<RecyclerViewRecipesByCategory.RecyclerViewHolder> {
 
     private List<Meals.Meal> meals;
+    private List<String> favlist;
     private Context context;
     private static ClickListener clickListener;
 
-    public RecyclerViewRecipesByCategory(Context context, List<Meals.Meal> meals){
+    public RecyclerViewRecipesByCategory(Context context, List<Meals.Meal> meals,List<String> favlist){
         this.meals = meals;
+        this.favlist = favlist;
         this.context = context;
     }
 
@@ -60,6 +63,31 @@ public class RecyclerViewRecipesByCategory extends RecyclerView.Adapter<Recycler
 
         String strMealName = meals.get(position).getStrMeal();
         holder.mealName.setText(strMealName);
+        if(favlist.contains(meals.get(position).getIdMeal()))
+        {
+            holder.favorite.setImageResource(R.drawable.ic_favorite);
+            holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite);
+        }
+        else {
+            holder.favorite.setImageResource(R.drawable.ic_favorite_border);
+            holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite_border);
+        }
+
+        holder.favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if((Integer)holder.favorite.getTag(R.id.favtag) == R.drawable.ic_favorite_border) {
+                    holder.favorite.setImageResource(R.drawable.ic_favorite);
+                    holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite);
+                    CategoryFragment.addToFavorite(meals.get(position).getIdMeal());
+                }
+                else{
+                    holder.favorite.setImageResource(R.drawable.ic_favorite_border);
+                    holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite_border);
+                    CategoryFragment.removeFromFavorite(meals.get(position).getIdMeal());
+                }
+            }
+        });
     }
 
     @Override
@@ -72,6 +100,8 @@ public class RecyclerViewRecipesByCategory extends RecyclerView.Adapter<Recycler
         ImageView mealThumb;
         @BindView(R.id.mealName)
         TextView mealName;
+        @BindView(R.id.love)
+        ImageView favorite;
 
         RecyclerViewHolder(@NonNull View itemView){
             super(itemView);
