@@ -36,6 +36,7 @@ import pr.code.models.Versions;
 import pr.code.utils.DBHelper;
 import pr.code.utils.PingAsync;
 import pr.code.utils.Util;
+import pr.code.views.favorites.FavoritesFragment;
 import pr.code.views.recipes.RecipesFragment;
 import pr.code.views.shoppingcart.ShoppingCartFragment;
 import retrofit2.Call;
@@ -220,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new MealPlannerFragment()).commit();
                 break;
             case R.id.nav_favorites:
+                setTitle("Избранное");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new FavoritesFragment()).commit();
                 break;

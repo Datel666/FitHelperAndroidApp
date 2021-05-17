@@ -112,10 +112,6 @@ public class CategoryFragment extends Fragment implements CategoryView {
             initvalues(this);
 
 
-
-
-
-
             presenter.getMealByCategory(getArguments().getString("EXTRA_DATA_NAME"),database);
 
 

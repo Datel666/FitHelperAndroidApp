@@ -46,10 +46,6 @@ public class CategoryActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-
-
-
-
         initActionBar();
         initIntent();
     }

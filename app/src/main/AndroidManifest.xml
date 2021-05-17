@@ -14,11 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".views.categories.CategoryActivity"
-            android:theme="@style/AppTheme"
+            android:name=".views.favorites.FavoritesActivity"
+            android:label="Избранное"
             android:screenOrientation="portrait"
-            android:label="Category"
             />
+        <activity
+            android:name=".views.categories.CategoryActivity"
+            android:label="Категории"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity android:name=".views.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,11 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name=".views.recipedetails.DetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
