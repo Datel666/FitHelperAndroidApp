@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.models.Meals;
 import pr.code.views.categories.CategoryFragment;
+import pr.code.views.favorites.FavoritesFragment;
 
 public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<FilteredRecipesRecyclerViewAdapter.RecyclerViewHolder> implements Filterable {
 
@@ -70,13 +71,22 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
 
         String strMealName = meals.get(position).getStrMeal();
         holder.mealName.setText(strMealName);
+        holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite);
         holder.favorite.setImageResource(R.drawable.ic_favorite);
 
         holder.favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CategoryFragment.removeFromFavorite(meals.get(position).getIdMeal());
-
+                if((Integer) holder.favorite.getTag(R.id.favtag) == R.drawable.ic_favorite) {
+                    FavoritesFragment.removeFromFavorite(meals.get(position).getIdMeal());
+                    holder.favorite.setImageResource(R.drawable.ic_favorite_border);
+                    holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite_border);
+                }
+                else{
+                    FavoritesFragment.addToFavorite(meals.get(position).getIdMeal());
+                    holder.favorite.setImageResource(R.drawable.ic_favorite);
+                    holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite);
+                }
             }
         });
 
@@ -103,7 +113,7 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
                 for (Meals.Meal item : mealsFull) {
-                    if (item.getStrMeal().toLowerCase().contains(filterPattern)) {
+                    if (item.getStrMeal().toLowerCase().contains(filterPattern) || item.getStrTags().toLowerCase().contains(filterPattern) || item.getStrCategory().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }

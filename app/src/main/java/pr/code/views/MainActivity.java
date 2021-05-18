@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        setTitle("Рецепты");
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -152,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_home);
         }
     }
+
 
     private void initValues() {
         net = false;
@@ -209,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
+                setTitle("Рецепты");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new RecipesFragment()).commit();
                 break;
@@ -226,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new FavoritesFragment()).commit();
                 break;
             case R.id.nav_shoppingcart:
+                setTitle("Список покупок");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ShoppingCartFragment()).commit();
                 break;

@@ -1,5 +1,6 @@
-package pr.code.views.recipes;
+package pr.code.views.search;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -7,54 +8,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pr.code.models.Categories;
 import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
+import pr.code.views.favorites.FavoritesPresenter;
 
+public class SearchPresenter {
 
-public class RecipesPresenter {
+    private SearchView view;
 
-    private RecipesView view;
-
-
-    public RecipesPresenter(RecipesView view) {
+    public SearchPresenter(SearchView view){
         this.view = view;
-
     }
 
-    void getRecipes(SQLiteDatabase database) {
-        view.showLoading();
+    void getSearchableCollection(SQLiteDatabase database){
+        view.showloading();
 
-        try {
-            List<Meals.Meal> templist = loadRecipes(database);
-            Collections.shuffle(templist);
-            view.setMeal(templist);
+        try{
+            List<Meals.Meal> resholder = loadSearchableCollection(database);
+            Collections.shuffle(resholder);
+            view.setSearchableCollection(resholder);
         }
-        catch(Exception ex){
-            view.onErrorLoading(ex.getMessage());
+        catch (Exception ex){
+
         }
         finally {
-            view.hideLoading();
+            view.hideloading();
         }
-
     }
 
-    void getCategories(SQLiteDatabase database) {
-        view.showLoading();
-
-        try {
-            view.setCategory(loadCategories(database));
-        }
-        catch(Exception ex){
-            view.onErrorLoading(ex.getMessage());
-        }
-        finally {
-            view.hideLoading();
-        }
-
-    }
-
-    List<Meals.Meal> loadRecipes(SQLiteDatabase database) {
+    List<Meals.Meal> loadSearchableCollection(SQLiteDatabase database){
         List<Meals.Meal> res = new ArrayList<>();
 
         Cursor cursor = database.rawQuery("SELECT * from " + DBHelper.TABLE_RECIPES, null);
@@ -88,36 +70,6 @@ public class RecipesPresenter {
                 tempRecipe.setStrIngredients(cursor.getString(ingredients));
                 tempRecipe.setStrMeasures(cursor.getString(measures));
                 res.add(tempRecipe);
-            }
-            while (cursor.moveToNext());
-        } else {
-        }
-        return res;
-    }
-
-
-    List<Categories.Category> loadCategories(SQLiteDatabase database) {
-        List<Categories.Category> res = new ArrayList<>();
-
-        Cursor cursor = database.rawQuery("SELECT * from " + DBHelper.TABLE_CATEGORIES, null);
-
-        if (cursor.moveToFirst()) {
-            int idCategory = cursor.getColumnIndex(DBHelper.KEY_IDCATEGORY);
-            int strCategory = cursor.getColumnIndex(DBHelper.KEY_NAMECATEGORY);
-            int strCategoryThumb = cursor.getColumnIndex(DBHelper.KEY_PHOTOCATEGORY);
-            int strCategoryDescription = cursor.getColumnIndex(DBHelper.KEY_DESCRIPTIONCATEGORY);
-
-            do {
-
-
-                Categories.Category tempCategory = new Categories.Category();
-                tempCategory.setIdCategory(cursor.getString(idCategory));
-                tempCategory.setStrCategory(cursor.getString(strCategory));
-                tempCategory.setStrCategoryThumb(cursor.getString(strCategoryThumb));
-                tempCategory.setStrCategoryDescription(cursor.getString(strCategoryDescription));
-
-
-                res.add(tempCategory);
 
             }
             while (cursor.moveToNext());
@@ -126,6 +78,45 @@ public class RecipesPresenter {
         return res;
     }
 
+    boolean removeFromFavorites(SQLiteDatabase db, String id){
+        try{
+            db.beginTransaction();
 
 
+            db.delete(DBHelper.TABLE_FAVORITES
+                    ,DBHelper.Key_FAVORITERECIPEID + "=?"
+                    ,new String[]{id});
+
+            db.setTransactionSuccessful();
+            return true;
+        }
+        catch (Exception ex){
+
+        }
+        finally {
+            db.endTransaction();
+        }
+        return false;
+    }
+
+    boolean addToFavorites(SQLiteDatabase db, String id){
+        try{
+            db.beginTransaction();
+
+            ContentValues cv = new ContentValues();
+            cv.put(DBHelper.Key_FAVORITERECIPEID,id);
+
+            db.insert(DBHelper.TABLE_FAVORITES,null,cv);
+
+            db.setTransactionSuccessful();
+            return true;
+        }
+        catch (Exception ex){
+
+        }
+        finally {
+            db.endTransaction();
+        }
+        return false;
+    }
 }

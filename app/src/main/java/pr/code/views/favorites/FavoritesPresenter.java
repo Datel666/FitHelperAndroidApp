@@ -1,5 +1,6 @@
 package pr.code.views.favorites;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -93,6 +94,48 @@ public class FavoritesPresenter {
         } else {
         }
         return res;
+    }
+
+    boolean removeFromFavorites(SQLiteDatabase db, String id){
+        try{
+            db.beginTransaction();
+
+
+            db.delete(DBHelper.TABLE_FAVORITES
+                    ,DBHelper.Key_FAVORITERECIPEID + "=?"
+                    ,new String[]{id});
+
+            db.setTransactionSuccessful();
+            return true;
+        }
+        catch (Exception ex){
+
+        }
+        finally {
+            db.endTransaction();
+        }
+        return false;
+    }
+
+    boolean addToFavorites(SQLiteDatabase db, String id){
+        try{
+            db.beginTransaction();
+
+            ContentValues cv = new ContentValues();
+            cv.put(DBHelper.Key_FAVORITERECIPEID,id);
+
+            db.insert(DBHelper.TABLE_FAVORITES,null,cv);
+
+            db.setTransactionSuccessful();
+            return true;
+        }
+        catch (Exception ex){
+
+        }
+        finally {
+            db.endTransaction();
+        }
+        return false;
     }
 
 }

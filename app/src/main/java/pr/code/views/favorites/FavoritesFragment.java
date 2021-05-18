@@ -70,8 +70,14 @@ public class FavoritesFragment extends Fragment implements FavoritesView{
 
         initvalues(this);
 
-        presenter.getFavorites(database);
 
+
+    }
+
+    @Override
+    public void onResume() {
+        presenter.getFavorites(database);
+        super.onResume();
     }
 
     @Override
@@ -136,5 +142,13 @@ public class FavoritesFragment extends Fragment implements FavoritesView{
     @Override
     public void showLoading(){
         progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public static void addToFavorite(String id){
+        presenter.addToFavorites(database,id);
+    }
+
+    public static void removeFromFavorite(String id){
+        presenter.removeFromFavorites(database,id);
     }
 }

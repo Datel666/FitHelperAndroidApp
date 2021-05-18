@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,8 @@ import pr.code.utils.DBHelper;
 import pr.code.utils.Util;
 import pr.code.views.categories.CategoryActivity;
 import pr.code.views.recipedetails.DetailsActivity;
+import pr.code.views.search.SearchActivity;
+import pr.code.views.shoppingcart.ShoppingCartFragment;
 
 public class RecipesFragment extends Fragment  implements RecipesView{
 
@@ -48,6 +51,8 @@ public class RecipesFragment extends Fragment  implements RecipesView{
     ViewPager viewPagerMeal;
     @BindView(R.id.recyclerCategory)
     RecyclerView recyclerViewCategory;
+    @BindView(R.id.recipesSearchEditText)
+    EditText editText;
 
 
 
@@ -65,6 +70,15 @@ public class RecipesFragment extends Fragment  implements RecipesView{
         presenter = new RecipesPresenter(this);
         presenter.getRecipes(database);
         presenter.getCategories(database);
+
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(act, SearchActivity.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.pull_up_from_bottom, R.anim.push_out_to_bottom);
+            }
+        });
 
         return view;
 
