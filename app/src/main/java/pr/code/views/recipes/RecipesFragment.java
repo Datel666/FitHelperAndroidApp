@@ -12,11 +12,11 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
-import pr.code.adapters.RecyclerViewRecipesAdapter;
+import pr.code.adapters.RecyclerViewCategoryAdapter;
 import pr.code.adapters.ViewPagerHeaderAdapter;
 import pr.code.models.Categories;
 import pr.code.models.Meals;
@@ -33,7 +33,6 @@ import pr.code.utils.Util;
 import pr.code.views.categories.CategoryActivity;
 import pr.code.views.recipedetails.DetailsActivity;
 import pr.code.views.search.SearchActivity;
-import pr.code.views.shoppingcart.ShoppingCartFragment;
 
 public class RecipesFragment extends Fragment  implements RecipesView{
 
@@ -79,6 +78,9 @@ public class RecipesFragment extends Fragment  implements RecipesView{
                 getActivity().overridePendingTransition(R.anim.pull_up_from_bottom, R.anim.push_out_to_bottom);
             }
         });
+        editText.setOnLongClickListener(null);
+
+
 
         return view;
 
@@ -106,7 +108,7 @@ public class RecipesFragment extends Fragment  implements RecipesView{
 
     @Override
     public void setCategory(List<Categories.Category> category) {
-        RecyclerViewRecipesAdapter recipesAdapter = new RecyclerViewRecipesAdapter(category,act);
+        RecyclerViewCategoryAdapter recipesAdapter = new RecyclerViewCategoryAdapter(category,act);
         recyclerViewCategory.setAdapter(recipesAdapter);
         GridLayoutManager layoutManager = new GridLayoutManager(act, 3,
                 GridLayoutManager.VERTICAL, false);

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        android:layout_marginBottom="2dp"
+
+        >
+
+
+        <LinearLayout
+
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#DCDCDC"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ingredientNumber"
+                    android:paddingLeft="8dp"
+                    android:lines="1"
+                    android:layout_centerVertical="true"
+
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ingredientName"
+                    android:lines="1"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="28sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+
+            <ImageView
+
+                android:layout_width="22sp"
+                android:layout_height="22sp"
+                android:id="@+id/deleteIngredient"
+                android:layout_gravity="center"
+                android:layout_marginRight="5sp"
+                android:src="@drawable/remove"
+                android:layout_alignParentRight="true"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
+</RelativeLayout>

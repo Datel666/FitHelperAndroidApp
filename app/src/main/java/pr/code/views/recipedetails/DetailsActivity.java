@@ -3,9 +3,14 @@ package pr.code.views.recipedetails;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +43,7 @@ import pr.code.utils.DBHelper;
 import pr.code.utils.Util;
 import pr.code.views.categories.CategoryFragment;
 import pr.code.views.recipes.RecipesFragment;
+import pr.code.views.search.SearchActivity;
 
 public class DetailsActivity extends AppCompatActivity implements DetailsView{
 
@@ -71,11 +77,27 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
+    @BindView(R.id.cooktime)
+    TextView cooktime;
+
+    @BindView(R.id.calories)
+    TextView calories;
+
+    @BindView(R.id.protein)
+    TextView protein;
+
+    @BindView(R.id.fats)
+    TextView fats;
+
+    @BindView(R.id.carbs)
+    TextView carbs;
+
 
     boolean isfavorite;
     String id;
     static SQLiteDatabase database;
     static DetailsPresenter presenter;
+    String customizedInstructions;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,6 +121,12 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
         Intent intent = getIntent();
 
         String mealname = intent.getStringExtra(RecipesFragment.EXTRA_DETAIL);
+
+        if(intent.getStringExtra(SearchActivity.EXTRA_INSTRUCTIONS) != null)
+        {
+            customizedInstructions = intent.getStringExtra(SearchActivity.EXTRA_INSTRUCTIONS);
+        }
+
 
 
         presenter = new DetailsPresenter(this);
@@ -199,6 +227,8 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
         isfavorite = infavorites;
         id = meal.getIdMeal();
 
+        String[] info = meal.getStrMealInfo().split(",");
+
         Picasso.get().load(meal.getStrMealThumb()).networkPolicy(NetworkPolicy.OFFLINE)
                 .into(mealThumb, new Callback() {
                     @Override
@@ -211,6 +241,11 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
                 });
 
 
+        calories.setText(info[0]);
+        protein.setText(info[1]);
+        fats.setText(info[2]);
+        carbs.setText(info[3]);
+        cooktime.setText(meal.getStrCookTime());
 
         collapsingToolbarLayout.setTitle(meal.getStrMeal());
         category.setText(meal.getStrCategory());
@@ -221,13 +256,43 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
         int inlist = meal.getStrIngredients().split(",").length;
         int melist = meal.getStrMeasures().split(",").length;
 
+        ForegroundColorSpan fcsRed = new ForegroundColorSpan(Color.RED);
+        ForegroundColorSpan fcsGreen = new ForegroundColorSpan(Color.GREEN);
 
-        for (String a:
-                meal.getStrIngredients().split(",")) {
-            if(!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))){
-                ingredients.append("\n \u2022 " + a);
+
+
+
+        if(customizedInstructions !=null)
+        {
+
+
+            for (String a:
+                    customizedInstructions.split(",")) {
+                if(!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))){
+
+                    if(a.contains("\u2713")) {
+
+                        ingredients.append("\n \u2022 " + a);
+                    }
+                    else{
+                        ingredients.append("\n \u2022 " + a + " \u2716");
+                    }
+
+
+                }
+            }
+
+        }
+
+        else{
+            for (String a:
+                    meal.getStrIngredients().split(",")) {
+                if(!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))){
+                    ingredients.append("\n \u2022 " + a);
+                }
             }
         }
+
 
         if (inlist == melist){
             for (String a:

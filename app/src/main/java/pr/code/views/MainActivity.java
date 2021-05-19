@@ -36,6 +36,7 @@ import pr.code.models.Versions;
 import pr.code.utils.DBHelper;
 import pr.code.utils.PingAsync;
 import pr.code.utils.Util;
+import pr.code.views.cookwith.CookWithFragment;
 import pr.code.views.favorites.FavoritesFragment;
 import pr.code.views.recipes.RecipesFragment;
 import pr.code.views.shoppingcart.ShoppingCartFragment;

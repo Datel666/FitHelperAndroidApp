@@ -30,6 +30,7 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
 
     private List<Meals.Meal> meals;
     private List<Meals.Meal> mealsFull;
+    private int[] matching;
 
     private Context context;
 
@@ -39,6 +40,13 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
         this.meals = meals;
         mealsFull = new ArrayList<>(this.meals);
         this.context = context;
+    }
+
+    public FilteredRecipesRecyclerViewAdapter(Context context, List<Meals.Meal> meals, int[] matching) {
+        this.meals = meals;
+        mealsFull = new ArrayList<>(this.meals);
+        this.context = context;
+        this.matching = matching;
     }
 
 
@@ -53,6 +61,16 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
+
+
+        if (matching != null && matching.length > 0) {
+            String match = matching[position] + "/" + meals.get(position).getStrIngredients().split(",").length;
+            holder.matching.setText(match);
+
+        } else {
+
+            holder.matching.setText("");
+        }
 
         String strMealThumb = meals.get(position).getStrMealThumb();
         Picasso.get().load(strMealThumb).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.shadow_bottom_to_top)
@@ -70,25 +88,27 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
                 });
 
         String strMealName = meals.get(position).getStrMeal();
+
+
         holder.mealName.setText(strMealName);
-        holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite);
+        holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite);
         holder.favorite.setImageResource(R.drawable.ic_favorite);
 
         holder.favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if((Integer) holder.favorite.getTag(R.id.favtag) == R.drawable.ic_favorite) {
+                if ((Integer) holder.favorite.getTag(R.id.favtag) == R.drawable.ic_favorite) {
                     FavoritesFragment.removeFromFavorite(meals.get(position).getIdMeal());
                     holder.favorite.setImageResource(R.drawable.ic_favorite_border);
-                    holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite_border);
-                }
-                else{
+                    holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite_border);
+                } else {
                     FavoritesFragment.addToFavorite(meals.get(position).getIdMeal());
                     holder.favorite.setImageResource(R.drawable.ic_favorite);
-                    holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite);
+                    holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite);
                 }
             }
         });
+
 
     }
 
@@ -140,6 +160,8 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
         TextView mealName;
         @BindView(R.id.love)
         ImageView favorite;
+        @BindView(R.id.matching)
+        TextView matching;
 
         RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);

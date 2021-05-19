@@ -58,7 +58,7 @@ public class ShoppingCartPresenter {
     }
 
     boolean newCartItem(SQLiteDatabase db, CartItems.CartItem cartItem) {
-        if (loadCartItems(db).size() < 18) {
+        if (loadCartItems(db).size() < 50) {
             try {
                 db.beginTransaction();
 
@@ -79,11 +79,11 @@ public class ShoppingCartPresenter {
         return false;
     }
 
-    boolean deleteCartItem(SQLiteDatabase db, CartItems.CartItem cartItem){
+    boolean deleteCartItem(SQLiteDatabase db, int id){
         try{
             db.beginTransaction();
 
-            db.delete(DBHelper.TABLE_SHOPPINGLIST,DBHelper.KEY_SHOPLISTITEMID + "=?",new String[]{cartItem.getItemid()});
+            db.delete(DBHelper.TABLE_SHOPPINGLIST,DBHelper.KEY_SHOPLISTITEMID + "=?",new String[]{Integer.toString(id)});
 
             db.setTransactionSuccessful();
             return  true;

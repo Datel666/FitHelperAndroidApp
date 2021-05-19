@@ -1,21 +1,25 @@
 package pr.code.views.search;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,7 +42,10 @@ public class SearchActivity extends AppCompatActivity implements SearchView{
 
     static SQLiteDatabase database;
     static SearchPresenter presenter;
+
     private FilteredRecipesRecyclerViewAdapter adapter;
+
+    public static final String EXTRA_INSTRUCTIONS = "instructions";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +78,25 @@ public class SearchActivity extends AppCompatActivity implements SearchView{
     void initvalues(SearchView searchView)
     {
         database = DBHelper.getInstance(this).getReadableDatabase();
+
         presenter = new SearchPresenter(searchView);
+
     }
 
     @Override
     protected void onResume() {
-        presenter.getSearchableCollection(database);
+        Log.d("yatut", "onResume: proshel onresume searchactivity");
+        if(getIntent().getStringArrayListExtra("ingredients") != null)
+        {
+            Log.d("yatut", "onResume: voshel intent check i sobiraus presenter get");
+            List<String> ingredients = new ArrayList<>(getIntent().getStringArrayListExtra("ingredients"));
+            Log.d("yatut", "onResume: ingredients from intent = " + ingredients.toString());
+            presenter.getWithIngredients(database,ingredients);
+            Log.d("yatut", "onResume: vizval presenter get");
+        }
+        else {
+            presenter.getSearchableCollection(database);
+        }
         super.onResume();
     }
 
@@ -119,5 +139,41 @@ public class SearchActivity extends AppCompatActivity implements SearchView{
 
     public static void removeFromFavorite(String id){
         presenter.removeFromFavorites(database,id);
+    }
+
+    @Override
+    public void setCollection(List<Meals.Meal> meals, int[] matching) {
+        Log.d("yatut", "setSearchableFilteredCollection: ");
+        adapter = new FilteredRecipesRecyclerViewAdapter(this,meals,matching);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        recyclerView.setClipToPadding(false);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+
+        if(meals.size()<1){
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setTitle("Уведомление")
+                    .setMessage("Блюд, которые можно было бы приготовить из указанных вами ингредиентов не найдено.")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    })
+                    .create();
+            dialog.show();
+        }
+
+
+
+        adapter.setOnitemClickListener(((view, position) -> {
+            TextView mealname = view.findViewById(R.id.mealName);
+            Intent intent = new Intent(this, DetailsActivity.class);
+            intent.putExtra(EXTRA_DETAIL, mealname.getText().toString());
+            intent.putExtra(EXTRA_INSTRUCTIONS, meals.get(position).getStrIngredients());
+            startActivity(intent);
+        }));
     }
 }

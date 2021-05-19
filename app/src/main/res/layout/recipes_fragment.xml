@@ -40,6 +40,8 @@
 
                 <EditText
                     android:id="@+id/recipesSearchEditText"
+                    android:focusableInTouchMode="false"
+                    android:focusable="false"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:drawablePadding="10dp"

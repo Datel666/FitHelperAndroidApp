@@ -7,17 +7,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,29 +24,37 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
-import pr.code.adapters.ListViewItemAdapter;
+import pr.code.adapters.ShoppingCartRecyclerViewAdapter;
 import pr.code.models.CartItems;
 import pr.code.utils.DBHelper;
 
 public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
 
 
-    static ListView listView;
+
+    @BindView(R.id.listview)
+    RecyclerView listView;
+
+    @BindView(R.id.inputname)
+    EditText input;
+
+    @BindView(R.id.inputquantity)
+    EditText quantity;
+
+    @BindView(R.id.enter)
+    Button enter;
 
 
 
 
     View view;
     static Context con;
-
-    List<CartItems.CartItem> items;
-    EditText input;
-    EditText quantity;
-    Button enter;
     Toast t;
+    List<CartItems.CartItem> items;
     static SQLiteDatabase database;
     static ShoppingCartPresenter presenter;
     static AlertDialog.Builder dialog;
+    ShoppingCartRecyclerViewAdapter adapter;
 
 
     @Nullable
@@ -76,15 +83,21 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
                 }
             }
         });
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                String name = items.get(position).getItemname().trim();
-                String quantity = items.get(position).getItemquantity().trim();
-                showQuantity("Полное наименование товара: \n" + name + "\nНеобходимое количество: " + quantity);
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
-        });
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                removeItem(Integer.valueOf(items.get(position).getItemid()));
+            }
+        }).attachToRecyclerView(listView);
+
+
 
         return view;
     }
@@ -96,10 +109,7 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
     }
 
     void initValues(){
-        listView = view.findViewById(R.id.listview);
-        input = view.findViewById(R.id.inputname);
-        quantity = view.findViewById(R.id.inputquantity);
-        enter = view.findViewById(R.id.enter);
+
         database = DBHelper.getInstance(getActivity()).getWritableDatabase();
         presenter = new ShoppingCartPresenter(this);
         presenter.getShoppingCartItemList(database);
@@ -115,12 +125,17 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
     }
 
     public static void addItem(CartItems.CartItem item){
-        presenter.newCartItem(database,item);
+
+        boolean res = presenter.newCartItem(database,item);
         presenter.getShoppingCartItemList(database);
+        if(!res){
+            Toast m = Toast.makeText(con,"Достигнуто максимальное количество элементов в списке (50)",Toast.LENGTH_SHORT);
+            m.show();
+        }
     }
 
-    public static void removeItem(CartItems.CartItem item){
-        presenter.deleteCartItem(database,item);
+    public static void removeItem(int id){
+        presenter.deleteCartItem(database,id);
         presenter.getShoppingCartItemList(database);
     }
 
@@ -140,8 +155,13 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
 
     @Override
     public void setCartItems(List<CartItems.CartItem> cartItems) {
-        ListViewItemAdapter adapter = new ListViewItemAdapter(getActivity(),cartItems);
+        adapter = new ShoppingCartRecyclerViewAdapter(con,cartItems);
         items = new ArrayList<>(cartItems);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(con);
+        listView.setLayoutManager(layoutManager);
+        listView.setHasFixedSize(true);
+
+        listView.setNestedScrollingEnabled(true);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }

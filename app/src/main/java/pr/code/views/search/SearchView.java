@@ -9,5 +9,6 @@ public interface SearchView {
     void showloading();
     void hideloading();
     void setSearchableCollection(List<Meals.Meal> meals);
+    void setCollection(List<Meals.Meal> meals,int[] matching);
 
 }

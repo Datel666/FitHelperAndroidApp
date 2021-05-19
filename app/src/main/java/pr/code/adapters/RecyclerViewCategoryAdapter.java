@@ -3,7 +3,6 @@ package pr.code.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,14 +23,14 @@ import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.models.Categories;
 
-public class RecyclerViewRecipesAdapter extends RecyclerView.Adapter<RecyclerViewRecipesAdapter.RecyclerViewHolder> {
+public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerViewCategoryAdapter.RecyclerViewHolder> {
 
 
     private List<Categories.Category> categories;
     private Context context;
     private static ClickListener clickListener;
 
-    public RecyclerViewRecipesAdapter(List<Categories.Category> categories,Context context){
+    public RecyclerViewCategoryAdapter(List<Categories.Category> categories, Context context){
         this.categories =categories;
         this.context = context;
     }
@@ -43,7 +42,7 @@ public class RecyclerViewRecipesAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @NonNull
     @Override
-    public RecyclerViewRecipesAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup,int i){
+    public RecyclerViewCategoryAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i){
         View view = LayoutInflater.from(context).inflate(R.layout.item_recycler_category,
                 viewGroup,false);
         return new RecyclerViewHolder(view);
@@ -51,7 +50,7 @@ public class RecyclerViewRecipesAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @NonNull
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewRecipesAdapter.RecyclerViewHolder viewHolder,int i){
+    public void onBindViewHolder(@NonNull RecyclerViewCategoryAdapter.RecyclerViewHolder viewHolder, int i){
 
         String strCategoryThum = categories.get(i).getStrCategoryThumb();
 
@@ -93,7 +92,7 @@ public class RecyclerViewRecipesAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public void setOnItemClickListener(ClickListener clickListener){
-        RecyclerViewRecipesAdapter.clickListener =clickListener;
+        RecyclerViewCategoryAdapter.clickListener =clickListener;
     }
 
     public interface ClickListener{
