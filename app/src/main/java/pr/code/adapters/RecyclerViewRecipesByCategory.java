@@ -29,7 +29,7 @@ public class RecyclerViewRecipesByCategory extends RecyclerView.Adapter<Recycler
     private Context context;
     private static ClickListener clickListener;
 
-    public RecyclerViewRecipesByCategory(Context context, List<Meals.Meal> meals,List<String> favlist){
+    public RecyclerViewRecipesByCategory(Context context, List<Meals.Meal> meals, List<String> favlist) {
         this.meals = meals;
         this.favlist = favlist;
         this.context = context;
@@ -37,9 +37,9 @@ public class RecyclerViewRecipesByCategory extends RecyclerView.Adapter<Recycler
 
     @NonNull
     @Override
-    public RecyclerViewRecipesByCategory.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup,int i){
+    public RecyclerViewRecipesByCategory.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_recycler_meal,
-                viewGroup,false);
+                viewGroup, false);
         return new RecyclerViewHolder(view);
     }
 
@@ -60,30 +60,27 @@ public class RecyclerViewRecipesByCategory extends RecyclerView.Adapter<Recycler
                                 .into(holder.mealThumb);
                     }
                 });
-
+        holder.matching.setText("");
         String strMealName = meals.get(position).getStrMeal();
         holder.mealName.setText(strMealName);
-        if(favlist.contains(meals.get(position).getIdMeal()))
-        {
+        if (favlist.contains(meals.get(position).getIdMeal())) {
             holder.favorite.setImageResource(R.drawable.ic_favorite);
-            holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite);
-        }
-        else {
+            holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite);
+        } else {
             holder.favorite.setImageResource(R.drawable.ic_favorite_border);
-            holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite_border);
+            holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite_border);
         }
 
         holder.favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if((Integer)holder.favorite.getTag(R.id.favtag) == R.drawable.ic_favorite_border) {
+                if ((Integer) holder.favorite.getTag(R.id.favtag) == R.drawable.ic_favorite_border) {
                     holder.favorite.setImageResource(R.drawable.ic_favorite);
-                    holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite);
+                    holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite);
                     CategoryFragment.addToFavorite(meals.get(position).getIdMeal());
-                }
-                else{
+                } else {
                     holder.favorite.setImageResource(R.drawable.ic_favorite_border);
-                    holder.favorite.setTag(R.id.favtag,R.drawable.ic_favorite_border);
+                    holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite_border);
                     CategoryFragment.removeFromFavorite(meals.get(position).getIdMeal());
                 }
             }
@@ -95,31 +92,33 @@ public class RecyclerViewRecipesByCategory extends RecyclerView.Adapter<Recycler
         return meals.size();
     }
 
-    static class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    static class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.mealThumb)
         ImageView mealThumb;
         @BindView(R.id.mealName)
         TextView mealName;
         @BindView(R.id.love)
         ImageView favorite;
+        @BindView(R.id.matching)
+        TextView matching;
 
-        RecyclerViewHolder(@NonNull View itemView){
+        RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            clickListener.onClick(v,getAdapterPosition());
+            clickListener.onClick(v, getAdapterPosition());
         }
     }
 
-    public void setOnitemClickListener(ClickListener clickListener){
+    public void setOnitemClickListener(ClickListener clickListener) {
         RecyclerViewRecipesByCategory.clickListener = clickListener;
     }
 
-    public interface ClickListener{
+    public interface ClickListener {
         void onClick(View view, int position);
     }
 }

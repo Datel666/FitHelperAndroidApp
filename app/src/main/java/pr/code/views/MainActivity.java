@@ -38,6 +38,7 @@ import pr.code.utils.PingAsync;
 import pr.code.utils.Util;
 import pr.code.views.cookwith.CookWithFragment;
 import pr.code.views.favorites.FavoritesFragment;
+import pr.code.views.helper.HelperFragment;
 import pr.code.views.recipes.RecipesFragment;
 import pr.code.views.shoppingcart.ShoppingCartFragment;
 import retrofit2.Call;
@@ -169,20 +170,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean net = false;
 
         try {
-            //Log.d("dec", "Ping async : " );
+
             PingAsync ping = new PingAsync();
             Boolean res =  ping.execute().get();
-            //Log.d("dec", "Ping done , getting result : " );
+
             net = res;
 
         }
         catch (Exception ex){
-            //Log.d("dec", "Process exception : " + ex.getMessage());
+
             net = false;
         }
 
-
-        //Log.d("dec", "Checkin process result: ");
 
         if (firstStart) {
             if (net) {
@@ -233,6 +232,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 setTitle("Список покупок");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ShoppingCartFragment()).commit();
+            case R.id.nav_helper:
+                setTitle("Fit-помощник");
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new HelperFragment()).commit();
                 break;
         }
 

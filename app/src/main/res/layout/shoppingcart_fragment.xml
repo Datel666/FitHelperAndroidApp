@@ -57,12 +57,13 @@
                 <Button
                     android:id="@+id/enter"
                     android:layout_width="wrap_content"
-                    android:layout_height="40sp"
+                    android:layout_height="35sp"
                     android:layout_gravity="right"
                     android:layout_marginTop="8sp"
                     android:layout_marginRight="4sp"
                     android:text="@string/addBtnText"
                     android:textColor="@color/colorPrimaryDark"
+                    android:background="@drawable/button_background"
 
 
                     android:adjustViewBounds="false"
@@ -95,18 +96,60 @@
 
     </RelativeLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listview"
-        android:layout_marginTop="8dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_below="@id/header"
-        android:scrollbars="vertical"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listview"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:scrollbars="vertical"
+
+            />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="2dp"
+            app:cardCornerRadius="8dp"
+            android:id="@+id/emptycv"
+
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#DCDCDC"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal"
+
+
+                    android:text="@string/emptyList"
+                    android:textSize="35dp"
+
+
+                    />
+
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
 
 
 
-        />
+
+
 
 
 

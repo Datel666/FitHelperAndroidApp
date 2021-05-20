@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,6 +44,8 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
 
     @BindView(R.id.enter)
     Button enter;
+    @BindView(R.id.emptycv)
+    CardView cv;
 
 
 
@@ -163,6 +166,33 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
 
         listView.setNestedScrollingEnabled(true);
         listView.setAdapter(adapter);
+
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                cv.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                cv.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                cv.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            }
+        });
+
         adapter.notifyDataSetChanged();
+
+
+    }
+
+    void checkEmpty() {
+        cv.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 }

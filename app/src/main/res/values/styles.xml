@@ -30,4 +30,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+
+    <style name="MySeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressBackgroundTint">#f4511e</item>
+        <item name="android:progressTint">#388e3c</item>
+        <item name="android:colorControlActivated">#EE8434</item>
+    </style>
+
 </resources>

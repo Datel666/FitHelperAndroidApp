@@ -61,6 +61,7 @@ public class ShoppingCartRecyclerViewAdapter extends RecyclerView.Adapter<Shoppi
     @Override
     public int getItemCount(){
         return items.size();
+
     }
 
     @NonNull

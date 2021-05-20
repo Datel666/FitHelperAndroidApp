@@ -1,72 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="15sp"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15sp">
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimaryDark"
         android:text="Добавьте ингредиенты в список"
-        />
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="18dp"
+
         android:layout_marginRight="18dp"
-
-        android:id="@+id/header"
-        android:background="#F1FEFF"
-        >
-
+        android:background="#F1FEFF">
 
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardbelow"
-            app:cardUseCompatPadding="true"
-            app:cardCornerRadius="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            app:cardCornerRadius="10dp"
+            app:cardUseCompatPadding="true"
 
             >
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
+
                 <EditText
+                    android:id="@+id/inputIngredientName"
                     android:layout_width="match_parent"
+
                     android:layout_height="40dp"
-
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/cookwithIngredientHint"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
 
-                    android:id="@+id/inputIngredientName"/>
+                    android:hint="@string/cookwithIngredientHint" />
 
 
                 <Button
                     android:id="@+id/addIngredientBtn"
                     android:layout_width="wrap_content"
-                    android:layout_height="40sp"
+                    android:layout_height="35sp"
                     android:layout_gravity="right"
                     android:layout_marginTop="8sp"
                     android:layout_marginRight="4sp"
-                    android:text="@string/addBtnText"
-                    android:textColor="@color/colorPrimaryDark"
-
-
                     android:adjustViewBounds="false"
+                    android:text="@string/addBtnText"
+                    android:background="@drawable/button_background"
+
+
+                    android:textColor="@color/colorPrimaryDark"
 
                     />
 
@@ -80,59 +79,96 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/IngredientList"
-            android:textAlignment="center"
             android:layout_below="@id/cardbelow"
             android:layout_marginTop="5dp"
+            android:text="@string/IngredientList"
+            android:textAlignment="center"
 
 
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
 
             />
 
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ingredientsListView"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="7dp"
+
+
+            android:scrollbars="vertical"
+
+            />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="2dp"
+            app:cardCornerRadius="8dp"
+            android:id="@+id/emptyview"
+
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#DCDCDC"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal"
+
+
+                    android:text="@string/emptyList"
+                    android:textSize="35dp"
+
+
+                    />
+
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ingredientsListView"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginTop="7dp"
-
-        android:layout_below="@id/header"
-        android:scrollbars="vertical"
-
-
-        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="5dp"
+        android:orientation="vertical"
 
         >
 
         <Button
             android:id="@+id/cookWithGoToSearchBtn"
             android:layout_width="wrap_content"
-            android:layout_height="40sp"
+            android:layout_height="35sp"
             android:layout_gravity="right"
 
             android:layout_marginRight="4sp"
-            android:text="@string/searchBtnText"
-            android:textColor="@color/colorPrimaryDark"
-
-
             android:adjustViewBounds="false"
+            android:text="@string/searchBtnText"
 
+
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@drawable/button_background"
             />
 
     </LinearLayout>
-
 
 
 </LinearLayout>

@@ -8,6 +8,7 @@
     <string name="favorites">Избранное</string>
     <string name="recipes">Рецепты</string>
     <string name="cookwith">Приготовить из</string>
+    <string name="helper">Fit-рекомендации</string>
     <string name="mealplanner">Планировать приёмы пищи</string>
     <string name="shoppingcart">Список покупок</string>
 
@@ -25,6 +26,7 @@
     <string name="Ingredients">Ингридиенты</string>
 
     <string name="IngredientList">Список ингредиентов</string>
+    <string name="emptyList">Список пуст</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -38,6 +40,24 @@
 
     <string name="cookwithIngredientHint">Название ингредиента</string>
 
+    <string name="userinfo">Информация о пользователе: </string>
 
+    <string name="age">Возраст: </string>
+    <string name="height">Текущий рост: </string>
+    <string name="weight">Текущий вес: </string>
+    <string name="lifestyle">Образ жизни: </string>
+    <string name="bmistatus">Статус: </string>
 
+    <string name="changeInfo">Обновить информацию</string>
+
+    <string name="goaltext">Установить цель:</string>
+    <string name="recomendationsText">Список рекомендаций:</string>
+    <string name="weightHistory">График веса</string>
+    <string name="caloriesGoal">Рекомендуемая суточная норма калорий :</string>
+
+    <string-array name="goalSpinnerArray">
+        <item>Поддержание веса</item>
+        <item>Набор веса</item>
+        <item>Похудение</item>
+    </string-array>
 </resources>

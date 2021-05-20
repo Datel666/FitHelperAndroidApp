@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +43,9 @@ public class CookWithFragment extends Fragment implements CookWithView {
 
     @BindView(R.id.cookWithGoToSearchBtn)
     Button gotoSearchBtn;
+
+    @BindView(R.id.emptyview)
+    CardView cw;
 
 
     View view;
@@ -119,9 +123,35 @@ public class CookWithFragment extends Fragment implements CookWithView {
         recyclerView.setNestedScrollingEnabled(true);
         recyclerView.setAdapter(adapter);
 
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                checkEmpty();
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                checkEmpty();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                checkEmpty();
+            }
+
+
+        });
+
 
         database = DBHelper.getInstance(getActivity()).getReadableDatabase();
 
+    }
+
+    void checkEmpty() {
+        cw.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     void makeToast(String s) {
