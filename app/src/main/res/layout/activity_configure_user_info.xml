@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context=".views.helper.ConfigureUserInfoActivity">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:text="Выберите свой пол"
+        android:textColor="#000"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <LinearLayout
+
+        android:layout_marginHorizontal="25dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/male"
+            android:layout_gravity="right"
+            android:layout_width="150dp"
+            android:background="@color/malefemalenonfocused"
+            android:layout_height="150dp">
+
+            <ImageView
+                android:layout_width="170px"
+                android:layout_height="170px"
+                android:src="@drawable/male"
+                android:layout_centerInParent="true">
+            </ImageView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:textAlignment="center"
+                android:text="Мужчина"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <RelativeLayout
+            android:id="@+id/female"
+
+            android:layout_width="150dp"
+            android:background="@color/malefemalenonfocused"
+            android:layout_height="150dp">
+
+            <ImageView
+                android:layout_width="170px"
+                android:layout_height="170px"
+                android:src="@drawable/female"
+                android:layout_centerInParent="true">
+            </ImageView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:textAlignment="center"
+                android:text="Женщина"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="50dp"
+        android:layout_height="wrap_content"
+        android:text="Ваш возраст"
+        android:textColor="#000"
+
+        />
+    <EditText
+        android:id="@+id/ageEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginVertical="10dp"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="6dp"
+        android:inputType="numberDecimal"
+        android:background="@drawable/edit_bg"
+        />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="50dp"
+        android:layout_height="wrap_content"
+        android:text="Ваш рост в сантиметрах"
+        android:textColor="#000"
+
+        />
+    <EditText
+        android:id="@+id/heightEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginVertical="10dp"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="6dp"
+        android:inputType="numberDecimal"
+        android:background="@drawable/edit_bg"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="50dp"
+        android:layout_height="wrap_content"
+        android:text="Ваш вес в килограммах"
+        android:textColor="#000"
+        />
+    <EditText
+        android:id="@+id/weightEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginVertical="10dp"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="6dp"
+        android:inputType="numberDecimal"
+        android:background="@drawable/edit_bg"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="50dp"
+        android:layout_height="wrap_content"
+        android:text="Образ жизни"
+        android:textColor="#000"
+        />
+
+    <androidx.cardview.widget.CardView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        app:cardCornerRadius="7dp"
+        app:cardUseCompatPadding="true"
+        android:id="@+id/belowspinner"
+        >
+        <Spinner
+            android:id="@+id/lifestyleSpinner"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+
+            android:entries="@array/lifeStyle"
+
+            />
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/applybtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:text="Применить"
+        android:background="@drawable/button_bg"
+        android:textColor="#fafafa"
+        />
+
+
+
+</LinearLayout>

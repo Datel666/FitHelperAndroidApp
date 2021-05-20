@@ -21,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper mInstance = null;
 
-    public static int DATABASE_VERSION = 6;
+    public static int DATABASE_VERSION = 7;
 
 
     public static final String DATABASE_NAME = "cookbookDB";
@@ -61,6 +61,17 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLE_FAVORITES = "favorites";
     public static final String KEY_FAVORITESITEMID = "idfavorite";
     public static final String Key_FAVORITERECIPEID = "idfavrecipe";
+
+
+    public static final String TABLE_USERINFO = "userinfo";
+    public static final String KEY_USERINFOID = "iduserinfo";
+    public static final String KEY_USERAGE = "userage";
+    public static final String KEY_USERHEIGHT = "userheight";
+    public static final String KEY_USERWEIGHT = "userweight";
+    public static final String KEY_USERLIFESTYLE = "userlifestyle";
+    public static final String KEY_USERINFODATE = "userinfodate";
+    public static final String KEY_USERGENDER = "usergender";
+    public static final String KEY_USERGOAL = "usergoal";
     //endregion
 
 
@@ -122,6 +133,17 @@ public class DBHelper extends SQLiteOpenHelper {
                 + TABLE_FAVORITES + "("
                 + KEY_FAVORITESITEMID + " integer primary key autoincrement, "
                 + Key_FAVORITERECIPEID + " text " + ")");
+
+        db.execSQL("create table "
+                + TABLE_USERINFO + "("
+                + KEY_USERINFOID + " integer primary key autoincrement, "
+                + KEY_USERAGE + " text,"
+                + KEY_USERHEIGHT + " text,"
+                + KEY_USERWEIGHT + " text,"
+                + KEY_USERLIFESTYLE + " text, "
+                + KEY_USERINFODATE + " text, "
+                + KEY_USERGENDER + " text, "
+                + KEY_USERGOAL + " text "+ ")");
 
 
         try {
@@ -192,6 +214,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_VERSIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPINGLIST);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVORITES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERINFO);
 
         onCreate(db);
     }

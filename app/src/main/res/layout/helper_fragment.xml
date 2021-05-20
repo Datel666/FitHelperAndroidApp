@@ -72,6 +72,7 @@
                         >
 
                         <ImageView
+                            android:id="@+id/helperGenderView"
                             android:layout_width="80dp"
                             android:layout_height="105dp"
                             android:src="@drawable/ic_baseline_android_24"
@@ -109,6 +110,7 @@
                         </TextView>
 
                         <TextView
+                            android:id="@+id/helperAgeEdit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lines="1"
@@ -149,6 +151,7 @@
                         </TextView>
 
                         <TextView
+                            android:id="@+id/helperHeightEdit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lines="1"
@@ -183,13 +186,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lines="1"
-                            android:text="@string/height"
+                            android:text="@string/weight"
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="16sp"
                             android:textStyle="bold">
                         </TextView>
 
                         <TextView
+                            android:id="@+id/helperWeightEdit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lines="1"
@@ -230,6 +234,7 @@
                         </TextView>
 
                         <TextView
+                            android:id="@+id/helperLifestyleEdit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lines="1"
@@ -260,6 +265,7 @@
                         </TextView>
 
                         <TextView
+                            android:id="@+id/helperStatusEdit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:lines="1"

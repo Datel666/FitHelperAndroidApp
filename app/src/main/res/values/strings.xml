@@ -60,4 +60,10 @@
         <item>Набор веса</item>
         <item>Похудение</item>
     </string-array>
+
+    <string-array name="lifeStyle">
+        <item>Малоактивный</item>
+        <item>Средняя активность</item>
+        <item>Активный</item>
+    </string-array>
 </resources>
