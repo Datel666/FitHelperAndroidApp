@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pr.code.models.Meals;
+import pr.code.models.Recomendations;
 import pr.code.models.UserInfo;
 import pr.code.utils.DBHelper;
 
@@ -25,7 +26,20 @@ public class HelperPresenter {
             view.setUserInfo(templist);
         }
         catch (Exception ex){
-            Log.d("userinfo", "getUserInfo: " + ex.getMessage());
+
+        }
+        finally {
+
+        }
+    }
+
+    void getUserRecomendations(SQLiteDatabase database,String goal,String status){
+        try{
+            List<Recomendations.Recomendation> recs = loadRecomendations(database,goal,status);
+            view.setRecomendations(recs);
+        }
+        catch (Exception ex){
+
         }
         finally {
 
@@ -66,6 +80,36 @@ public class HelperPresenter {
             while (cursor.moveToNext());
         } else {
         }
+        return res;
+    }
+
+    List<Recomendations.Recomendation> loadRecomendations(SQLiteDatabase database, String goal, String status){
+        List<Recomendations.Recomendation> res = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery("SELECT * from " + DBHelper.TABLE_RECOMENDATIONS
+                + " WHERE " + DBHelper.Key_RECGOAL + " = '" + goal +"'" + " AND " + DBHelper.Key_RECSTATUS + " = '" + status +"'" , null);
+
+        if (cursor.moveToFirst()) {
+            int recid = cursor.getColumnIndex(DBHelper.KEY_RECID);
+            int recgoal = cursor.getColumnIndex(DBHelper.Key_RECGOAL);
+            int recstatus = cursor.getColumnIndex(DBHelper.Key_RECSTATUS);
+            int rectext = cursor.getColumnIndex(DBHelper.Key_RECTEXT);
+
+
+
+            do {
+                Recomendations.Recomendation temprec = new Recomendations.Recomendation();
+                temprec.setIdrec(cursor.getString(recid));
+                temprec.setGoal(cursor.getString(recgoal));
+                temprec.setStatus(cursor.getString(recstatus));
+                temprec.setRectext(cursor.getString(rectext));
+
+                res.add(temprec);
+            }
+            while (cursor.moveToNext());
+        } else {
+        }
+        Log.d("recs", "loadRecomendations: " + res);
         return res;
     }
 }

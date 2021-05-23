@@ -72,6 +72,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String KEY_USERINFODATE = "userinfodate";
     public static final String KEY_USERGENDER = "usergender";
     public static final String KEY_USERGOAL = "usergoal";
+
+    public static final String TABLE_RECOMENDATIONS = "recomendations";
+    public static final String KEY_RECID = "idrec";
+    public static final String Key_RECGOAL = "goal";
+    public static final String Key_RECSTATUS = "status";
+    public static final String Key_RECTEXT = "rectext";
     //endregion
 
 
@@ -145,6 +151,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 + KEY_USERGENDER + " text, "
                 + KEY_USERGOAL + " text "+ ")");
 
+        db.execSQL("create table "
+                + TABLE_RECOMENDATIONS + "("
+                + KEY_RECID + " integer primary key autoincrement, "
+                + Key_RECGOAL + " text,"
+                + Key_RECSTATUS + " text,"
+                + Key_RECTEXT + " text" + ")");
+
 
         try {
             db.beginTransaction();
@@ -164,7 +177,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECIPES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_VERSIONS);
-
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECOMENDATIONS);
 
         db.execSQL("create table "
                 + TABLE_CATEGORIES + "("
@@ -193,6 +206,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 + KEY_IDVER + " integer,"
                 + KEY_IDDATE + " text " + ")");
 
+        db.execSQL("create table "
+                + TABLE_RECOMENDATIONS + "("
+                + KEY_RECID + " integer primary key autoincrement, "
+                + Key_RECGOAL + " text,"
+                + Key_RECSTATUS + " text,"
+                + Key_RECTEXT + " text" + ")");
+
 
         try {
             db.beginTransaction();
@@ -215,6 +235,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPINGLIST);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVORITES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERINFO);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECOMENDATIONS);
 
         onCreate(db);
     }

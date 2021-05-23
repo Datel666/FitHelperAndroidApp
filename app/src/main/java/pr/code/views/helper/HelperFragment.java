@@ -1,5 +1,6 @@
 package pr.code.views.helper;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -27,11 +29,15 @@ import androidx.viewpager.widget.ViewPager;
 import com.github.mikephil.charting.charts.LineChart;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
+import pr.code.adapters.ViewPagerCategoryAdapter;
+import pr.code.adapters.ViewPagerRecomendationsAdapter;
+import pr.code.models.Recomendations;
 import pr.code.models.UserInfo;
 import pr.code.utils.DBHelper;
 import pr.code.views.MainActivity;
@@ -46,6 +52,8 @@ public class HelperFragment extends Fragment implements HelperView{
 
     @BindView(R.id.helperAgeEdit)
     TextView ageText;
+    @BindView(R.id.agePrefixText)
+    TextView agePrefixText;
 
     @BindView(R.id.helperHeightEdit)
     TextView heightText;
@@ -100,7 +108,15 @@ public class HelperFragment extends Fragment implements HelperView{
         });
 
 
+
+
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 
     @Override
@@ -121,9 +137,8 @@ public class HelperFragment extends Fragment implements HelperView{
 
         else{
             presenter.getUserInfo(database);
+
         }
-
-
     }
 
     void initvalues(){
@@ -144,18 +159,26 @@ public class HelperFragment extends Fragment implements HelperView{
         chartInfo = new ArrayList<>(userInfoList);
         UserInfo actualUserInfo = new UserInfo();
         actualUserInfo = userInfoList.get(userInfoList.size()-1);
-
+        String ccal = " кал.";
+        String caloriesGoal = "";
+        int userid = Integer.parseInt(actualUserInfo.getIdUserinfo());
         String userWeight = actualUserInfo.getUserWeight();
         String userHeight = actualUserInfo.getUserHeight();
         String userLifestyle = actualUserInfo.getUserLifeStyle();
         String userAge = actualUserInfo.getUserAge();
-
+        String userGender = actualUserInfo.getUserGender();
+        String userGoal = actualUserInfo.getUsergoal();
         String status = calculateBMIStatus(Integer.parseInt(userWeight),
                 Integer.parseInt(userHeight));
+        caloriesGoal = calculateCaloriesGoal(Integer.parseInt(userWeight),Integer.parseInt(userHeight)
+                ,Integer.parseInt(userAge),userLifestyle,userGender) + ccal;
 
-        String caloriesGoal;
+        String[] stringArray = getResources().getStringArray(R.array.goalSpinnerArray);
 
+        int val = Arrays.asList(stringArray).indexOf(userGoal);
+        goalSpinner.setSelection(val);
 
+        presenter.getUserRecomendations(database,userGoal,status);
 
         int colorid = R.color.green;
         switch (status){
@@ -168,30 +191,51 @@ public class HelperFragment extends Fragment implements HelperView{
             case "Избыточный вес":
                 colorid = R.color.yellow;
                 break;
-            case "Ожирение":
-                colorid = R.color.red;
-                break;
-
         }
 
-        if(actualUserInfo.getUserGender().equals("Мужчина")){
+        if(userGender.equals("Мужчина")){
             genderImage.setImageDrawable(getResources().getDrawable(R.drawable.male));
         }
         else{
             genderImage.setImageDrawable(getResources().getDrawable(R.drawable.female));
         }
 
-        ageText.setText(actualUserInfo.getUserAge());
-        weightText.setText(actualUserInfo.getUserWeight());
-        heightText.setText(actualUserInfo.getUserHeight());
-        lifestyleText.setText(actualUserInfo.getUserLifeStyle());
+        agePrefixText.setText(agePostfix(Integer.parseInt(userAge)));
+        ageText.setText(userAge);
+        weightText.setText(userWeight);
+        heightText.setText(userHeight);
+        lifestyleText.setText(userLifestyle);
         statusText.setText(status);
         statusText.setTextColor(ContextCompat.getColor(getContext(),colorid));
+        caloriesgoalText.setText(caloriesGoal);
+
+        goalSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updateLifeStyle(userid,goalSpinner.getSelectedItem().toString());
+                presenter.getUserInfo(database);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 
     @Override
-    public void setRecomendations(List<String> recomendationsList) {
+    public void setRecomendations(List<Recomendations.Recomendation> recomendationsList) {
+        ViewPagerRecomendationsAdapter adapter = new ViewPagerRecomendationsAdapter(recomendationsList,getContext());
+        viewPager.setAdapter(adapter);
+        viewPager.setPadding(20,0,100,0);
+        adapter.notifyDataSetChanged();
+        adapter.setOnItemClickListener(new ViewPagerRecomendationsAdapter.ClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                maketoast(recomendationsList.get(position).getRectext());
+            }
+        });
 
     }
 
@@ -208,9 +252,7 @@ public class HelperFragment extends Fragment implements HelperView{
         else if(bmi>25 && bmi<29.9){
             status = "Избыточный вес";
         }
-        else if(bmi>30){
-            status = "Ожирение";
-        }
+
         else if(bmi<18.5){
             status = "Недостаточный вес";
         }
@@ -219,11 +261,34 @@ public class HelperFragment extends Fragment implements HelperView{
         return status;
     }
 
-    String calculateCaloriesGoal(int weight,int height,int age,String lifestyle){
+    String calculateCaloriesGoal(int weight,int height,int age,String lifestyle,String gender){
         String calories = "";
+        double coef = 1;
+        double goal = 0d;
+
+        switch (lifestyle){
+            case "Малоактивный":
+                coef = 1.2d;
+                break;
+            case "Средняя активность":
+                coef = 1.375d;
+                break;
+            case "Активный":
+                coef = 1.55d;
+                break;
+        }
 
 
+        if(gender.equals("Мужчина")){
+            goal = 88.36 + (13.4*weight) + (4.8 * height) -(age * 5.7);
+        }
+        else{
+            goal = 447.6 + (9.2*weight) + (3.1 * height) -(age * 4.3);
+        }
 
+
+        goal*=coef;
+        calories = Integer.toString((int)goal);
         return calories;
     }
 
@@ -250,7 +315,7 @@ public class HelperFragment extends Fragment implements HelperView{
                 }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                getActivity().onBackPressed();
             }
         }).create().show();
     }
@@ -258,5 +323,45 @@ public class HelperFragment extends Fragment implements HelperView{
     void callIntent(){
         Intent intent = new Intent(getContext(),ConfigureUserInfoActivity.class);
         startActivity(intent);
+    }
+
+
+
+    String agePostfix(int agee){
+        int age = agee;
+        int ageLastNumber = age % 10;
+        boolean exclusion = (age % 100 >= 11) && (age % 100 <= 14);
+        String old = "";
+
+        if (ageLastNumber == 1)
+            old = "год";
+        else if(ageLastNumber == 0 || ageLastNumber >= 5 && ageLastNumber <= 9)
+            old = "лет";
+        else if(ageLastNumber >= 2 && ageLastNumber <= 4)
+            old = "года";
+        if (exclusion)
+            old = "лет";
+
+        return old;
+    }
+
+    void updateLifeStyle(int id,String lifestyle){
+
+        database.beginTransaction();
+        try {
+            ContentValues cv = new ContentValues();
+            cv.put(DBHelper.KEY_USERGOAL, lifestyle);
+
+            database.update(DBHelper.TABLE_USERINFO, cv, DBHelper.KEY_USERINFOID + "=?", new String[]{String.valueOf(id)});
+            database.setTransactionSuccessful();
+        }
+        catch(Exception ex){
+
+        }
+        finally {
+            database.endTransaction();
+        }
+
+
     }
 }

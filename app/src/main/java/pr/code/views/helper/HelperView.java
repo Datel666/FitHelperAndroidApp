@@ -1,5 +1,6 @@
 package pr.code.views.helper;
 
+import pr.code.models.Recomendations;
 import pr.code.models.UserInfo;
 import java.util.List;
 
@@ -7,5 +8,5 @@ public interface HelperView {
 
     void setUserInfo(List<UserInfo> userInfoList);
 
-    void setRecomendations(List<String> recomendationsList);
+    void setRecomendations(List<Recomendations.Recomendation> recomendationsList);
 }

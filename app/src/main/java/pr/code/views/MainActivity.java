@@ -32,6 +32,7 @@ import pr.code.R;
 import pr.code.models.Categories;
 import pr.code.models.Meals;
 
+import pr.code.models.Recomendations;
 import pr.code.models.Versions;
 import pr.code.utils.DBHelper;
 import pr.code.utils.PingAsync;
@@ -203,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+
             super.onBackPressed();
         }
     }
@@ -255,22 +257,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setView(R.layout.loading_dialog).setCancelable(false);
                         AlertDialog dialog1 = builder.create();
+
+                        AlertDialog.Builder builder2 = new AlertDialog.Builder(context);
+                        builder2.setTitle("Обновление базы данных рецептов").setCancelable(false)
+                                .setMessage("База данных рецептов была успешно обновлена").setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setTitle("Рецепты");
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                        new RecipesFragment()).commit();
+                            }
+                        });
+                        AlertDialog dialog2 = builder2.create();
+
                         dialog1.show();
 
                         getVersions();
                         getRecipes();
                         getCategories();
+                        getRecomendations(dialog1,dialog2);
 
-                        dialog1.dismiss();
+
 
                         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putBoolean("firstStart", false);
                         editor.apply();
 
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                new RecipesFragment()).commit();
-                        navigationView.setCheckedItem(R.id.nav_home);
+
 
                     }
                 }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
@@ -329,6 +343,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                                         builder.setView(R.layout.loading_dialog).setCancelable(false);
                                         final AlertDialog dialog1 = builder.create();
+
+                                        AlertDialog.Builder builder2 = new AlertDialog.Builder(context);
+                                        builder2.setTitle("Обновление базы данных рецептов").setCancelable(false)
+                                                .setMessage("База данных рецептов была успешно обновлена").setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                setTitle("Рецепты");
+                                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                                        new RecipesFragment()).commit();
+                                            }
+                                        });
+                                        AlertDialog dialog2 = builder2.create();
+
+
                                         dialog1.show();
 
                                         DBHelper.forceUpgrade(db);
@@ -336,20 +364,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                         getVersions();
                                         getRecipes();
                                         getCategories();
+                                        getRecomendations(dialog1,dialog2);
 
 
                                         dialog1.cancel();
 
-                                        AlertDialog.Builder builder2 = new AlertDialog.Builder(context);
-                                        builder2.setTitle("Обновление базы данных рецептов").setCancelable(false)
-                                                .setMessage("База данных рецептов была успешно обновлена").setPositiveButton("Ок", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
 
-                                            }
-                                        });
-                                        AlertDialog dialog2 = builder2.create();
-                                        dialog2.show();
 
                                     }
                                 }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
@@ -537,6 +557,56 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onFailure(Call<Categories> call, Throwable t) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setCancelable(false);
+                builder.setTitle("При загрузке данных возникла ошибка");
+                builder.setMessage(t.getLocalizedMessage());
+                builder.setPositiveButton("Закрыть приложение", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishAffinity();
+                        System.exit(0);
+                    }
+                });
+                AlertDialog dialog1 = builder.create();
+                dialog1.show();
+            }
+        });
+    }
+
+    void getRecomendations(AlertDialog dialog1, AlertDialog dialog2) {
+
+        Call<Recomendations> categoriesCall = Util.getApi().getRecomendations();
+        categoriesCall.enqueue(new Callback<Recomendations>() {
+            @Override
+            public void onResponse(@NonNull Call<Recomendations> call, @NonNull Response<Recomendations> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Recomendations.Recomendation> recList = new ArrayList<>();
+                    recList = response.body().getRecomendations();
+                    try {
+                        db.beginTransaction();
+                        for (Recomendations.Recomendation r : recList) {
+                            ContentValues cv = new ContentValues();
+                            cv.put(DBHelper.Key_RECGOAL, r.getGoal());
+                            cv.put(DBHelper.Key_RECSTATUS, r.getStatus());
+                            cv.put(DBHelper.Key_RECTEXT, r.getRectext());
+
+                            db.insert(DBHelper.TABLE_RECOMENDATIONS, null, cv);
+
+                        }
+                        db.setTransactionSuccessful();
+                    } catch (Exception ex) {
+
+                    } finally {
+                        db.endTransaction();
+                        dialog1.cancel();
+                        dialog2.show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Recomendations> call, Throwable t) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setCancelable(false);
                 builder.setTitle("При загрузке данных возникла ошибка");
