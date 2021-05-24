@@ -27,6 +27,15 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,12 +92,19 @@ public class HelperFragment extends Fragment implements HelperView{
     LineChart weightChart;
 
 
+    public static final String EXTRA_GENDER = "gender";
+    public static final String EXTRA_AGE = "age";
+    public static final String EXTRA_HEIGHT = "height";
+    public static final String EXTRA_WEIGHT = "weight";
+    public static final String EXTRA_LIFESTYLE = "lifestyle";
+
     private View view;
 
     SharedPreferences prefs;
     HelperPresenter presenter;
     SQLiteDatabase database;
     List<UserInfo> chartInfo;
+    UserInfo actualUserInfo;
     Toast t;
 
 
@@ -103,7 +119,7 @@ public class HelperFragment extends Fragment implements HelperView{
         updateSelfInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callIntent();
+                callupdateIntent();
             }
         });
 
@@ -123,10 +139,6 @@ public class HelperFragment extends Fragment implements HelperView{
     public void onResume() {
         super.onResume();
 
-        prefs = this.getActivity().getSharedPreferences("prefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("firstHelperLaunch", false);
-        editor.apply();
 
         boolean decision = isFirstStart();
 
@@ -156,11 +168,13 @@ public class HelperFragment extends Fragment implements HelperView{
 
     @Override
     public void setUserInfo(List<UserInfo> userInfoList) {
-        chartInfo = new ArrayList<>(userInfoList);
-        UserInfo actualUserInfo = new UserInfo();
+        chartInfo = new ArrayList<>(userInfoList.subList(userInfoList.size()-5,userInfoList.size()));
+
+        actualUserInfo = new UserInfo();
         actualUserInfo = userInfoList.get(userInfoList.size()-1);
         String ccal = " кал.";
         String caloriesGoal = "";
+
         int userid = Integer.parseInt(actualUserInfo.getIdUserinfo());
         String userWeight = actualUserInfo.getUserWeight();
         String userHeight = actualUserInfo.getUserHeight();
@@ -170,6 +184,7 @@ public class HelperFragment extends Fragment implements HelperView{
         String userGoal = actualUserInfo.getUsergoal();
         String status = calculateBMIStatus(Integer.parseInt(userWeight),
                 Integer.parseInt(userHeight));
+
         caloriesGoal = calculateCaloriesGoal(Integer.parseInt(userWeight),Integer.parseInt(userHeight)
                 ,Integer.parseInt(userAge),userLifestyle,userGender) + ccal;
 
@@ -209,6 +224,8 @@ public class HelperFragment extends Fragment implements HelperView{
         statusText.setTextColor(ContextCompat.getColor(getContext(),colorid));
         caloriesgoalText.setText(caloriesGoal);
 
+        drawChart(chartInfo);
+
         goalSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -239,6 +256,59 @@ public class HelperFragment extends Fragment implements HelperView{
 
     }
 
+    void drawChart(List<UserInfo> chartArgs){
+        ArrayList<Entry> yValues = new ArrayList<>();
+        ArrayList<String> dates = new ArrayList<>();
+        String[] months = (getResources().getStringArray(R.array.months));
+        float enumerator = 0 ;
+        for (UserInfo s:chartArgs
+             ) {
+            dates.add(s.getUserInfoDate());
+            yValues.add(new Entry(enumerator,Float.parseFloat(s.getUserWeight())));
+            enumerator++;
+        }
+
+
+
+        LineDataSet set = new LineDataSet(yValues,"Вес (кг)");
+        LineData linedata = new LineData(set);
+
+
+        IAxisValueFormatter formatter = new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+
+                if (((int) value) < dates.size()) {
+                    String date = dates.get((int)value);
+                    String[] args = date.split("-");
+                    return months[Integer.parseInt(args[0])] + " " + args[1];
+                } else {
+                    return "0";
+                }
+            }
+        };
+
+
+        set.setValueTextSize(11f);
+        weightChart.setData(linedata);
+        weightChart.setNoDataText("Недостаточно данных");
+        weightChart.getDescription().setEnabled(false);
+        weightChart.setPadding(20,20,20,0);
+        XAxis xAxis = weightChart.getXAxis();
+        xAxis.setTextSize(11f);
+        xAxis.setValueFormatter(formatter);
+        xAxis.setGranularity(1);
+        YAxis yaLeft = weightChart.getAxisLeft();
+        YAxis yaRight = weightChart.getAxisRight();
+        yaLeft.setTextSize(11f);
+        yaRight.setTextSize(11f);
+        yaLeft.setGranularity(3);
+        yaRight.setGranularity(3);
+        set.setLineWidth(5f);
+
+        weightChart.invalidate();
+    }
+
     String calculateBMIStatus(int weight, int height){
         String status = "";
 
@@ -249,7 +319,7 @@ public class HelperFragment extends Fragment implements HelperView{
         if(bmi>18.5 && bmi<24.9){
             status = "Вес в пределах нормы";
         }
-        else if(bmi>25 && bmi<29.9){
+        else if(bmi>25){
             status = "Избыточный вес";
         }
 
@@ -310,20 +380,33 @@ public class HelperFragment extends Fragment implements HelperView{
                 .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        callIntent();
+                        callbaseIntent();
                     }
                 }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                getActivity().onBackPressed();
+                getActivity().setTitle("Рецепты");
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new RecipesFragment()).commit();
             }
         }).create().show();
     }
 
-    void callIntent(){
+    void callbaseIntent(){
         Intent intent = new Intent(getContext(),ConfigureUserInfoActivity.class);
         startActivity(intent);
     }
+
+    void callupdateIntent(){
+        Intent intent = new Intent(getContext(),ConfigureUserInfoActivity.class);
+        intent.putExtra(EXTRA_GENDER,actualUserInfo.getUserGender());
+        intent.putExtra(EXTRA_AGE,actualUserInfo.getUserAge());
+        intent.putExtra(EXTRA_HEIGHT,actualUserInfo.getUserHeight());
+        intent.putExtra(EXTRA_WEIGHT,actualUserInfo.getUserWeight());
+        intent.putExtra(EXTRA_LIFESTYLE,actualUserInfo.getUserLifeStyle());
+        startActivity(intent);
+    }
+
 
 
 

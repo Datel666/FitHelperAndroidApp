@@ -56,6 +56,16 @@ public class SearchActivity extends AppCompatActivity implements SearchView{
         initvalues(this);
         setTitle("Поиск рецептов");
 
+        if(getIntent().getStringArrayListExtra("ingredients") != null)
+        {
+            List<String> ingredients = new ArrayList<>(getIntent().getStringArrayListExtra("ingredients"));
+            presenter.getWithIngredients(database,ingredients);
+
+        }
+        else {
+            presenter.getSearchableCollection(database);
+        }
+
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -85,18 +95,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView{
 
     @Override
     protected void onResume() {
-        Log.d("yatut", "onResume: proshel onresume searchactivity");
-        if(getIntent().getStringArrayListExtra("ingredients") != null)
-        {
-            Log.d("yatut", "onResume: voshel intent check i sobiraus presenter get");
-            List<String> ingredients = new ArrayList<>(getIntent().getStringArrayListExtra("ingredients"));
-            Log.d("yatut", "onResume: ingredients from intent = " + ingredients.toString());
-            presenter.getWithIngredients(database,ingredients);
-            Log.d("yatut", "onResume: vizval presenter get");
-        }
-        else {
-            presenter.getSearchableCollection(database);
-        }
+
+
         super.onResume();
     }
 
@@ -117,8 +117,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView{
     }
 
     @Override
-    public void setSearchableCollection(List<Meals.Meal> meals) {
-        adapter = new FilteredRecipesRecyclerViewAdapter(this,meals);
+    public void setSearchableCollection(List<Meals.Meal> meals,List<String> favlist) {
+        adapter = new FilteredRecipesRecyclerViewAdapter(this,meals,favlist);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.setClipToPadding(false);
         recyclerView.setAdapter(adapter);
@@ -142,9 +142,9 @@ public class SearchActivity extends AppCompatActivity implements SearchView{
     }
 
     @Override
-    public void setCollection(List<Meals.Meal> meals, int[] matching) {
-        Log.d("yatut", "setSearchableFilteredCollection: ");
-        adapter = new FilteredRecipesRecyclerViewAdapter(this,meals,matching);
+    public void setCollection(List<Meals.Meal> meals, int[] matching,List<String> favlist) {
+
+        adapter = new FilteredRecipesRecyclerViewAdapter(this,meals,matching,favlist);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.setClipToPadding(false);
         recyclerView.setAdapter(adapter);

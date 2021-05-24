@@ -66,4 +66,19 @@
         <item>Средняя активность</item>
         <item>Активный</item>
     </string-array>
+
+    <string-array name="months">
+        <item>Янв.</item>
+        <item>Февр.</item>
+        <item>Март</item>
+        <item>Апр.</item>
+        <item>Май.</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Авг.</item>
+        <item>Сент.</item>
+        <item>Окт.</item>
+        <item>Ноя.</item>
+        <item>Дек.</item>
+    </string-array>
 </resources>

@@ -36,7 +36,7 @@ public class CookWithFragment extends Fragment implements CookWithView {
     RecyclerView recyclerView;
 
     @BindView(R.id.inputIngredientName)
-    EditText editText;
+    EditText input;
 
     @BindView(R.id.addIngredientBtn)
     Button addIngredientBtn;
@@ -54,7 +54,7 @@ public class CookWithFragment extends Fragment implements CookWithView {
     Toast t;
 
     static SQLiteDatabase database;
-    static CookWithPresenter presenter;
+
 
     static CookWithRecyclerViewAdapter adapter;
 
@@ -71,12 +71,13 @@ public class CookWithFragment extends Fragment implements CookWithView {
         addIngredientBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = editText.getText().toString();
-                if (text.isEmpty() || text == null) {
-                    makeToast("Введите название ингредиента");
+
+                if (!validateName()) {
+                    return;
                 } else {
+                    String text = input.getText().toString();
                     addItem(text);
-                    editText.setText("");
+                    input.setText("");
                 }
             }
         });
@@ -148,6 +149,20 @@ public class CookWithFragment extends Fragment implements CookWithView {
 
         database = DBHelper.getInstance(getActivity()).getReadableDatabase();
 
+    }
+
+    private boolean validateName(){
+        String inputname = input.getText().toString().trim();
+
+        if(inputname.isEmpty() || inputname.length()<1)
+        {
+            input.setError("Введите название ингредиента");
+            return false;
+        }
+        else{
+            input.setError(null);
+            return true;
+        }
     }
 
     void checkEmpty() {

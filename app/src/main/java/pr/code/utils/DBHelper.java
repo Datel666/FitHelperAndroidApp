@@ -21,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper mInstance = null;
 
-    public static int DATABASE_VERSION = 7;
+    public static int DATABASE_VERSION = 8;
 
 
     public static final String DATABASE_NAME = "cookbookDB";

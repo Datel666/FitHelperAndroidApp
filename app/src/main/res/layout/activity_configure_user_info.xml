@@ -91,64 +91,81 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_marginHorizontal="50dp"
-        android:layout_height="wrap_content"
-        android:text="Ваш возраст"
-        android:textColor="#000"
-
-        />
-    <EditText
-        android:id="@+id/ageEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginVertical="10dp"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="6dp"
-        android:inputType="numberDecimal"
-        android:background="@drawable/edit_bg"
-        />
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_marginHorizontal="50dp"
-        android:layout_height="wrap_content"
-        android:text="Ваш рост в сантиметрах"
-        android:textColor="#000"
 
-        />
-    <EditText
-        android:id="@+id/heightEdit"
+    <com.google.android.material.textfield.TextInputLayout
+        app:counterEnabled="true"
+        app:counterMaxLength="3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginVertical="10dp"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="6dp"
-        android:inputType="numberDecimal"
-        android:background="@drawable/edit_bg"
-        />
-    <TextView
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ageEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="10dp"
+            android:paddingHorizontal="15dp"
+            android:hint="Введите ваш возраст в годах"
+            android:maxLength="3"
+
+            android:inputType="numberDecimal"
+
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        app:counterEnabled="true"
+        app:counterMaxLength="3"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="50dp"
         android:layout_height="wrap_content"
-        android:text="Ваш вес в килограммах"
-        android:textColor="#000"
-        />
-    <EditText
-        android:id="@+id/weightEdit"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/heightEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="10dp"
+            android:paddingHorizontal="15dp"
+            android:hint="Введите ваш рост в см"
+            android:maxLength="3"
+
+            android:inputType="numberDecimal"
+
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        app:counterEnabled="true"
+        app:counterMaxLength="3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginVertical="10dp"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="6dp"
-        android:inputType="numberDecimal"
-        android:background="@drawable/edit_bg"
-        />
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/weightEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Введите ваш вес в кг"
+            android:maxLength="3"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="10dp"
+            android:paddingHorizontal="15dp"
+
+            android:inputType="numberDecimal"
+
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -180,15 +197,27 @@
             />
     </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/applybtn"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
         android:layout_marginHorizontal="50dp"
-        android:text="Применить"
-        android:background="@drawable/button_bg"
-        android:textColor="#fafafa"
-        />
+        app:cardUseCompatPadding="true">
+
+        <Button
+            android:id="@+id/applybtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="Применить"
+
+            android:background="@drawable/button_background"
+            android:textColor="@color/colorPrimaryDark"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+
 
 
 

@@ -25,28 +25,32 @@ import pr.code.R;
 import pr.code.models.Meals;
 import pr.code.views.categories.CategoryFragment;
 import pr.code.views.favorites.FavoritesFragment;
+import pr.code.views.search.SearchActivity;
 
 public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<FilteredRecipesRecyclerViewAdapter.RecyclerViewHolder> implements Filterable {
 
     private List<Meals.Meal> meals;
     private List<Meals.Meal> mealsFull;
+    private List<String> favlist;
     private int[] matching;
 
     private Context context;
 
     private static ClickListener clickListener;
 
-    public FilteredRecipesRecyclerViewAdapter(Context context, List<Meals.Meal> meals) {
+    public FilteredRecipesRecyclerViewAdapter(Context context, List<Meals.Meal> meals,List<String> favlist) {
         this.meals = meals;
         mealsFull = new ArrayList<>(this.meals);
         this.context = context;
+        this.favlist = favlist;
     }
 
-    public FilteredRecipesRecyclerViewAdapter(Context context, List<Meals.Meal> meals, int[] matching) {
+    public FilteredRecipesRecyclerViewAdapter(Context context, List<Meals.Meal> meals, int[] matching,List<String> favlist) {
         this.meals = meals;
         mealsFull = new ArrayList<>(this.meals);
         this.context = context;
         this.matching = matching;
+        this.favlist = favlist;
     }
 
 
@@ -91,18 +95,26 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
 
 
         holder.mealName.setText(strMealName);
-        holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite);
-        holder.favorite.setImageResource(R.drawable.ic_favorite);
+
+        if(favlist.contains(meals.get(position).getIdMeal())){
+            holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite);
+            holder.favorite.setImageResource(R.drawable.ic_favorite);
+        }
+        else{
+            holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite_border);
+            holder.favorite.setImageResource(R.drawable.ic_favorite_border);
+        }
+
 
         holder.favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if ((Integer) holder.favorite.getTag(R.id.favtag) == R.drawable.ic_favorite) {
-                    FavoritesFragment.removeFromFavorite(meals.get(position).getIdMeal());
+                    SearchActivity.removeFromFavorite(meals.get(position).getIdMeal());
                     holder.favorite.setImageResource(R.drawable.ic_favorite_border);
                     holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite_border);
                 } else {
-                    FavoritesFragment.addToFavorite(meals.get(position).getIdMeal());
+                    SearchActivity.addToFavorite(meals.get(position).getIdMeal());
                     holder.favorite.setImageResource(R.drawable.ic_favorite);
                     holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite);
                 }

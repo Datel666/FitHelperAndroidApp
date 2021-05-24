@@ -118,7 +118,7 @@
 
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="16sp"
-                            android:textStyle="bold">
+                            >
                         </TextView>
 
                         <TextView
@@ -130,7 +130,7 @@
 
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="16sp"
-                            android:textStyle="bold">
+                            >
                         </TextView>
 
                     </LinearLayout>
@@ -160,7 +160,7 @@
 
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="16sp"
-                            android:textStyle="bold">
+                            >
                         </TextView>
 
                         <TextView
@@ -171,7 +171,7 @@
                             android:text="см"
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="16sp"
-                            android:textStyle="bold">
+                            >
                         </TextView>
 
                     </LinearLayout>
@@ -202,7 +202,7 @@
 
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="16sp"
-                            android:textStyle="bold">
+                            >
                         </TextView>
 
                         <TextView
@@ -213,7 +213,7 @@
                             android:text="кг"
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="16sp"
-                            android:textStyle="bold">
+                            >
                         </TextView>
 
                     </LinearLayout>
@@ -243,7 +243,7 @@
 
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="16sp"
-                            android:textStyle="bold">
+                            >
                         </TextView>
 
 
@@ -273,7 +273,7 @@
                             android:paddingStart="10dp"
 
                             android:textSize="16sp"
-                            android:textStyle="bold">
+                            >
                         </TextView>
 
 
@@ -401,7 +401,7 @@
                 android:layout_below="@id/recomendationstext"
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="120dp" >
+                android:layout_height="170dp" >
 
             </androidx.viewpager.widget.ViewPager>
 
@@ -429,10 +429,13 @@
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/weightChart"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginHorizontal="5dp"
                 android:layout_below="@id/historytext"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_background"
+                android:layout_height="250dp"
+
 
                 >
 

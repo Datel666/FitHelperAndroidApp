@@ -29,7 +29,7 @@ public class SearchPresenter {
         try{
             List<Meals.Meal> resholder = loadSearchableCollection(database);
             Collections.shuffle(resholder);
-            view.setSearchableCollection(resholder);
+            view.setSearchableCollection(resholder,loadFavoriteIdentifiers(database));
         }
         catch (Exception ex){
 
@@ -41,15 +41,15 @@ public class SearchPresenter {
 
     void getWithIngredients(SQLiteDatabase database,List<String> ingredients){
         view.showloading();
-        Log.d("yatyt", "getSearchableCollectionWithIngredients:" + " voshel v method" );
+
         try {
             List<Meals.Meal> tempMealList = loadSearchableCollection(database);
-            Log.d("yatyt", "getSearchableCollectionWithIngredients:" + " zaprosil select vseh receptov" );
+
             CookWithPresenterReturnClass res = calculateMatchingIngredients(tempMealList, ingredients);
             List<Meals.Meal> m = new ArrayList<>(res.getMeals());
             int[] matching = res.getMatching();
 
-            Log.d("yatyt", "getSearchableCollectionWithIngredients: vrode vse norm  array lenght = " + matching.length + " matching recipes = " + m.size() );
+
             List<Meals.Meal> matchingMoreThan0 = new ArrayList<>();
             List<Integer> matchinglist = new ArrayList<>();
             for(int i =0;i<matching.length;i++){
@@ -59,11 +59,11 @@ public class SearchPresenter {
                 }
             }
             int[] array = matchinglist.stream().mapToInt(i->i).toArray();
-            Log.d("yatyt", "getSearchableCollectionWithIngredients: vrode vse norm  array lenght = " + array.length + " matching recipes = " + matchingMoreThan0.size() );
-             view.setCollection(matchingMoreThan0,array);
+
+             view.setCollection(matchingMoreThan0,array,loadFavoriteIdentifiers(database));
         }
         catch (Exception ex){
-            Log.d("yatyt", "getSearchableCollectionWithIngredients: slomalsya)0" + ex.getMessage());
+
         }
         finally {
             view.hideloading();
@@ -112,6 +112,25 @@ public class SearchPresenter {
         return res;
     }
 
+    List<String> loadFavoriteIdentifiers(SQLiteDatabase database){
+        List<String> res = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery("SELECT * from " + DBHelper.TABLE_FAVORITES, null);
+
+        if (cursor.moveToFirst()) {
+            int favId = cursor.getColumnIndex(DBHelper.Key_FAVORITERECIPEID);
+
+            do {
+
+                res.add(cursor.getString(favId));
+
+            }
+            while (cursor.moveToNext());
+        } else {
+        }
+        return res;
+    }
+
     CookWithPresenterReturnClass calculateMatchingIngredients(List<Meals.Meal> meals, List<String> ingredients) {
 
         CookWithPresenterReturnClass res = new CookWithPresenterReturnClass();
@@ -121,11 +140,11 @@ public class SearchPresenter {
 
         for (Meals.Meal m : meals
         ) {
-            List<String> defIngredients = Arrays.asList(m.getStrIngredients().split(","));
+            List<String> defIngredients = Arrays.asList(m.getStrIngredients().toLowerCase().split(","));
 
             for (String ing : ingredients
             ) {
-                if (defIngredients.contains(ing.trim())) {
+                if (defIngredients.contains(ing.trim().toLowerCase())) {
                     int index = defIngredients.indexOf(ing);
                     String temp = defIngredients.get(index) + " \u2713";
                     defIngredients.set(index, temp);
@@ -135,6 +154,7 @@ public class SearchPresenter {
 
                 }
             }
+
             m.setStrIngredients(String.join(",", defIngredients));
             mealsres.add(m);
             enumerator++;
@@ -143,8 +163,29 @@ public class SearchPresenter {
 
         res.setMatching(matches);
         res.setMeals(mealsres);
-        Log.d("yatut", "calculateMatchingIngredients: nashel receptov s ingredientami = " + mealsres.size());
+
         return res;
+    }
+
+    List<String> loadFavoritesList(SQLiteDatabase database){
+        List<String> favorites = new ArrayList<>();
+
+        Cursor cursor = database.rawQuery("SELECT * from " + DBHelper.TABLE_FAVORITES, null);
+
+        if (cursor.moveToFirst()) {
+            int idRecipe = cursor.getColumnIndex(DBHelper.Key_FAVORITERECIPEID);
+
+
+            do {
+
+                favorites.add(cursor.getString(idRecipe));
+
+            }
+            while (cursor.moveToNext());
+        } else {
+        }
+
+        return favorites;
     }
 
     boolean removeFromFavorites(SQLiteDatabase db, String id){

@@ -7,17 +7,20 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +37,7 @@ import com.squareup.picasso.Picasso;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +49,7 @@ import pr.code.views.categories.CategoryFragment;
 import pr.code.views.recipes.RecipesFragment;
 import pr.code.views.search.SearchActivity;
 
-public class DetailsActivity extends AppCompatActivity implements DetailsView{
+public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -92,12 +96,17 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
     @BindView(R.id.carbs)
     TextView carbs;
 
+    @BindView(R.id.voiceInstructionsBtn)
+    ImageView voiceInstructionsBtn;
+
 
     boolean isfavorite;
     String id;
     static SQLiteDatabase database;
     static DetailsPresenter presenter;
     String customizedInstructions;
+    TextToSpeech tts;
+    Toast t;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,6 +114,12 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
         setContentView(R.layout.activity_recipe_details);
         ButterKnife.bind(this);
 
+        voiceInstructionsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speak();
+            }
+        });
 
 
     }
@@ -117,36 +132,95 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
         setupActionBar();
 
 
-
         Intent intent = getIntent();
 
         String mealname = intent.getStringExtra(RecipesFragment.EXTRA_DETAIL);
 
-        if(intent.getStringExtra(SearchActivity.EXTRA_INSTRUCTIONS) != null)
-        {
+        if (intent.getStringExtra(SearchActivity.EXTRA_INSTRUCTIONS) != null) {
             customizedInstructions = intent.getStringExtra(SearchActivity.EXTRA_INSTRUCTIONS);
         }
 
 
-
         presenter = new DetailsPresenter(this);
-        presenter.getMealById(mealname,database);
+        presenter.getMealById(mealname, database);
 
     }
+    void speak(){
+            String text = instructions.getText().toString();
+            float pitch = 0.8f;
+            float speed = 0.8f;
 
-    void initvalues(){
+            tts.setPitch(pitch);
+            tts.setSpeechRate(speed);
+            tts.speak(text,TextToSpeech.QUEUE_FLUSH,null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(tts!=null){
+            tts.stop();
+            tts.shutdown();
+        }
+
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        if(tts!=null){
+            tts.stop();
+            tts.shutdown();
+        }
+
+        super.onStop();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(tts!=null){
+            tts.stop();
+            tts.shutdown();
+        }
+
+        super.onBackPressed();
+    }
+
+
+
+    void initvalues() {
+        voiceInstructionsBtn.setEnabled(false);
         database = DBHelper.getInstance(this).getReadableDatabase();
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status == TextToSpeech.SUCCESS){
+
+                    //int res = tts.setLanguage(new Locale(Locale.getDefault().getLanguage()));
+                    int res = tts.setLanguage(new Locale("ru","RU"));
+                    if(res == TextToSpeech.LANG_MISSING_DATA || res == TextToSpeech.LANG_NOT_SUPPORTED){
+
+                    }
+                    else{
+                        voiceInstructionsBtn.setEnabled(true);
+                    }
+
+                }
+                else{
+
+                }
+            }
+        });
     }
 
-    private void setupActionBar(){
+    private void setupActionBar() {
         setSupportActionBar(toolbar);
         collapsingToolbarLayout.setContentScrimColor(getResources().getColor(R.color.colorWhite));
         collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.colorPrimary));
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.colorWhite));
         //collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.titleTextStyle);
-       //collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.titleTextStyle);
+        //collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.titleTextStyle);
 
-        if(getSupportActionBar() !=null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
@@ -171,16 +245,15 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_detail,menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
         MenuItem favoriteItem = menu.findItem(R.id.favorite);
 
         Drawable favoriteItemColor = favoriteItem.getIcon();
         setupColorActionBarIcon(favoriteItemColor);
 
-        if(isfavorite){
+        if (isfavorite) {
             favoriteItem.setIcon(R.drawable.ic_favorite);
-        }
-        else{
+        } else {
             favoriteItem.setIcon(R.drawable.ic_favorite_border);
         }
 
@@ -189,17 +262,16 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
             case R.id.favorite:
-                if(isfavorite) {
+                if (isfavorite) {
                     removeFromFavorite(id);
                     item.setIcon(R.drawable.ic_favorite_border);
                     isfavorite = false;
-                }
-                else{
+                } else {
                     addToFavorite(id);
                     item.setIcon(R.drawable.ic_favorite);
                     isfavorite = true;
@@ -208,7 +280,6 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
 
     @Override
@@ -222,7 +293,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
     }
 
     @Override
-    public void setMeal(Meals.Meal meal,boolean infavorites) {
+    public void setMeal(Meals.Meal meal, boolean infavorites) {
 
         isfavorite = infavorites;
         id = meal.getIdMeal();
@@ -232,7 +303,9 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
         Picasso.get().load(meal.getStrMealThumb()).networkPolicy(NetworkPolicy.OFFLINE)
                 .into(mealThumb, new Callback() {
                     @Override
-                    public void onSuccess() { }
+                    public void onSuccess() {
+                    }
+
                     @Override
                     public void onError(Exception e) {
                         Picasso.get().load(meal.getStrMealThumb()).error(R.drawable.ic_error_recipe)
@@ -260,44 +333,39 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
         ForegroundColorSpan fcsGreen = new ForegroundColorSpan(Color.GREEN);
 
 
+        if (customizedInstructions != null) {
 
 
-        if(customizedInstructions !=null)
-        {
-
-
-            for (String a:
+            for (String a :
                     customizedInstructions.split(",")) {
-                if(!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))){
+                if (!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))) {
+                    String name  = a;
+                    name = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
+                    if (a.contains("\u2713")) {
 
-                    if(a.contains("\u2713")) {
-
-                        ingredients.append("\n \u2022 " + a);
-                    }
-                    else{
-                        ingredients.append("\n \u2022 " + a + " \u2716");
+                        ingredients.append("\n \u2022 " + name);
+                    } else {
+                        ingredients.append("\n \u2022 " + name + " \u2716");
                     }
 
 
                 }
             }
 
-        }
-
-        else{
-            for (String a:
+        } else {
+            for (String a :
                     meal.getStrIngredients().split(",")) {
-                if(!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))){
+                if (!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))) {
                     ingredients.append("\n \u2022 " + a);
                 }
             }
         }
 
 
-        if (inlist == melist){
-            for (String a:
+        if (inlist == melist) {
+            for (String a :
                     meal.getStrMeasures().split(",")) {
-                if(!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))){
+                if (!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))) {
                     measures.append("\n : " + a);
                 }
             }
@@ -305,16 +373,25 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView{
 
     }
 
-    public void addToFavorite(String id){
-        presenter.addToFavorites(database,id);
+    public void addToFavorite(String id) {
+        presenter.addToFavorites(database, id);
     }
 
-    public void removeFromFavorite(String id){
-        presenter.removeFromFavorites(database,id);
+    public void removeFromFavorite(String id) {
+        presenter.removeFromFavorites(database, id);
     }
 
     @Override
     public void onErrorLoading(String message) {
-        Util.showDialogMessage(this,"Ошибка ",message);
+        Util.showDialogMessage(this, "Ошибка ", message);
+    }
+
+    void maketoast(String s){
+        if(t !=null) {
+            t.cancel(); }
+        t = Toast.makeText(this,s,Toast.LENGTH_LONG);
+        t.setGravity(Gravity.CENTER,0,0);
+        t.show();
+
     }
 }

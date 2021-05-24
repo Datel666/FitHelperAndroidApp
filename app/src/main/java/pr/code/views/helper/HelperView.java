@@ -9,4 +9,6 @@ public interface HelperView {
     void setUserInfo(List<UserInfo> userInfoList);
 
     void setRecomendations(List<Recomendations.Recomendation> recomendationsList);
+
+
 }

@@ -18,10 +18,6 @@
             android:icon="@drawable/ic_baseline_no_food_24"
             android:title="@string/helper" />
         <item
-            android:id="@+id/nav_mealplanner"
-            android:icon="@drawable/ic_mealplanner"
-            android:title="@string/mealplanner" />
-        <item
             android:id="@+id/nav_favorites"
             android:icon="@drawable/ic_favorite"
             android:title="@string/favorites" />

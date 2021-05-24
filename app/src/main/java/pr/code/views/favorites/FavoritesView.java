@@ -6,7 +6,7 @@ import pr.code.models.Meals;
 
 public interface FavoritesView {
 
-    void setFavorites(List<Meals.Meal> meals);
+    void setFavorites(List<Meals.Meal> meals,List<String> favlist);
     void showLoading();
     void hideLoading();
 }

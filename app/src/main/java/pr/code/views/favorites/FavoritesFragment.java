@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,10 +40,13 @@ public class FavoritesFragment extends Fragment implements FavoritesView{
     RecyclerView recyclerView;
     @BindView(R.id.favoritesprogressBar)
     ProgressBar progressBar;
+    @BindView(R.id.favemptycv)
+    CardView cv;
 
     static SQLiteDatabase database;
     static FavoritesPresenter presenter;
     private FilteredRecipesRecyclerViewAdapter adapter;
+
 
     Context con;
 
@@ -93,11 +97,32 @@ public class FavoritesFragment extends Fragment implements FavoritesView{
     }
 
     @Override
-    public void setFavorites(List<Meals.Meal> meals) {
-        adapter  = new FilteredRecipesRecyclerViewAdapter(getActivity(),meals);
+    public void setFavorites(List<Meals.Meal> meals,List<String> favlist) {
+        adapter  = new FilteredRecipesRecyclerViewAdapter(getActivity(),meals,favlist);
         recyclerView.setLayoutManager(new GridLayoutManager(con,2));
         recyclerView.setClipToPadding(false);
         recyclerView.setAdapter(adapter);
+
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                cv.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                cv.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                cv.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            }
+        });
+
         adapter.notifyDataSetChanged();
 
         adapter.setOnitemClickListener(((view, position) -> {

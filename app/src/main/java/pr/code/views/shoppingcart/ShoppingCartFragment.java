@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,10 +39,10 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
     RecyclerView listView;
 
     @BindView(R.id.inputname)
-    EditText input;
+    TextInputEditText input;
 
     @BindView(R.id.inputquantity)
-    EditText quantity;
+    TextInputEditText quantity;
 
     @BindView(R.id.enter)
     Button enter;
@@ -75,14 +77,16 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
             @Override
             public void onClick(View v) {
                 String text = input.getText().toString();
-                if(text.isEmpty() || text == null){
-                    makeToast("Введите название товара");
+                if(!validateName() | !validateQuantity()){
+                    return;
                 }
                 else {
                     CartItems.CartItem item = new CartItems.CartItem();
                     item.setItemname(input.getText().toString());
                     item.setItemquantity(quantity.getText().toString());
                     addItem(item);
+                    input.setText("");
+                    quantity.setText("");
                 }
             }
         });
@@ -103,6 +107,34 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
 
 
         return view;
+    }
+
+    private boolean validateName(){
+        String inputname = input.getText().toString().trim();
+
+        if(inputname.isEmpty() || inputname.length()<1)
+        {
+            input.setError("Введите название товара");
+            return false;
+        }
+        else{
+            input.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateQuantity(){
+        String quant = quantity.getText().toString();
+
+        if(quant.isEmpty() || quant.length()<1)
+        {
+            quantity.setError("Укажите количество товара");
+            return false;
+        }
+        else{
+            quantity.setError(null);
+            return true;
+        }
     }
 
     @Override

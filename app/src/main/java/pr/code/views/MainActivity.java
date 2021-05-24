@@ -217,13 +217,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new RecipesFragment()).commit();
                 break;
+
             case R.id.nav_cookwith:
+                setTitle("Приготовить из");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new CookWithFragment()).commit();
                 break;
-            case R.id.nav_mealplanner:
+            case R.id.nav_helper:
+                setTitle("Fit-помощник");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new MealPlannerFragment()).commit();
+                        new HelperFragment()).commit();
                 break;
             case R.id.nav_favorites:
                 setTitle("Избранное");
@@ -234,11 +237,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 setTitle("Список покупок");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ShoppingCartFragment()).commit();
-            case R.id.nav_helper:
-                setTitle("Fit-помощник");
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new HelperFragment()).commit();
-                break;
+
         }
 
         drawer.closeDrawer(GravityCompat.START);

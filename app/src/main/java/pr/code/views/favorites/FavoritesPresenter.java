@@ -24,7 +24,7 @@ public class FavoritesPresenter {
         try {
             List<String> templist = loadFavoriteIdentifiers(database);
             String inlist = String.join(",",templist);
-            view.setFavorites(loadFavoriteRecipes(database,inlist));
+            view.setFavorites(loadFavoriteRecipes(database,inlist),templist);
         }
         catch (Exception ex){
 
