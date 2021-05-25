@@ -22,6 +22,9 @@ import pr.code.R;
 import pr.code.models.Meals;
 import pr.code.views.categories.CategoryFragment;
 
+/**
+ * This class represents RecyclerView adapter class used to create custom designed non-filterable list of recipes by category
+ */
 public class RecyclerViewRecipesByCategory extends RecyclerView.Adapter<RecyclerViewRecipesByCategory.RecyclerViewHolder> {
 
     private List<Meals.Meal> meals;

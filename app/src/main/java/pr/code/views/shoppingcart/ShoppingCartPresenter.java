@@ -8,9 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pr.code.models.CartItems;
-import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
 
+/**
+ * This presenter class is used to retrieve necessary data from database and send it to the fragment
+ * within this presenter was called
+ */
 public class ShoppingCartPresenter {
 
     private ShoppingCartView view;

@@ -29,6 +29,10 @@ import pr.code.adapters.CookWithRecyclerViewAdapter;
 import pr.code.utils.DBHelper;
 import pr.code.views.search.SearchActivity;
 
+/**
+ * This fragment class is responsible for presenting a specialized form that allows
+ * to perform smart search by ingredients to user
+ */
 public class CookWithFragment extends Fragment implements CookWithView {
 
 

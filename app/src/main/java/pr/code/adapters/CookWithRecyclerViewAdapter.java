@@ -15,14 +15,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
-import pr.code.models.CartItems;
 import pr.code.views.cookwith.CookWithFragment;
-import pr.code.views.shoppingcart.ShoppingCartFragment;
 
+
+/**
+ * This class represents RecyclerView adapter class used to create custom designed ingredients list
+ */
 public class CookWithRecyclerViewAdapter extends RecyclerView.Adapter<CookWithRecyclerViewAdapter.RecyclerViewHolder>{
 
-    List<String> items;
-    Context context;
+    private List<String> items;
+    private Context context;
 
 
     public CookWithRecyclerViewAdapter(Context context,List<String> items){

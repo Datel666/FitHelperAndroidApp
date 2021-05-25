@@ -1,5 +1,8 @@
 package pr.code.models;
 
+/**
+ * This class describes user info model
+ */
 public class UserInfo {
 
     String idUserinfo;

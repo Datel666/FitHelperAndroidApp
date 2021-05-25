@@ -1,7 +1,6 @@
 package pr.code.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -22,6 +18,10 @@ import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.models.CartItems;
 import pr.code.views.shoppingcart.ShoppingCartFragment;
+
+/**
+ * This class represents RecyclerView adapter class used to create custom designed shoppingcart items list
+ */
 
 public class ShoppingCartRecyclerViewAdapter extends RecyclerView.Adapter<ShoppingCartRecyclerViewAdapter.RecyclerViewHolder> {
 

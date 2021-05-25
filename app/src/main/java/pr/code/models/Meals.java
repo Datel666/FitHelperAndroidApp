@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * This class describes recipe(s) model
+ */
 public class Meals implements Serializable {
 
     @SerializedName("meals")

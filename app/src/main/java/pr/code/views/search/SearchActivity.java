@@ -1,9 +1,7 @@
 package pr.code.views.search;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,8 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,10 +24,14 @@ import pr.code.R;
 import pr.code.adapters.FilteredRecipesRecyclerViewAdapter;
 import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
+import pr.code.utils.FavoritesListHelper;
 import pr.code.views.recipedetails.DetailsActivity;
 
 import static pr.code.views.recipes.RecipesFragment.EXTRA_DETAIL;
 
+/**
+ * This Activity allows to search a collection of recipes by name or tags
+ */
 public class SearchActivity extends AppCompatActivity implements SearchView{
 
     @BindView(R.id.searchRecipesEditText)
@@ -134,11 +134,11 @@ public class SearchActivity extends AppCompatActivity implements SearchView{
     }
 
     public static void addToFavorite(String id){
-        presenter.addToFavorites(database,id);
+        FavoritesListHelper.addToFavorites(database,id);
     }
 
     public static void removeFromFavorite(String id){
-        presenter.removeFromFavorites(database,id);
+        FavoritesListHelper.removeFromFavorites(database,id);
     }
 
     @Override

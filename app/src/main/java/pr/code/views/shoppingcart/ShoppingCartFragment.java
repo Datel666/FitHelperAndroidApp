@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,9 +30,10 @@ import pr.code.adapters.ShoppingCartRecyclerViewAdapter;
 import pr.code.models.CartItems;
 import pr.code.utils.DBHelper;
 
+/**
+ * This fragment class is responsible for presenting a shopping cart form to user
+ */
 public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
-
-
 
     @BindView(R.id.listview)
     RecyclerView listView;

@@ -1,7 +1,6 @@
 package pr.code.views.helper;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -28,8 +26,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.utils.DBHelper;
-import pr.code.views.search.SearchPresenter;
 
+/**
+ * This activity allows to configure and update user info for Fit-helper
+ */
 public class ConfigureUserInfoActivity extends AppCompatActivity {
 
 
@@ -228,7 +228,7 @@ public class ConfigureUserInfoActivity extends AppCompatActivity {
 
         }
         catch (Exception ex){
-            Log.d("userinfo", "addUserInfo: "  + ex.getMessage());
+
 
         }
         finally {

@@ -2,6 +2,9 @@ package pr.code.models;
 
 import java.util.List;
 
+/**
+ * This class describes Cart item(s) model
+ */
 public class CartItems {
 
     private List<CartItem> cartItems;

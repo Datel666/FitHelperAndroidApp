@@ -54,6 +54,10 @@ import pr.code.views.recipes.RecipesFragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * This fragment class is responsible for presenting a specialized form that contain
+ * user info and healthy lifestyle recomendations
+ */
 public class HelperFragment extends Fragment implements HelperView{
 
     @BindView(R.id.helperGenderView)
@@ -344,7 +348,7 @@ public class HelperFragment extends Fragment implements HelperView{
             status = "Недостаточный вес";
         }
 
-        Log.d("userinfo", "calculateBMIStatus: " + bmi);
+
         return status;
     }
 

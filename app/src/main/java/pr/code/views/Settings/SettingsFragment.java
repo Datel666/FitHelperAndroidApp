@@ -1,21 +1,14 @@
 package pr.code.views.Settings;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SwitchPreference;
 
-import butterknife.ButterKnife;
 import pr.code.R;
 
+/**
+ * This fragment is used to configure application settings
+ */
 public class SettingsFragment extends PreferenceFragmentCompat {
 
 

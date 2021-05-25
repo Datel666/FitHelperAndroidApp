@@ -2,16 +2,18 @@ package pr.code.views.helper;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pr.code.models.Meals;
 import pr.code.models.Recomendations;
 import pr.code.models.UserInfo;
 import pr.code.utils.DBHelper;
 
+/**
+ * This presenter class is used to retrieve necessary data from database and send it to the fragment
+ * within this presenter was called
+ */
 public class HelperPresenter {
 
     private HelperView view;

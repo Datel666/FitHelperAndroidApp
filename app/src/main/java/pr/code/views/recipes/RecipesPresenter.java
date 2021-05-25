@@ -11,7 +11,10 @@ import pr.code.models.Categories;
 import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
 
-
+/**
+ * This presenter class is used to retrieve necessary data from database and send it to the fragment
+ * within this presenter was called
+ */
 public class RecipesPresenter {
 
     private RecipesView view;

@@ -4,6 +4,9 @@ import java.util.List;
 
 import pr.code.models.Meals;
 
+/**
+ * This is a 'return' type class used within program
+ */
 public class CookWithPresenterReturnClass {
 
     public CookWithPresenterReturnClass(int[] matching, List<Meals.Meal> meals){

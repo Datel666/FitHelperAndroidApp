@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * This class describes category(ies) model
+ */
 public class Categories implements Serializable {
 
     @SerializedName("categories")

@@ -1,18 +1,13 @@
 package pr.code.views.recipedetails;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,9 +29,6 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -44,11 +36,16 @@ import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
-import pr.code.utils.Util;
-import pr.code.views.categories.CategoryFragment;
+import pr.code.utils.ApiNDialogHelper;
+import pr.code.utils.FavoritesListHelper;
 import pr.code.views.recipes.RecipesFragment;
 import pr.code.views.search.SearchActivity;
 
+
+/**
+ * This Activity is responsible for presenting a specialized form that contain
+ * full information about certain recipe
+ */
 public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     @BindView(R.id.toolbar)
@@ -374,16 +371,17 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     }
 
     public void addToFavorite(String id) {
-        presenter.addToFavorites(database, id);
+        FavoritesListHelper.addToFavorites(database,id);
+
     }
 
     public void removeFromFavorite(String id) {
-        presenter.removeFromFavorites(database, id);
+        FavoritesListHelper.removeFromFavorites(database,id);
     }
 
     @Override
     public void onErrorLoading(String message) {
-        Util.showDialogMessage(this, "Ошибка ", message);
+        ApiNDialogHelper.showDialogMessage(this, "Ошибка ", message);
     }
 
     void maketoast(String s){

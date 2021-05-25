@@ -2,6 +2,9 @@ package pr.code.models;
 
 import java.util.List;
 
+/**
+ * This class describes recomendation(s) model
+ */
 public class Recomendations {
 
 

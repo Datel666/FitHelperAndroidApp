@@ -5,12 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
 
+/**
+ * This presenter class is used to retrieve necessary data from database and send it to the fragment
+ * within this presenter was called
+ */
 public class DetailsPresenter {
 
     private DetailsView view;
@@ -52,7 +54,7 @@ public class DetailsPresenter {
             int mealInfo = cursor.getColumnIndex(DBHelper.KEY_MEALINFO);
             int cooktime = cursor.getColumnIndex(DBHelper.KEY_COOKTIME);
 
-            Log.d("Details", cursor.getString(strArea));
+
 
             res.setIdMeal(cursor.getString(idMeal));
             res.setStrMeal(cursor.getString(strMeal));
@@ -88,45 +90,4 @@ public class DetailsPresenter {
 
     }
 
-    boolean addToFavorites(SQLiteDatabase db, String id){
-        try{
-            db.beginTransaction();
-
-            ContentValues cv = new ContentValues();
-            cv.put(DBHelper.Key_FAVORITERECIPEID,id);
-
-            db.insert(DBHelper.TABLE_FAVORITES,null,cv);
-
-            db.setTransactionSuccessful();
-            return true;
-        }
-        catch (Exception ex){
-
-        }
-        finally {
-            db.endTransaction();
-        }
-        return false;
-    }
-
-    boolean removeFromFavorites(SQLiteDatabase db, String id){
-        try{
-            db.beginTransaction();
-
-
-            db.delete(DBHelper.TABLE_FAVORITES
-                    ,DBHelper.Key_FAVORITERECIPEID + "=?"
-                    ,new String[]{id});
-
-            db.setTransactionSuccessful();
-            return true;
-        }
-        catch (Exception ex){
-
-        }
-        finally {
-            db.endTransaction();
-        }
-        return false;
-    }
 }

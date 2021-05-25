@@ -12,7 +12,6 @@ import androidx.preference.PreferenceManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -38,7 +37,7 @@ import pr.code.models.Recomendations;
 import pr.code.models.Versions;
 import pr.code.utils.DBHelper;
 import pr.code.utils.PingAsync;
-import pr.code.utils.Util;
+import pr.code.utils.ApiNDialogHelper;
 import pr.code.views.Settings.SettingsFragment;
 import pr.code.views.cookwith.CookWithFragment;
 import pr.code.views.favorites.FavoritesFragment;
@@ -49,6 +48,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * This activity is responsible for redirecting between application fragments aka forms.
+ * Also this activity is responsible for making decisions related to versioning and retrieving data from the server.
+ */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
@@ -86,14 +89,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             AlertDialog dialog1 = builder.create();
             dialog1.show();
         } else if (dec == 2) {
-            Log.d("dec", "2");
+
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             boolean autoupdate = prefs.getBoolean("autoupdate", true);
             if (autoupdate) {
                 versionComparison();
             }
         } else if (dec == 3) {
-            Log.d("dec", "3");
+
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             boolean autoupdate = prefs.getBoolean("autoupdate", true);
             if (autoupdate) {
@@ -311,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void versionComparison() {
 
-        Call<Versions> versionCall = Util.getApi().getVersion();
+        Call<Versions> versionCall = ApiNDialogHelper.getApi().getVersion();
         versionCall.enqueue(new Callback<Versions>() {
             @Override
             public void onResponse(@NonNull Call<Versions> call, @NonNull Response<Versions> response) {
@@ -417,7 +420,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     void getVersions() {
 
-        Call<Versions> versionCall = Util.getApi().getVersion();
+        Call<Versions> versionCall = ApiNDialogHelper.getApi().getVersion();
         versionCall.enqueue(new Callback<Versions>() {
             @Override
             public void onResponse(Call<Versions> call, Response<Versions> response) {
@@ -445,7 +448,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             cv.put(DBHelper.KEY_IDVER, r.getIdversion());
 
                             db.insert(DBHelper.TABLE_VERSIONS, null, cv);
-                            //Log.d("Insert", "Ya vstavlyau v versii");
+
                         }
                         db.setTransactionSuccessful();
 
@@ -479,7 +482,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     void getRecipes() {
 
-        Call<Meals> recipesCall = Util.getApi().getMeals();
+        Call<Meals> recipesCall = ApiNDialogHelper.getApi().getMeals();
         recipesCall.enqueue(new Callback<Meals>() {
             @Override
             public void onResponse(Call<Meals> call, Response<Meals> response) {
@@ -502,7 +505,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             cv.put(DBHelper.KEY_MEALINFO, r.getStrMealInfo());
                             cv.put(DBHelper.KEY_COOKTIME, r.getStrCookTime());
                             db.insert(DBHelper.TABLE_RECIPES, null, cv);
-                            //Log.d("Insert", "Ya v receptah");
+
                         }
                         db.setTransactionSuccessful();
                     } catch (Exception ex) {
@@ -535,7 +538,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     void getCategories() {
 
-        Call<Categories> categoriesCall = Util.getApi().getCategories();
+        Call<Categories> categoriesCall = ApiNDialogHelper.getApi().getCategories();
         categoriesCall.enqueue(new Callback<Categories>() {
             @Override
             public void onResponse(@NonNull Call<Categories> call, @NonNull Response<Categories> response) {
@@ -583,7 +586,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     void getRecomendations(AlertDialog dialog1, AlertDialog dialog2) {
 
-        Call<Recomendations> categoriesCall = Util.getApi().getRecomendations();
+        Call<Recomendations> categoriesCall = ApiNDialogHelper.getApi().getRecomendations();
         categoriesCall.enqueue(new Callback<Recomendations>() {
             @Override
             public void onResponse(@NonNull Call<Recomendations> call, @NonNull Response<Recomendations> response) {

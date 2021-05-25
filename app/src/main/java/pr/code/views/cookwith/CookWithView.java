@@ -1,14 +1,11 @@
 package pr.code.views.cookwith;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import pr.code.models.Meals;
-import pr.code.utils.CookWithPresenterReturnClass;
-
+/**
+ * Implements data display (from the Model), contacts the Presenter for updates, redirects events from the user to the Presenter
+ */
 public interface CookWithView {
 
     void setMealsWithIndgredients(ArrayList<String> ingredients);
-
-
 }

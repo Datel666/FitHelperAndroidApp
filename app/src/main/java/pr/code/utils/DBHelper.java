@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- * Класс-помощник для работы с базой данных SQLite
+ * This class is used to organize SQLite database related things
  */
 public class DBHelper extends SQLiteOpenHelper {
 

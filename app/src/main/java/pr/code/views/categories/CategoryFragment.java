@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,12 +33,15 @@ import pr.code.R;
 import pr.code.adapters.RecyclerViewRecipesByCategory;
 import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
-import pr.code.utils.Util;
+import pr.code.utils.ApiNDialogHelper;
+import pr.code.utils.FavoritesListHelper;
 import pr.code.views.recipedetails.DetailsActivity;
 
 import static pr.code.views.recipes.RecipesFragment.EXTRA_DETAIL;
 
-
+/**
+ * This fragment used within CategoryActivity and responsible for recipes by category list view building
+ */
 public class CategoryFragment extends Fragment implements CategoryView {
 
     @BindView(R.id.recyclerViewwww)
@@ -146,7 +148,7 @@ public class CategoryFragment extends Fragment implements CategoryView {
 
     @Override
     public void onErrorLoading(String message) {
-        Util.showDialogMessage(getActivity(),"Error ",message);
+        ApiNDialogHelper.showDialogMessage(getActivity(),"Error ",message);
     }
 
     @OnClick(R.id.cardCategory)
@@ -159,11 +161,11 @@ public class CategoryFragment extends Fragment implements CategoryView {
     }
 
     public static void addToFavorite(String id){
-        presenter.addToFavorites(database,id);
+        FavoritesListHelper.addToFavorites(database,id);
     }
 
     public static void removeFromFavorite(String id){
-        presenter.removeFromFavorites(database,id);
+        FavoritesListHelper.addToFavorites(database,id);
     }
 
 

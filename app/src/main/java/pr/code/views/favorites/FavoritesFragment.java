@@ -30,10 +30,14 @@ import pr.code.R;
 import pr.code.adapters.FilteredRecipesRecyclerViewAdapter;
 import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
+import pr.code.utils.FavoritesListHelper;
 import pr.code.views.recipedetails.DetailsActivity;
 
 import static pr.code.views.recipes.RecipesFragment.EXTRA_DETAIL;
 
+/**
+ * This fragment class is responsible for presenting a list of user favorite recipes
+ */
 public class FavoritesFragment extends Fragment implements FavoritesView{
 
     @BindView(R.id.favoritesrecyclerView)
@@ -170,10 +174,10 @@ public class FavoritesFragment extends Fragment implements FavoritesView{
     }
 
     public static void addToFavorite(String id){
-        presenter.addToFavorites(database,id);
+        FavoritesListHelper.addToFavorites(database,id);
     }
 
     public static void removeFromFavorite(String id){
-        presenter.removeFromFavorites(database,id);
+        FavoritesListHelper.removeFromFavorites(database,id);
     }
 }

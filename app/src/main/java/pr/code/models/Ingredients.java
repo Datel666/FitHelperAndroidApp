@@ -2,6 +2,9 @@ package pr.code.models;
 
 import java.util.List;
 
+/**
+ * This class describes ingredient(s) model
+ */
 public class Ingredients {
 
     private List<Ingredient> ingredients;

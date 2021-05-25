@@ -23,6 +23,9 @@ import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.models.Categories;
 
+/**
+ * This class represents RecyclerView adapter class used to create custom designed list of categories
+ */
 public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerViewCategoryAdapter.RecyclerViewHolder> {
 
 

@@ -23,19 +23,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.models.Meals;
-import pr.code.views.categories.CategoryFragment;
-import pr.code.views.favorites.FavoritesFragment;
 import pr.code.views.search.SearchActivity;
 
+/**
+ * This class represents RecyclerView adapter class used to create custom designed filterable list of recipes
+ */
 public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<FilteredRecipesRecyclerViewAdapter.RecyclerViewHolder> implements Filterable {
 
     private List<Meals.Meal> meals;
     private List<Meals.Meal> mealsFull;
     private List<String> favlist;
     private int[] matching;
-
     private Context context;
-
     private static ClickListener clickListener;
 
     public FilteredRecipesRecyclerViewAdapter(Context context, List<Meals.Meal> meals,List<String> favlist) {

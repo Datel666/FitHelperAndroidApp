@@ -3,7 +3,6 @@ package pr.code.views.categories;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
@@ -24,8 +23,10 @@ import pr.code.adapters.ViewPagerCategoryAdapter;
 import pr.code.models.Categories;
 import pr.code.views.recipes.RecipesFragment;
 
+/**
+ * This activity class used to present categories related information to user
+ */
 public class CategoryActivity extends AppCompatActivity {
-
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

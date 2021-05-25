@@ -2,6 +2,9 @@ package pr.code.models;
 
 import java.util.List;
 
+/**
+ * This class describes versioning model
+ */
 public class Versions {
 
     private List<Version> versions;

@@ -13,6 +13,10 @@ import java.util.List;
 import pr.code.models.Categories;
 import pr.code.views.categories.CategoryFragment;
 
+
+/**
+ * This class represents FragmentPagerAdapter class used to fill TabLayout with categories as tabs
+ */
 public class ViewPagerCategoryAdapter extends FragmentPagerAdapter {
 
     private List<Categories.Category> categories;

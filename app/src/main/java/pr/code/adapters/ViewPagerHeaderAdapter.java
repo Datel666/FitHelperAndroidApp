@@ -21,6 +21,10 @@ import java.util.List;
 import pr.code.R;
 import pr.code.models.Meals;
 
+
+/**
+ * This class represents PagerAdapter class used to create custom designed recipes list
+ */
 public class ViewPagerHeaderAdapter extends PagerAdapter {
 
     private List<Meals.Meal> recipes;

@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * This class implements ping to server feature
+ */
 public class PingAsync extends AsyncTask<Void,Void,Boolean> {
 
     @Override

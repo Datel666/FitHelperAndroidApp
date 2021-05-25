@@ -8,11 +8,14 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+
+/**
+ * This class defines the fields and methods required to implement network communication
+ * between the client application and the server.
+ */
 public class FoodClient {
 
     private static final String BASE_URL = "http://10.0.2.2:8080/";
-
-
 
     public static String getBaseUrl() {
         return BASE_URL;

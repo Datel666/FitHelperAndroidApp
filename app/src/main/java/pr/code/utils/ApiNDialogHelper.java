@@ -6,7 +6,10 @@ import android.content.Context;
 import pr.code.api.FoodApi;
 import pr.code.api.FoodClient;
 
-public class Util {
+/**
+ * This class systematizes network related features and implements dialog creation shortcut
+ */
+public class ApiNDialogHelper {
 
     public static FoodApi getApi(){
         return FoodClient.getFoodClient().create(FoodApi.class);

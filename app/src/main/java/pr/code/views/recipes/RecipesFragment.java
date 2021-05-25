@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -29,11 +28,15 @@ import pr.code.adapters.ViewPagerHeaderAdapter;
 import pr.code.models.Categories;
 import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
-import pr.code.utils.Util;
+import pr.code.utils.ApiNDialogHelper;
 import pr.code.views.categories.CategoryActivity;
 import pr.code.views.recipedetails.DetailsActivity;
 import pr.code.views.search.SearchActivity;
 
+
+/**
+ * This Fragment is responsible for presenting a list of categories and recipes to user
+ */
 public class RecipesFragment extends Fragment  implements RecipesView{
 
     public static final String EXTRA_CATEGORY = "category";
@@ -146,6 +149,6 @@ public class RecipesFragment extends Fragment  implements RecipesView{
 
     @Override
     public void onErrorLoading(String message) {
-        Util.showDialogMessage(act, "Title", message);
+        ApiNDialogHelper.showDialogMessage(act, "Title", message);
     }
 }

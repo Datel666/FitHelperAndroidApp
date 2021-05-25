@@ -4,21 +4,21 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import pr.code.R;
 import pr.code.models.Recomendations;
 
+
+/**
+ * This class represents PagerAdapter class used to create custom designed recomendations list
+ */
 public class ViewPagerRecomendationsAdapter extends PagerAdapter {
     List<Recomendations.Recomendation> reclist;
     Context context;

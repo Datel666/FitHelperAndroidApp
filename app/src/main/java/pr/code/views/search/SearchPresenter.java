@@ -1,9 +1,7 @@
 package pr.code.views.search;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,8 +11,11 @@ import java.util.List;
 import pr.code.models.Meals;
 import pr.code.utils.CookWithPresenterReturnClass;
 import pr.code.utils.DBHelper;
-import pr.code.views.favorites.FavoritesPresenter;
 
+/**
+ * This presenter class is used to retrieve necessary data from database and send it to the fragment
+ * within this presenter was called
+ */
 public class SearchPresenter {
 
     private SearchView view;
@@ -167,66 +168,5 @@ public class SearchPresenter {
         return res;
     }
 
-    List<String> loadFavoritesList(SQLiteDatabase database){
-        List<String> favorites = new ArrayList<>();
 
-        Cursor cursor = database.rawQuery("SELECT * from " + DBHelper.TABLE_FAVORITES, null);
-
-        if (cursor.moveToFirst()) {
-            int idRecipe = cursor.getColumnIndex(DBHelper.Key_FAVORITERECIPEID);
-
-
-            do {
-
-                favorites.add(cursor.getString(idRecipe));
-
-            }
-            while (cursor.moveToNext());
-        } else {
-        }
-
-        return favorites;
-    }
-
-    boolean removeFromFavorites(SQLiteDatabase db, String id){
-        try{
-            db.beginTransaction();
-
-
-            db.delete(DBHelper.TABLE_FAVORITES
-                    ,DBHelper.Key_FAVORITERECIPEID + "=?"
-                    ,new String[]{id});
-
-            db.setTransactionSuccessful();
-            return true;
-        }
-        catch (Exception ex){
-
-        }
-        finally {
-            db.endTransaction();
-        }
-        return false;
-    }
-
-    boolean addToFavorites(SQLiteDatabase db, String id){
-        try{
-            db.beginTransaction();
-
-            ContentValues cv = new ContentValues();
-            cv.put(DBHelper.Key_FAVORITERECIPEID,id);
-
-            db.insert(DBHelper.TABLE_FAVORITES,null,cv);
-
-            db.setTransactionSuccessful();
-            return true;
-        }
-        catch (Exception ex){
-
-        }
-        finally {
-            db.endTransaction();
-        }
-        return false;
-    }
 }
