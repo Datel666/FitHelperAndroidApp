@@ -86,8 +86,20 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
 
                     @Override
                     public void onError(Exception e) {
-                        Picasso.get().load(strMealThumb).error(R.drawable.ic_error_recipe)
-                                .into(holder.mealThumb);
+                        Picasso.get().load(strMealThumb).placeholder(R.drawable.shadow_bottom_to_top)
+                                .into(holder.mealThumb, new Callback() {
+                                            @Override
+                                            public void onSuccess() {
+
+                                            }
+
+                                            @Override
+                                            public void onError(Exception e) {
+                                                Picasso.get().load(strMealThumb).error(R.drawable.ic_error_recipe)
+                                                        .into(holder.mealThumb);
+                                            }
+                                        });
+
                     }
                 });
 

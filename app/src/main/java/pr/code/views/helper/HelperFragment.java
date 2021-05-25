@@ -1,7 +1,7 @@
 package pr.code.views.helper;
 
 import android.content.ContentValues;
-import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -34,8 +35,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,12 +44,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
-import pr.code.adapters.ViewPagerCategoryAdapter;
+
 import pr.code.adapters.ViewPagerRecomendationsAdapter;
 import pr.code.models.Recomendations;
 import pr.code.models.UserInfo;
 import pr.code.utils.DBHelper;
-import pr.code.views.MainActivity;
+
 import pr.code.views.recipes.RecipesFragment;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -90,6 +90,9 @@ public class HelperFragment extends Fragment implements HelperView{
 
     @BindView(R.id.weightChart)
     LineChart weightChart;
+
+    @BindView(R.id.emptyhelperview)
+    CardView emptycard;
 
 
     public static final String EXTRA_GENDER = "gender";
@@ -168,7 +171,19 @@ public class HelperFragment extends Fragment implements HelperView{
 
     @Override
     public void setUserInfo(List<UserInfo> userInfoList) {
-        chartInfo = new ArrayList<>(userInfoList.subList(userInfoList.size()-5,userInfoList.size()));
+        if(userInfoList.size()>5) {
+            emptycard.setVisibility(View.INVISIBLE);
+            chartInfo = new ArrayList<>(userInfoList.subList(userInfoList.size() - 5, userInfoList.size()));
+            drawChart(chartInfo);
+        }
+        else if(userInfoList.size()>1){
+            emptycard.setVisibility(View.INVISIBLE);
+            chartInfo = new ArrayList<>(userInfoList);
+            drawChart(chartInfo);
+        }
+        else{
+            emptycard.setVisibility(View.VISIBLE);
+        }
 
         actualUserInfo = new UserInfo();
         actualUserInfo = userInfoList.get(userInfoList.size()-1);
@@ -224,7 +239,7 @@ public class HelperFragment extends Fragment implements HelperView{
         statusText.setTextColor(ContextCompat.getColor(getContext(),colorid));
         caloriesgoalText.setText(caloriesGoal);
 
-        drawChart(chartInfo);
+
 
         goalSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -278,13 +293,15 @@ public class HelperFragment extends Fragment implements HelperView{
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
 
-                if (((int) value) < dates.size()) {
-                    String date = dates.get((int)value);
-                    String[] args = date.split("-");
-                    return months[Integer.parseInt(args[0])] + " " + args[1];
-                } else {
-                    return "0";
-                }
+                    if (((int) value) < dates.size()) {
+                        String date = dates.get((int) value);
+                        String[] args = date.split("-");
+                        return months[Integer.parseInt(args[0])] + " " + args[1];
+                    } else {
+                        return "0";
+                    }
+
+
             }
         };
 

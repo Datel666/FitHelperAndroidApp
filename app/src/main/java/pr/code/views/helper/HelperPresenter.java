@@ -109,7 +109,7 @@ public class HelperPresenter {
             while (cursor.moveToNext());
         } else {
         }
-        Log.d("recs", "loadRecomendations: " + res);
+
         return res;
     }
 }

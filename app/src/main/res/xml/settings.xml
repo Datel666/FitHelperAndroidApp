@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Данные">
+
+    </PreferenceCategory>
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="autoupdate"
+        android:title="Автообновление"
+        android:summary="Включение или отключение автоматического обновления базы данных"
+        />
+</PreferenceScreen>

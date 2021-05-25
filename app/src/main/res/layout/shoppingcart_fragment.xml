@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:text="Добавляйте товары в список покупок"
             android:textAlignment="center"
+            android:layout_marginBottom="5dp"
 
             android:layout_marginTop="5dp"
 
@@ -151,7 +152,7 @@
         android:layout_height="wrap_content"
         android:text="@string/shoppingcart"
         android:textAlignment="center"
-
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:layout_below="@id/header"
 

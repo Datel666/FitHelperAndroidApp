@@ -25,7 +25,13 @@
             android:id="@+id/nav_shoppingcart"
             android:icon="@drawable/ic_shoppingcart"
             android:title="@string/shoppingcart" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings" />
     </group>
+
+
 
 
 </menu>

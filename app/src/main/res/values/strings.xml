@@ -11,6 +11,7 @@
     <string name="helper">Fit-рекомендации</string>
     <string name="mealplanner">Планировать приёмы пищи</string>
     <string name="shoppingcart">Список покупок</string>
+    <string name="settings">Настройки</string>
 
 
     <string name="portion">В одной порции</string>
@@ -27,7 +28,7 @@
 
     <string name="IngredientList">Список ингредиентов</string>
     <string name="emptyList">Список пуст</string>
-
+    <string name="notEnoughData">Недостаточно данных</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

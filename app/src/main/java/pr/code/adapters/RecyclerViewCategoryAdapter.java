@@ -63,8 +63,21 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
 
                     @Override
                     public void onError(Exception e) {
-                        Picasso.get().load(strCategoryThum).placeholder(R.drawable.ic_circle).error(R.drawable.ic_error_recipe)
-                                .into(viewHolder.categoryThumb);
+                        Picasso.get().load(strCategoryThum).placeholder(R.drawable.ic_circle)
+                                .into(viewHolder.categoryThumb, new Callback() {
+                                            @Override
+                                            public void onSuccess() {
+
+                                            }
+
+                                            @Override
+                                            public void onError(Exception e) {
+                                                Picasso.get().load(strCategoryThum).placeholder(R.drawable.ic_circle).error(R.drawable.ic_error_recipe)
+                                                        .into(viewHolder.categoryThumb);
+                                            }
+                                        });
+
+
                     }
                 });
 

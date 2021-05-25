@@ -17,6 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -32,13 +34,13 @@ public class ConfigureUserInfoActivity extends AppCompatActivity {
 
 
     @BindView(R.id.ageEdit)
-    EditText ageedit;
+    TextInputEditText ageedit;
 
     @BindView(R.id.heightEdit)
-    EditText heightedit;
+    TextInputEditText heightedit;
 
     @BindView(R.id.weightEdit)
-    EditText weightedit;
+    TextInputEditText weightedit;
 
     @BindView(R.id.lifestyleSpinner)
     Spinner lifestyleSpinner;
@@ -103,7 +105,10 @@ public class ConfigureUserInfoActivity extends AppCompatActivity {
                     maketoast("Вы не указали свой пол");
                     return;
                 }
-                if(ageedit.getText().length()>0 && heightedit.getText().length()>0 && weightedit.getText().length()>0) {
+                if(!validateAge() | !validateHeight() | !validateweight()) {
+                    return;
+                }
+                else{
                     addUserInfo(gender);
 
                     SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
@@ -113,13 +118,51 @@ public class ConfigureUserInfoActivity extends AppCompatActivity {
 
                     finish();
                 }
-                else{
-                    maketoast("Заполните все поля");
-                    return;
-                }
             }
         });
 
+    }
+
+    private boolean validateAge(){
+        String inputage = ageedit.getText().toString().trim();
+
+        if(inputage.isEmpty() || inputage.length()<1)
+        {
+            ageedit.setError("Укажите свой возраст");
+            return false;
+        }
+        else{
+            ageedit.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateHeight(){
+        String inputheight = heightedit.getText().toString().trim();
+
+        if(inputheight.isEmpty() || inputheight.length()<1)
+        {
+            heightedit.setError("Укажите ваш рост в см");
+            return false;
+        }
+        else{
+            heightedit.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateweight(){
+        String inputweight = weightedit.getText().toString().trim();
+
+        if(inputweight.isEmpty() || inputweight.length()<1)
+        {
+            weightedit.setError("Укажите ваш вес в кг");
+            return false;
+        }
+        else{
+            weightedit.setError(null);
+            return true;
+        }
     }
 
     void maketoast(String s){
