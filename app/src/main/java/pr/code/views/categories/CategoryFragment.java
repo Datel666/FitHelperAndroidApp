@@ -42,8 +42,8 @@ import static pr.code.views.recipes.RecipesFragment.EXTRA_DETAIL;
 
 public class CategoryFragment extends Fragment implements CategoryView {
 
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
+    @BindView(R.id.recyclerViewwww)
+    RecyclerView recyclerViewww;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.imageCategory)
@@ -131,9 +131,9 @@ public class CategoryFragment extends Fragment implements CategoryView {
     @Override
     public void setMeals(List<Meals.Meal> meals,List<String> favlist) {
         RecyclerViewRecipesByCategory adapter = new RecyclerViewRecipesByCategory(getActivity(),meals,favlist);
-        recyclerView.setLayoutManager(new GridLayoutManager(con,2));
-        recyclerView.setClipToPadding(false);
-        recyclerView.setAdapter(adapter);
+        recyclerViewww.setLayoutManager(new GridLayoutManager(con,2));
+        recyclerViewww.setClipToPadding(false);
+        recyclerViewww.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
         adapter.setOnitemClickListener(((view, position) -> {
