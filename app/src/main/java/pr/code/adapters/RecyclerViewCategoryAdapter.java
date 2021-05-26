@@ -57,7 +57,7 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
 
         String strCategoryThum = categories.get(i).getStrCategoryThumb();
 
-        Picasso.get().load(strCategoryThum).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.ic_circle)
+        Picasso.get().load(strCategoryThum).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.ic_circle).resize(320,200)
                 .into(viewHolder.categoryThumb, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -66,7 +66,7 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
 
                     @Override
                     public void onError(Exception e) {
-                        Picasso.get().load(strCategoryThum).placeholder(R.drawable.ic_circle)
+                        Picasso.get().load(strCategoryThum).placeholder(R.drawable.ic_circle).resize(320,200)
                                 .into(viewHolder.categoryThumb, new Callback() {
                                             @Override
                                             public void onSuccess() {
@@ -75,7 +75,7 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
 
                                             @Override
                                             public void onError(Exception e) {
-                                                Picasso.get().load(strCategoryThum).placeholder(R.drawable.ic_circle).error(R.drawable.ic_error_recipe)
+                                                Picasso.get().load(strCategoryThum).placeholder(R.drawable.ic_circle).resize(320,200).error(R.drawable.ic_error_recipe)
                                                         .into(viewHolder.categoryThumb);
                                             }
                                         });

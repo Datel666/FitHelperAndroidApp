@@ -89,24 +89,24 @@ public class CategoryFragment extends Fragment implements CategoryView {
 
         if(getArguments()!=null){
             textCategory.setText(getArguments().getString("EXTRA_DATA_DESC"));
-            Picasso.get().load(getArguments().getString("EXTRA_DATA_IMAGE")).networkPolicy(NetworkPolicy.OFFLINE)
+            Picasso.get().load(getArguments().getString("EXTRA_DATA_IMAGE")).networkPolicy(NetworkPolicy.OFFLINE).resize(320,200)
                     .into(imageCategory, new Callback() {
                         @Override
                         public void onSuccess() { }
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(getArguments().getString("EXTRA_DATA_IMAGE")).error(R.drawable.ic_error_recipe)
+                            Picasso.get().load(getArguments().getString("EXTRA_DATA_IMAGE")).resize(320,200).error(R.drawable.ic_error_recipe)
                                     .into(imageCategory);
                         }
                     });
 
-            Picasso.get().load(getArguments().getString("EXTRA_DATA_IMAGE")).networkPolicy(NetworkPolicy.OFFLINE)
+            Picasso.get().load(getArguments().getString("EXTRA_DATA_IMAGE")).networkPolicy(NetworkPolicy.OFFLINE).resize(320,200)
                     .into(imageCategoryBg, new Callback() {
                         @Override
                         public void onSuccess() { }
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(getArguments().getString("EXTRA_DATA_IMAGE")).error(R.drawable.ic_error_recipe)
+                            Picasso.get().load(getArguments().getString("EXTRA_DATA_IMAGE")).resize(320,200).error(R.drawable.ic_error_recipe)
                                     .into(imageCategoryBg);
                         }
                     });

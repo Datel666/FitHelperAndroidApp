@@ -150,10 +150,10 @@ public class TestСases {
         onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText(R.string.recipes))));
 
         onView(withId(R.id.recipesSearchEditText)).perform(click());
-        onView(withId(R.id.searchRecipesEditText))
-                .check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.searchRecyclerView), isCompletelyDisplayed()))
+
+
+        onView(allOf(withId(R.id.searchRecyclerView), isDisplayed()))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.mealThumb)).check(matches(isDisplayed()));
     }

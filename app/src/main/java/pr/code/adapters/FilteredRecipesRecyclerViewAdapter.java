@@ -76,7 +76,7 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
         }
 
         String strMealThumb = meals.get(position).getStrMealThumb();
-        Picasso.get().load(strMealThumb).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.shadow_bottom_to_top)
+        Picasso.get().load(strMealThumb).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.shadow_bottom_to_top).resize(700,700)
                 .into(holder.mealThumb, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -85,7 +85,7 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
 
                     @Override
                     public void onError(Exception e) {
-                        Picasso.get().load(strMealThumb).placeholder(R.drawable.shadow_bottom_to_top)
+                        Picasso.get().load(strMealThumb).placeholder(R.drawable.shadow_bottom_to_top).resize(700,700)
                                 .into(holder.mealThumb, new Callback() {
                                             @Override
                                             public void onSuccess() {
@@ -94,7 +94,7 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
 
                                             @Override
                                             public void onError(Exception e) {
-                                                Picasso.get().load(strMealThumb).error(R.drawable.ic_error_recipe)
+                                                Picasso.get().load(strMealThumb).error(R.drawable.ic_error_recipe).resize(700,700)
                                                         .into(holder.mealThumb);
                                             }
                                         });
