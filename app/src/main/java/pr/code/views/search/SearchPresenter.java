@@ -146,7 +146,7 @@ public class SearchPresenter {
             for (String ing : ingredients
             ) {
                 if (defIngredients.contains(ing.trim().toLowerCase())) {
-                    int index = defIngredients.indexOf(ing);
+                    int index = defIngredients.indexOf(ing.trim().toLowerCase());
                     String temp = defIngredients.get(index) + " \u2713";
                     defIngredients.set(index, temp);
                     matches[enumerator] = matches[enumerator] +1;

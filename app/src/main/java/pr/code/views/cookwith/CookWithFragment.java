@@ -105,6 +105,9 @@ public class CookWithFragment extends Fragment implements CookWithView {
                 if(items.size()>0) {
                     setMealsWithIndgredients((new ArrayList<>(items)));
                 }
+                else{
+                    makeToast("Перед осуществлением поиска необходимо добавить ингредиенты в список");
+                }
             }
         });
 
