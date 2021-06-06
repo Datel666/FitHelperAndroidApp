@@ -1,6 +1,7 @@
 package pr.code.adapters;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.models.Meals;
+import pr.code.utils.FavoritesListHelper;
 import pr.code.views.search.SearchActivity;
 
 /**
@@ -36,20 +38,23 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
     private int[] matching;
     private Context context;
     private static ClickListener clickListener;
+    private SQLiteDatabase db;
 
-    public FilteredRecipesRecyclerViewAdapter(Context context, List<Meals.Meal> meals,List<String> favlist) {
+    public FilteredRecipesRecyclerViewAdapter(Context context, List<Meals.Meal> meals, List<String> favlist, SQLiteDatabase db) {
         this.meals = meals;
         mealsFull = new ArrayList<>(this.meals);
         this.context = context;
         this.favlist = favlist;
+        this.db  = db;
     }
 
-    public FilteredRecipesRecyclerViewAdapter(Context context, List<Meals.Meal> meals, int[] matching,List<String> favlist) {
+    public FilteredRecipesRecyclerViewAdapter(Context context, List<Meals.Meal> meals, int[] matching,List<String> favlist,SQLiteDatabase db) {
         this.meals = meals;
         mealsFull = new ArrayList<>(this.meals);
         this.context = context;
         this.matching = matching;
         this.favlist = favlist;
+        this.db =db;
     }
 
 
@@ -121,11 +126,11 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
             @Override
             public void onClick(View v) {
                 if ((Integer) holder.favorite.getTag(R.id.favtag) == R.drawable.ic_favorite) {
-                    SearchActivity.removeFromFavorite(meals.get(position).getIdMeal());
+                    FavoritesListHelper.removeFromFavorites(db,meals.get(position).getIdMeal());
                     holder.favorite.setImageResource(R.drawable.ic_favorite_border);
                     holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite_border);
                 } else {
-                    SearchActivity.addToFavorite(meals.get(position).getIdMeal());
+                    FavoritesListHelper.addToFavorites(db,meals.get(position).getIdMeal());
                     holder.favorite.setImageResource(R.drawable.ic_favorite);
                     holder.favorite.setTag(R.id.favtag, R.drawable.ic_favorite);
                 }

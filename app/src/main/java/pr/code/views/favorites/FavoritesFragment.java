@@ -102,7 +102,7 @@ public class FavoritesFragment extends Fragment implements FavoritesView{
 
     @Override
     public void setFavorites(List<Meals.Meal> meals,List<String> favlist) {
-        adapter  = new FilteredRecipesRecyclerViewAdapter(getActivity(),meals,favlist);
+        adapter  = new FilteredRecipesRecyclerViewAdapter(getActivity(),meals,favlist,database);
         recyclerView.setLayoutManager(new GridLayoutManager(con,2));
         recyclerView.setClipToPadding(false);
         recyclerView.setAdapter(adapter);

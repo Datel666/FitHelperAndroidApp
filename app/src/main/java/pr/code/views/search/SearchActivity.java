@@ -118,7 +118,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView{
 
     @Override
     public void setSearchableCollection(List<Meals.Meal> meals,List<String> favlist) {
-        adapter = new FilteredRecipesRecyclerViewAdapter(this,meals,favlist);
+        adapter = new FilteredRecipesRecyclerViewAdapter(this,meals,favlist,database);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.setClipToPadding(false);
         recyclerView.setAdapter(adapter);
@@ -144,7 +144,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView{
     @Override
     public void setCollection(List<Meals.Meal> meals, int[] matching,List<String> favlist) {
 
-        adapter = new FilteredRecipesRecyclerViewAdapter(this,meals,matching,favlist);
+        adapter = new FilteredRecipesRecyclerViewAdapter(this,meals,matching,favlist,database);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.setClipToPadding(false);
         recyclerView.setAdapter(adapter);
