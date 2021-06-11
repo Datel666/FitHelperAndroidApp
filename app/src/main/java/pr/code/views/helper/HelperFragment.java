@@ -207,6 +207,11 @@ public class HelperFragment extends Fragment implements HelperView{
         caloriesGoal = calculateCaloriesGoal(Integer.parseInt(userWeight),Integer.parseInt(userHeight)
                 ,Integer.parseInt(userAge),userLifestyle,userGender) + ccal;
 
+        prefs = this.getActivity().getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("caloriesGoal", caloriesGoal);
+        editor.apply();
+
         String[] stringArray = getResources().getStringArray(R.array.goalSpinnerArray);
 
         int val = Arrays.asList(stringArray).indexOf(userGoal);

@@ -65,7 +65,7 @@ public class ViewPagerHeaderAdapter extends PagerAdapter {
         String strMealThumb = recipes.get(position).getStrMealThumb();
 
 
-        Picasso.get().load(strMealThumb).networkPolicy(NetworkPolicy.OFFLINE)
+        Picasso.get().load(strMealThumb).networkPolicy(NetworkPolicy.OFFLINE).resize(320,200)
                 .into(mealThumb, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -74,19 +74,20 @@ public class ViewPagerHeaderAdapter extends PagerAdapter {
 
                     @Override
                     public void onError(Exception e) {
-                        Picasso.get().load(strMealThumb)
+                        Picasso.get().load(strMealThumb).resize(320,200)
                                 .into(mealThumb, new Callback() {
-                                            @Override
-                                            public void onSuccess() {
+                                    @Override
+                                    public void onSuccess() {
 
-                                            }
+                                    }
 
-                                            @Override
-                                            public void onError(Exception e) {
-                                                Picasso.get().load(strMealThumb).error(R.drawable.ic_error_recipe)
-                                                        .into(mealThumb);
-                                            }
-                                        });
+                                    @Override
+                                    public void onError(Exception e) {
+                                        Picasso.get().load(strMealThumb).resize(320,200).error(R.drawable.ic_error_recipe)
+                                                .into(mealThumb);
+                                    }
+                                });
+
 
                     }
                 });

@@ -78,6 +78,28 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String Key_RECGOAL = "goal";
     public static final String Key_RECSTATUS = "status";
     public static final String Key_RECTEXT = "rectext";
+
+    public static final String TABLE_MEALSHISTORY = "mealshistory";
+    public static final String KEY_MHID = "mealshistoryid";
+    public static final String KEY_MHDATE = "mealshistorydate";
+    public static final String KEY_MHTYPE = "mealhistorytype";
+    public static final String KEY_MHMEALNAME = "mealhistorymealname";
+    public static final String KEY_MHMEALCALORIES = "mealhistorymealcalories";
+    public static final String KEY_MHMEALPROTEINS = "mealhistorymealproteins";
+    public static final String KEY_MHMEALFATS = "mealhistorymealfats";
+    public static final String KEY_MHMEALCARBS = "mealhistorymealcarbs";
+
+    public static final String TABLE_MEALSTOTALS = "mealstotals";
+    public static final String KEY_TOTALID = "totalid";
+    public static final String KEY_TOTALDATE = "totaldate";
+    public static final String KEY_TOTALCAL = "totalcal";
+    public static final String KEY_TOTALBREAKFAST = "totalbreakfast";
+    public static final String KEY_TOTALLUNCH = "totallunch";
+    public static final String KEY_TOTALDINNER = "totaldinner";
+    public static final String KEY_TOTALSNACKS = "totalsnacks";
+    public static final String KEY_TOTALPROTEIN = "totalprotein";
+    public static final String KEY_TOTALFATS = "totalfats";
+    public static final String KEY_TOTALCARBS = "totalcarbs";
     //endregion
 
 
@@ -157,6 +179,30 @@ public class DBHelper extends SQLiteOpenHelper {
                 + Key_RECGOAL + " text,"
                 + Key_RECSTATUS + " text,"
                 + Key_RECTEXT + " text" + ")");
+
+        db.execSQL("create table "
+                + TABLE_MEALSHISTORY + "("
+                + KEY_MHID + " integer primary key autoincrement, "
+                + KEY_MHDATE + " text,"
+                + KEY_MHMEALNAME + " text,"
+                + KEY_MHMEALCALORIES + " text,"
+                + KEY_MHMEALPROTEINS + " text,"
+                + KEY_MHMEALFATS + " text,"
+                + KEY_MHMEALCARBS + " text,"
+                + KEY_MHTYPE + " text" + ")");
+
+        db.execSQL("create table "
+                + TABLE_MEALSTOTALS + "("
+                + KEY_TOTALID + " integer primary key autoincrement, "
+                + KEY_TOTALDATE + " text,"
+                + KEY_TOTALCAL + " text,"
+                + KEY_TOTALBREAKFAST + " text,"
+                + KEY_TOTALLUNCH + " text,"
+                + KEY_TOTALDINNER + " text,"
+                + KEY_TOTALSNACKS + " text,"
+                + KEY_TOTALPROTEIN + " text,"
+                + KEY_TOTALFATS + " text,"
+                + KEY_TOTALCARBS + " text" + ")");
 
 
         try {

@@ -16,9 +16,9 @@
 
     <string name="portion">В одной порции</string>
     <string name="cooktime">Время приготовления</string>
-    <string name="proteins">Белки</string>
-    <string name="fats">Жиры</string>
-    <string name="carbs">Углеводы</string>
+    <string name="proteins">Белки гр.</string>
+    <string name="fats">Жиры гр.</string>
+    <string name="carbs">Углеводы гр.</string>
     <string name="calories">Калории</string>
     <string name="category">Категория</string>
     <string name="country">Страна</string>
@@ -50,11 +50,14 @@
     <string name="bmistatus">Статус: </string>
 
     <string name="changeInfo">Обновить информацию</string>
+    <string name="registerNewMeals">Добавить новые приёмы пищи</string>
 
     <string name="goaltext">Установить цель:</string>
     <string name="recomendationsText">Список рекомендаций:</string>
     <string name="weightHistory">График веса</string>
     <string name="caloriesGoal">Рекомендуемая суточная норма калорий :</string>
+
+    <string name="caloriesHistory">Статистика приёмов пищи</string>
 
     <string-array name="goalSpinnerArray">
         <item>Поддержание веса</item>

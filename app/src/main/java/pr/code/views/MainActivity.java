@@ -42,6 +42,7 @@ import pr.code.views.Settings.SettingsFragment;
 import pr.code.views.cookwith.CookWithFragment;
 import pr.code.views.favorites.FavoritesFragment;
 import pr.code.views.helper.HelperFragment;
+import pr.code.views.helper.HelperRootFragment;
 import pr.code.views.recipes.RecipesFragment;
 import pr.code.views.shoppingcart.ShoppingCartFragment;
 import retrofit2.Call;
@@ -232,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_helper:
                 setTitle("Fit-помощник");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new HelperFragment()).commit();
+                        new HelperRootFragment()).commit();
                 break;
             case R.id.nav_favorites:
                 setTitle("Избранное");
