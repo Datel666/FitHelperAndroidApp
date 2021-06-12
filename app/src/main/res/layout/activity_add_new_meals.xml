@@ -8,35 +8,37 @@
 
     tools:context=".views.helper.AddNewMealsActivity">
 
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/addnewMealsToolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:textAlignment="center"
-        android:textColor="@color/colorPrimary"
-        android:text="Занесите информацию о новом приёме пищи"
-        android:textSize="18sp"
-        />
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+
+        app:titleTextColor="@color/colorWhite"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+
 
     <com.google.android.material.textfield.TextInputLayout
         app:counterEnabled="true"
         app:counterMaxLength="30"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
+
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/mealnameEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
+            android:layout_marginHorizontal="25dp"
 
 
             android:hint="Название блюда"
             android:maxLength="30"
 
-            android:inputType="numberDecimal"
+            android:inputType="text"
 
             />
 
@@ -57,13 +59,13 @@
             android:id="@+id/mealCaloriesEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
+            android:layout_marginHorizontal="25dp"
 
 
             android:hint="Калорийность блюда в калориях"
             android:maxLength="4"
 
-            android:inputType="numberDecimal"
+            android:inputType="number"
 
             />
 
@@ -82,7 +84,7 @@
             android:layout_height="wrap_content"
             android:hint="Содержание белков в граммах"
             android:maxLength="3"
-            android:layout_marginHorizontal="50dp"
+            android:layout_marginHorizontal="25dp"
 
 
 
@@ -105,7 +107,7 @@
             android:layout_height="wrap_content"
             android:hint="Содержание жиров в граммах"
             android:maxLength="3"
-            android:layout_marginHorizontal="50dp"
+            android:layout_marginHorizontal="25dp"
 
 
 
@@ -128,7 +130,7 @@
             android:layout_height="wrap_content"
             android:hint="Содержание углеводов в граммах"
             android:maxLength="3"
-            android:layout_marginHorizontal="50dp"
+            android:layout_marginHorizontal="25dp"
 
 
 
@@ -146,7 +148,7 @@
         app:cardUseCompatPadding="true">
 
         <Button
-            android:id="@+id/applybtn"
+            android:id="@+id/applyNewMealBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 

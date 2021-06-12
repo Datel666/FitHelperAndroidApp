@@ -2,6 +2,7 @@ package pr.code.views.helper;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class HelperStatisticsPresenter {
     void getFormsInfo(SQLiteDatabase database){
         try{
             List<StatisticsInfo> templist = loadFormsInfo(database);
+
             view.setFormsInfo(templist);
         }
         catch (Exception ex){
@@ -31,7 +33,7 @@ public class HelperStatisticsPresenter {
         }
     }
 
-    List<StatisticsInfo> loadFormsInfo(SQLiteDatabase db){
+    private List<StatisticsInfo> loadFormsInfo(SQLiteDatabase db){
         List<StatisticsInfo> res = new ArrayList<>();
 
         Cursor cursor = db.rawQuery("SELECT * from " + DBHelper.TABLE_MEALSTOTALS
@@ -55,7 +57,7 @@ public class HelperStatisticsPresenter {
                 tempinfo.setTotalID(cursor.getString(totalId));
                 tempinfo.setTotalDate(cursor.getString(totalDateid));
                 tempinfo.setTotalCal(cursor.getString(totalCalid));
-                tempinfo.setTotcalBreakfast(cursor.getString(totalBreakfastid));
+                tempinfo.setTotalBreakfast(cursor.getString(totalBreakfastid));
                 tempinfo.setTotalLunch(cursor.getString(totalLunchid));
                 tempinfo.setTotalDinner(cursor.getString(totalDinnerid));
                 tempinfo.setTotalSnacks(cursor.getString(totalSnacksid));

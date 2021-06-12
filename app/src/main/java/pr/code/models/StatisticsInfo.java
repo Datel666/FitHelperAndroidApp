@@ -5,7 +5,7 @@ public class StatisticsInfo {
     String totalID;
     String totalDate;
     String totalCal;
-    String totcalBreakfast;
+    String totalBreakfast;
     String totalLunch;
     String totalDinner;
     String totalSnacks;
@@ -22,7 +22,9 @@ public class StatisticsInfo {
     }
 
     public String getTotalDate() {
+
         return totalDate;
+
     }
 
     public void setTotalDate(String totalDate) {
@@ -30,7 +32,10 @@ public class StatisticsInfo {
     }
 
     public String getTotalCal() {
-        return totalCal;
+        if (totalCal !=null)
+            return totalCal;
+        else
+            return "0";
     }
 
     public void setTotalCal(String totalCal) {
@@ -38,15 +43,21 @@ public class StatisticsInfo {
     }
 
     public String getTotcalBreakfast() {
-        return totcalBreakfast;
+        if (totalBreakfast !=null)
+            return totalBreakfast;
+        else
+            return "0";
     }
 
-    public void setTotcalBreakfast(String totcalBreakfast) {
-        this.totcalBreakfast = totcalBreakfast;
+    public void setTotalBreakfast(String totcalBreakfast) {
+        this.totalBreakfast = totcalBreakfast;
     }
 
     public String getTotalLunch() {
-        return totalLunch;
+        if (totalLunch !=null)
+            return totalLunch;
+        else
+            return "0";
     }
 
     public void setTotalLunch(String totalLunch) {
@@ -54,7 +65,10 @@ public class StatisticsInfo {
     }
 
     public String getTotalDinner() {
-        return totalDinner;
+        if (totalDinner !=null)
+            return totalDinner;
+        else
+            return "0";
     }
 
     public void setTotalDinner(String totalDinner) {
@@ -62,7 +76,10 @@ public class StatisticsInfo {
     }
 
     public String getTotalSnacks() {
-        return totalSnacks;
+        if (totalSnacks !=null)
+            return totalSnacks;
+        else
+            return "0";
     }
 
     public void setTotalSnacks(String totalSnacks) {
@@ -70,7 +87,10 @@ public class StatisticsInfo {
     }
 
     public String getTotalProtein() {
-        return totalProtein;
+        if (totalProtein !=null)
+            return totalProtein;
+        else
+            return "0";
     }
 
     public void setTotalProtein(String totalProtein) {
@@ -78,7 +98,10 @@ public class StatisticsInfo {
     }
 
     public String getTotalFats() {
-        return totalFats;
+        if (totalFats !=null)
+            return totalFats;
+        else
+            return "0";
     }
 
     public void setTotalFats(String totalFats) {
@@ -86,7 +109,10 @@ public class StatisticsInfo {
     }
 
     public String getTotalCarbs() {
-        return totalCarbs;
+        if (totalCarbs !=null)
+            return totalCarbs;
+        else
+            return "0";
     }
 
     public void setTotalCarbs(String totalCarbs) {

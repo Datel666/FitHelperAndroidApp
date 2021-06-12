@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="2dp"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+
+
+            >
+
+            <TextView
+                android:id="@+id/mealListMealName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/colorPrimaryText"
+                android:textAlignment="textStart"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/mealListMealCalories"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="20sp"
+                android:layout_marginRight="10dp"
+                android:textAlignment="textEnd"
+
+
+                />
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

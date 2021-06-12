@@ -3,6 +3,10 @@ package pr.code.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import pr.code.api.FoodApi;
 import pr.code.api.FoodClient;
 
@@ -21,6 +25,14 @@ public class ApiNDialogHelper {
             alertDialog.cancel();
         }
         return alertDialog;
+    }
+
+    public static String getDate(){
+        SimpleDateFormat sdfDate = new SimpleDateFormat("MM-dd", Locale.getDefault());
+        Date now = new Date();
+        String strDate = sdfDate.format(now);
+
+        return strDate;
     }
 
 

@@ -11,8 +11,6 @@ public  class FavoritesListHelper {
 
     public static boolean addToFavorites(SQLiteDatabase db, String id){
         try{
-
-
             ContentValues cv = new ContentValues();
             cv.put(DBHelper.Key_FAVORITERECIPEID,id);
 
@@ -32,9 +30,6 @@ public  class FavoritesListHelper {
 
     public static boolean removeFromFavorites(SQLiteDatabase db, String id){
         try{
-
-
-
             db.delete(DBHelper.TABLE_FAVORITES
                     ,DBHelper.Key_FAVORITERECIPEID + "=?"
                     ,new String[]{id});

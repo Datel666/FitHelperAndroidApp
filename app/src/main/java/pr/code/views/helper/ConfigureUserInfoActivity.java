@@ -1,6 +1,8 @@
 package pr.code.views.helper;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -9,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -54,6 +57,9 @@ public class ConfigureUserInfoActivity extends AppCompatActivity {
     @BindView(R.id.female)
     RelativeLayout female;
 
+    @BindView(R.id.configureUserInfoToolbar)
+    Toolbar toolbar;
+
     SQLiteDatabase database;
     Toast t;
     Intent i;
@@ -68,7 +74,7 @@ public class ConfigureUserInfoActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initvalues();
-        setTitle("Поиск рецептов");
+
 
         male.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +127,13 @@ public class ConfigureUserInfoActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initActionBar();
+        setTitle("Информация о пользователе");
     }
 
     private boolean validateAge(){
@@ -242,6 +255,25 @@ public class ConfigureUserInfoActivity extends AppCompatActivity {
         Date now = new Date();
         String strDate = sdfDate.format(now);
         return strDate;
+    }
+
+    private void initActionBar(){
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() !=null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
     }
 
 

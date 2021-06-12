@@ -1,5 +1,6 @@
 package pr.code.views.helper;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -20,6 +22,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.views.categories.CategoryFragment;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class HelperRootFragment extends Fragment {
 
@@ -45,11 +49,6 @@ public class HelperRootFragment extends Fragment {
         ButterKnife.bind(this,view);
 
 
-
-
-
-
-
         return view;
     }
 
@@ -60,6 +59,15 @@ public class HelperRootFragment extends Fragment {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         tabLayout.setupWithViewPager(mViewPager);
         mSectionsPagerAdapter.notifyDataSetChanged();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        boolean fromMeals = prefs.getBoolean("fromMealsList", false);
+        if(fromMeals) {
+            tabLayout.selectTab(tabLayout.getTabAt(1));
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("fromMealsList", false);
+            editor.apply();
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
