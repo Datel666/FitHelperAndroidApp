@@ -19,6 +19,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
+import pr.code.api.FoodClient;
 import pr.code.models.Meals;
 import pr.code.views.categories.CategoryFragment;
 
@@ -49,7 +50,7 @@ public class RecyclerViewRecipesByCategory extends RecyclerView.Adapter<Recycler
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
 
-        String strMealThumb = meals.get(position).getStrMealThumb();
+        String strMealThumb = FoodClient.getBaseUrl() + meals.get(position).getStrMealThumb();
         Picasso.get().load(strMealThumb).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.shadow_bottom_to_top).resize(700,700)
                 .into(holder.mealThumb, new Callback() {
                     @Override

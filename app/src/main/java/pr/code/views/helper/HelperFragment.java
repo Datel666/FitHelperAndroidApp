@@ -131,8 +131,6 @@ public class HelperFragment extends Fragment implements HelperView{
         });
 
 
-
-
         return view;
     }
 
@@ -302,7 +300,7 @@ public class HelperFragment extends Fragment implements HelperView{
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
 
-                    if (((int) value) < dates.size()) {
+                    if (((int) value) < dates.size() && (int) value >-1) {
                         String date = dates.get((int) value);
                         String[] args = date.split("-");
                         return months[Integer.parseInt(args[0])] + " " + args[1];
@@ -320,6 +318,10 @@ public class HelperFragment extends Fragment implements HelperView{
         weightChart.setNoDataText("Недостаточно данных");
         weightChart.getDescription().setEnabled(false);
         weightChart.setPadding(20,20,20,0);
+        weightChart.setClickable(false);
+        weightChart.setFocusable(false);
+        weightChart.setScaleEnabled(false);
+        weightChart.setTouchEnabled(false);
         XAxis xAxis = weightChart.getXAxis();
         xAxis.setTextSize(11f);
         xAxis.setValueFormatter(formatter);

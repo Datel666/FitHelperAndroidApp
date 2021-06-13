@@ -1,5 +1,6 @@
 package pr.code.views.recipedetails;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
@@ -34,7 +36,9 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
+import pr.code.api.FoodClient;
 import pr.code.models.Meals;
+import pr.code.utils.CaloriesCounterNewDayHelper;
 import pr.code.utils.DBHelper;
 import pr.code.utils.ApiNDialogHelper;
 import pr.code.utils.FavoritesListHelper;
@@ -98,6 +102,8 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
 
     boolean isfavorite;
+    Menu optionsmenu;
+    boolean eaten;
     String id;
     static SQLiteDatabase database;
     static DetailsPresenter presenter;
@@ -110,6 +116,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
         ButterKnife.bind(this);
+        CaloriesCounterNewDayHelper.createRecordIfNotExist(database, ApiNDialogHelper.getDate());
 
         voiceInstructionsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,7 +193,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     void initvalues() {
         voiceInstructionsBtn.setEnabled(false);
-        database = DBHelper.getInstance(this).getReadableDatabase();
+        database = DBHelper.getInstance(this).getWritableDatabase();
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -243,7 +250,9 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+
         MenuItem favoriteItem = menu.findItem(R.id.favorite);
+        MenuItem eatThis = menu.findItem(R.id.eatthis);
 
         Drawable favoriteItemColor = favoriteItem.getIcon();
         setupColorActionBarIcon(favoriteItemColor);
@@ -253,7 +262,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         } else {
             favoriteItem.setIcon(R.drawable.ic_favorite_border);
         }
-
+        optionsmenu = menu;
         return true;
     }
 
@@ -272,6 +281,10 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
                     addToFavorite(id);
                     item.setIcon(R.drawable.ic_favorite);
                     isfavorite = true;
+                }
+            case R.id.eatthis:
+                if(!eaten) {
+                    showAlertDialogButtonClicked();
                 }
             default:
                 return super.onOptionsItemSelected(item);
@@ -293,11 +306,12 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     public void setMeal(Meals.Meal meal, boolean infavorites) {
 
         isfavorite = infavorites;
+        eaten = false;
         id = meal.getIdMeal();
 
         String[] info = meal.getStrMealInfo().split(",");
 
-        Picasso.get().load(meal.getStrMealThumb()).networkPolicy(NetworkPolicy.OFFLINE)
+        Picasso.get().load(FoodClient.getBaseUrl() + meal.getStrMealThumb()).networkPolicy(NetworkPolicy.OFFLINE)
                 .into(mealThumb, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -305,10 +319,12 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
                     @Override
                     public void onError(Exception e) {
-                        Picasso.get().load(meal.getStrMealThumb()).error(R.drawable.ic_error_recipe)
+                        Picasso.get().load(FoodClient.getBaseUrl() + meal.getStrMealThumb()).error(R.drawable.ic_error_recipe)
                                 .into(mealThumb);
                     }
                 });
+
+
 
 
         calories.setText(info[0]);
@@ -391,5 +407,62 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         t.setGravity(Gravity.CENTER,0,0);
         t.show();
 
+    }
+
+    public void showAlertDialogButtonClicked() {
+
+        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Выбор приёма пищи");
+
+        // add a list
+        String[] mealTypes = {"Завтрак", "Обед", "Ужин", "Перекус"};
+        builder.setItems(mealTypes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0: // breakfast
+                        optionsmenu.findItem(R.id.eatthis).setIcon(R.drawable.ic_check);
+                        CaloriesCounterNewDayHelper.registerMealConsumption(database,getIntent().getStringExtra(RecipesFragment.EXTRA_DETAIL)
+                        ,calories.getText().toString(),"breakfast",protein.getText().toString(),fats.getText().toString()
+                        ,carbs.getText().toString());
+                        CaloriesCounterNewDayHelper.updateDailyTotal(database);
+                        eaten = true;
+                        maketoast("Данное блюдо было успешно записано в счётчик калорий");
+                        break;
+                    case 1: // lunch
+                        optionsmenu.findItem(R.id.eatthis).setIcon(R.drawable.ic_check);
+                        CaloriesCounterNewDayHelper.registerMealConsumption(database,getIntent().getStringExtra(RecipesFragment.EXTRA_DETAIL)
+                                ,calories.getText().toString(),"lunch",protein.getText().toString(),fats.getText().toString()
+                                ,carbs.getText().toString());
+                        CaloriesCounterNewDayHelper.updateDailyTotal(database);
+                        eaten = true;
+                        maketoast("Данное блюдо было успешно записано в счётчик калорий");
+                        break;
+                    case 2: // dinner
+                        optionsmenu.findItem(R.id.eatthis).setIcon(R.drawable.ic_check);
+                        CaloriesCounterNewDayHelper.registerMealConsumption(database,getIntent().getStringExtra(RecipesFragment.EXTRA_DETAIL)
+                                ,calories.getText().toString(),"dinner",protein.getText().toString(),fats.getText().toString()
+                                ,carbs.getText().toString());
+                        CaloriesCounterNewDayHelper.updateDailyTotal(database);
+                        eaten = true;
+                        maketoast("Данное блюдо было успешно записано в счётчик калорий");
+                        break;
+                    case 3: // snacks
+                        optionsmenu.findItem(R.id.eatthis).setIcon(R.drawable.ic_check);
+                        CaloriesCounterNewDayHelper.registerMealConsumption(database,getIntent().getStringExtra(RecipesFragment.EXTRA_DETAIL)
+                                ,calories.getText().toString(),"snacks",protein.getText().toString(),fats.getText().toString()
+                                ,carbs.getText().toString());
+                        CaloriesCounterNewDayHelper.updateDailyTotal(database);
+                        eaten = true;
+                        maketoast("Данное блюдо было успешно записано в счётчик калорий");
+                        break;
+                }
+            }
+        });
+
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

@@ -410,9 +410,10 @@
                 />
 
             <androidx.cardview.widget.CardView
+
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginHorizontal="5dp"
                 app:cardCornerRadius="8dp"
@@ -455,10 +456,49 @@
                 android:layout_below="@id/historytext"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
+                >
+            </com.github.mikephil.charting.charts.BarChart>
 
+            <androidx.cardview.widget.CardView
+
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginHorizontal="5dp"
+                app:cardCornerRadius="8dp"
+                android:layout_below="@id/statisticsChart"
+                android:id="@+id/emptyStatisticsView2"
 
                 >
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#DCDCDC"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_horizontal"
+                        android:text="@string/notEnoughData"
+                        android:textSize="35dp"
+                        />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/caloriesChart"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginHorizontal="5dp"
+                android:layout_below="@id/statisticsChart"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                >
             </com.github.mikephil.charting.charts.BarChart>
 
 

@@ -23,6 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
+import pr.code.api.FoodClient;
 import pr.code.models.Meals;
 import pr.code.utils.FavoritesListHelper;
 import pr.code.views.search.SearchActivity;
@@ -80,7 +81,7 @@ public class FilteredRecipesRecyclerViewAdapter extends RecyclerView.Adapter<Fil
             holder.matching.setText("");
         }
 
-        String strMealThumb = meals.get(position).getStrMealThumb();
+        String strMealThumb = FoodClient.getBaseUrl() + meals.get(position).getStrMealThumb();
         Picasso.get().load(strMealThumb).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.shadow_bottom_to_top).resize(700,700)
                 .into(holder.mealThumb, new Callback() {
                     @Override

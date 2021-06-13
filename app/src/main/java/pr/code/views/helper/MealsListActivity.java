@@ -85,28 +85,28 @@ public class MealsListActivity extends AppCompatActivity implements MealsListVie
         addBreakfastBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startIntentWithMealType("breakfast");
+                startIntentWithMealType("breakfast","завтрак");
             }
         });
 
         addLunchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startIntentWithMealType("lunch");
+                startIntentWithMealType("lunch","обед");
             }
         });
 
         addDinnerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startIntentWithMealType("dinner");
+                startIntentWithMealType("dinner","ужин");
             }
         });
 
         addSnacksBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startIntentWithMealType("snacks");
+                startIntentWithMealType("snacks","перекус");
             }
         });
     }
@@ -122,11 +122,15 @@ public class MealsListActivity extends AppCompatActivity implements MealsListVie
     public void setMealsInfo(List<MealsListItem> breakfastMealList,List<MealsListItem> lunchMealList
             ,List<MealsListItem> dinnerMealList,List<MealsListItem> snacksMealList) {
 
+        int breakfastTotal = calculateTotalByMealType(breakfastMealList);
+        int lunchTotal =calculateTotalByMealType(lunchMealList);
+        int dinnerTotal = calculateTotalByMealType(dinnerMealList);
+        int snacksTotal = calculateTotalByMealType(snacksMealList);
+
+
         MealsListRecyclerViewAdapter brfastAdapter = new MealsListRecyclerViewAdapter(this,breakfastMealList);
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(this);
-        RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(this);
-        RecyclerView.LayoutManager layoutManager3 = new LinearLayoutManager(this);
-        RecyclerView.LayoutManager layoutManager4 = new LinearLayoutManager(this);
+
         breakfastRview.setLayoutManager(layoutManager1);
         breakfastRview.setHasFixedSize(true);
         breakfastRview.setNestedScrollingEnabled(true);
@@ -134,6 +138,7 @@ public class MealsListActivity extends AppCompatActivity implements MealsListVie
         brfastAdapter.notifyDataSetChanged();
 
         MealsListRecyclerViewAdapter lunchAdapter = new MealsListRecyclerViewAdapter(this,lunchMealList);
+        RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(this);
         lunchRview.setLayoutManager(layoutManager2);
         lunchRview.setHasFixedSize(true);
         lunchRview.setNestedScrollingEnabled(true);
@@ -141,6 +146,7 @@ public class MealsListActivity extends AppCompatActivity implements MealsListVie
         lunchAdapter.notifyDataSetChanged();
 
         MealsListRecyclerViewAdapter dinnerAdapter = new MealsListRecyclerViewAdapter(this,dinnerMealList);
+        RecyclerView.LayoutManager layoutManager3 = new LinearLayoutManager(this);
         dinnerRview.setLayoutManager(layoutManager3);
         dinnerRview.setHasFixedSize(true);
         dinnerRview.setNestedScrollingEnabled(true);
@@ -148,12 +154,21 @@ public class MealsListActivity extends AppCompatActivity implements MealsListVie
         dinnerAdapter.notifyDataSetChanged();
 
         MealsListRecyclerViewAdapter snacksAdapter = new MealsListRecyclerViewAdapter(this,snacksMealList);
+        RecyclerView.LayoutManager layoutManager4 = new LinearLayoutManager(this);
         snacksRview.setLayoutManager(layoutManager4);
         snacksRview.setHasFixedSize(true);
         snacksRview.setNestedScrollingEnabled(true);
         snacksRview.setAdapter(snacksAdapter);
         snacksAdapter.notifyDataSetChanged();
 
+        String brtext = "Всего: " + breakfastTotal + " калорий";
+        String lutext = "Всего: " + lunchTotal + " калорий";
+        String ditext = "Всего: " + dinnerTotal + " калорий";
+        String sntext = "Всего: " + snacksTotal + " калорий";
+        breakfastText.setText(brtext);
+        lunchText.setText(lutext);
+        dinnerText.setText(ditext);
+        snacksText.setText(sntext);
     }
 
     @Override
@@ -175,9 +190,19 @@ public class MealsListActivity extends AppCompatActivity implements MealsListVie
 
     }
 
-    private void startIntentWithMealType(String mealtype){
+    private int calculateTotalByMealType(List<MealsListItem> mealList){
+        int total =0;
+        for (MealsListItem d:mealList
+        ) {
+            total+= Integer.parseInt(d.getMealCalories());
+        }
+        return total;
+    }
+
+    private void startIntentWithMealType(String mealtype,String ruRUmealtype){
         Intent intent = new Intent(this,AddNewMealsActivity.class);
         intent.putExtra("mealtype",mealtype);
+        intent.putExtra("ruRumealtype",ruRUmealtype);
         startActivity(intent);
     }
 

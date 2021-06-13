@@ -21,6 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
+import pr.code.api.FoodClient;
 import pr.code.models.Categories;
 
 /**
@@ -55,7 +56,7 @@ public class RecyclerViewCategoryAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewCategoryAdapter.RecyclerViewHolder viewHolder, int i){
 
-        String strCategoryThum = categories.get(i).getStrCategoryThumb();
+        String strCategoryThum = FoodClient.getBaseUrl() + categories.get(i).getStrCategoryThumb();
 
         Picasso.get().load(strCategoryThum).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.ic_circle).resize(320,200)
                 .into(viewHolder.categoryThumb, new Callback() {

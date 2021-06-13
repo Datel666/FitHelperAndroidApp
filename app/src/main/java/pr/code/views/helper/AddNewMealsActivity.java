@@ -43,7 +43,8 @@ public class AddNewMealsActivity extends AppCompatActivity {
 
     @BindView(R.id.addnewMealsToolbar)
     Toolbar toolbar;
-
+    String mealType;
+    String ruRuMealType;
     SQLiteDatabase database;
 
     @Override
@@ -54,8 +55,8 @@ public class AddNewMealsActivity extends AppCompatActivity {
         initvalues();
         Intent intent = getIntent();
 
-        String mealType = intent.getStringExtra("mealtype");
-
+        mealType =intent.getStringExtra("mealtype");
+        ruRuMealType = intent.getStringExtra("ruRumealtype");
         applybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +82,7 @@ public class AddNewMealsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         initActionBar();
-        setTitle("Новый приём пищи");
+        setTitle("Новый приём пищи " + "(" +ruRuMealType + ")");
     }
 
     private void initvalues(){

@@ -57,7 +57,7 @@
     <string name="weightHistory">График веса</string>
     <string name="caloriesGoal">Рекомендуемая суточная норма калорий :</string>
 
-    <string name="caloriesHistory">Статистика приёмов пищи</string>
+    <string name="caloriesHistory">Статистика</string>
 
     <string-array name="goalSpinnerArray">
         <item>Поддержание веса</item>

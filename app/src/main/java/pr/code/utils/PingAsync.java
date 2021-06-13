@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import pr.code.api.FoodClient;
 import retrofit2.http.Url;
 
 /**
@@ -23,9 +24,9 @@ public class PingAsync extends AsyncTask<Void,Void,Boolean> {
 
         try {
 
-            //URL url = new URL("http://10.0.2.2");
-            URL url = new URL("http://192.168.0.93");
-            //URL url = new URL("http://www.google.com/");
+
+            URL url = new URL(FoodClient.getBaseUrl());
+
             HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
             urlc.setRequestProperty("User-Agent", "Android Application");
             urlc.setRequestProperty("Connection", "close");

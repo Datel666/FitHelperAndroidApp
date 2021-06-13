@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import pr.code.R;
+import pr.code.api.FoodClient;
 import pr.code.models.Meals;
 
 
@@ -62,7 +63,7 @@ public class ViewPagerHeaderAdapter extends PagerAdapter {
         ImageView mealThumb = view.findViewById(R.id.mealThumb);
         TextView mealName = view.findViewById(R.id.mealName);
 
-        String strMealThumb = recipes.get(position).getStrMealThumb();
+        String strMealThumb = FoodClient.getBaseUrl() + recipes.get(position).getStrMealThumb();
 
 
         Picasso.get().load(strMealThumb).networkPolicy(NetworkPolicy.OFFLINE).resize(320,200)
