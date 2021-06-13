@@ -282,9 +282,11 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
                     item.setIcon(R.drawable.ic_favorite);
                     isfavorite = true;
                 }
+                return true;
             case R.id.eatthis:
                 if(!eaten) {
                     showAlertDialogButtonClicked();
+                    return true;
                 }
             default:
                 return super.onOptionsItemSelected(item);

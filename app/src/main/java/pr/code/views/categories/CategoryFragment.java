@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pr.code.R;
 import pr.code.adapters.RecyclerViewRecipesByCategory;
+import pr.code.api.FoodClient;
 import pr.code.models.Meals;
 import pr.code.utils.DBHelper;
 import pr.code.utils.ApiNDialogHelper;
@@ -89,24 +90,24 @@ public class CategoryFragment extends Fragment implements CategoryView {
 
         if(getArguments()!=null){
             textCategory.setText(getArguments().getString("EXTRA_DATA_DESC"));
-            Picasso.get().load(getArguments().getString("EXTRA_DATA_IMAGE")).networkPolicy(NetworkPolicy.OFFLINE).resize(320,200)
+            Picasso.get().load(FoodClient.getBaseUrl() + getArguments().getString("EXTRA_DATA_IMAGE")).networkPolicy(NetworkPolicy.OFFLINE).resize(320,200)
                     .into(imageCategory, new Callback() {
                         @Override
                         public void onSuccess() { }
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(getArguments().getString("EXTRA_DATA_IMAGE")).resize(320,200).error(R.drawable.ic_error_recipe)
+                            Picasso.get().load(FoodClient.getBaseUrl() + getArguments().getString("EXTRA_DATA_IMAGE")).resize(320,200).error(R.drawable.ic_error_recipe)
                                     .into(imageCategory);
                         }
                     });
 
-            Picasso.get().load(getArguments().getString("EXTRA_DATA_IMAGE")).networkPolicy(NetworkPolicy.OFFLINE).resize(320,200)
+            Picasso.get().load(FoodClient.getBaseUrl() + getArguments().getString("EXTRA_DATA_IMAGE")).networkPolicy(NetworkPolicy.OFFLINE).resize(320,200)
                     .into(imageCategoryBg, new Callback() {
                         @Override
                         public void onSuccess() { }
                         @Override
                         public void onError(Exception e) {
-                            Picasso.get().load(getArguments().getString("EXTRA_DATA_IMAGE")).resize(320,200).error(R.drawable.ic_error_recipe)
+                            Picasso.get().load(FoodClient.getBaseUrl() + getArguments().getString("EXTRA_DATA_IMAGE")).resize(320,200).error(R.drawable.ic_error_recipe)
                                     .into(imageCategoryBg);
                         }
                     });
