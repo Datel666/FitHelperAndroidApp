@@ -33,6 +33,8 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -112,6 +114,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     String customizedInstructions;
     TextToSpeech tts;
     Toast t;
+    List<Integer> difIndexes;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -364,8 +367,8 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
 
         if (customizedInstructions != null) {
-
-
+            difIndexes = new ArrayList<>();
+            int en = 0;
             for (String a :
                     customizedInstructions.split(",")) {
                 if (!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))) {
@@ -376,9 +379,30 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
                         ingredients.append("\n \u2022 " + name);
                     } else {
                         ingredients.append("\n \u2022 " + name + " \u2716");
+                        difIndexes.add(en);
                     }
 
 
+                }
+                en++;
+            }
+
+            int n = 0;
+            if (inlist == melist) {
+                for (String a :
+                        meal.getStrMeasures().split(",")) {
+                    if (!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))) {
+                        if(difIndexes.contains(n) && !difIndexes.isEmpty()) {
+                            measures.append("\n \u2022 " + a+ " \u2716");
+                        }
+                        else if(!difIndexes.contains(n) && !difIndexes.isEmpty()){
+                            measures.append("\n \u2022 " + a+ " \u2713");
+                        }
+                        else if(difIndexes == null){
+                            measures.append("\n \u2022 " + a);
+                        }
+                    }
+                    n++;
                 }
             }
 
@@ -389,17 +413,23 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
                     ingredients.append("\n \u2022 " + a);
                 }
             }
-        }
 
+            if (inlist == melist) {
+                for (String a :
+                        meal.getStrMeasures().split(",")) {
+                    if (!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))) {
 
-        if (inlist == melist) {
-            for (String a :
-                    meal.getStrMeasures().split(",")) {
-                if (!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))) {
-                    measures.append("\n \u2022 " + a);
+                        measures.append("\n \u2022 " + a);
+
+                    }
+
                 }
             }
+
         }
+
+
+
 
     }
 
