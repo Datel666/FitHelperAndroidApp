@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">CookBook</string>
+    <string name="app_name_preupdated">CookBookPreUpdated</string>
 
     <string name="search_your_recipes">Поиск рецептов</string>
     <string name="meal_categories">Еда по категориям</string>

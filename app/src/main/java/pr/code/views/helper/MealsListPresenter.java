@@ -169,4 +169,22 @@ public class MealsListPresenter {
         }
         return res;
     }
+
+    boolean deleteItem(SQLiteDatabase db, int id){
+        try{
+            db.beginTransaction();
+
+            db.delete(DBHelper.TABLE_MEALSHISTORY,DBHelper.KEY_MHID + "=?",new String[]{Integer.toString(id)});
+
+            db.setTransactionSuccessful();
+            return  true;
+        }
+        catch (Exception ex){
+
+        }
+        finally {
+            db.endTransaction();
+        }
+        return false;
+    }
 }

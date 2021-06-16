@@ -16,8 +16,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
-import pr.code.models.CartItems;
-import pr.code.utils.CaloriesCounterNewDayHelper;
+import pr.code.utils.CaloriesCounterHelper;
 import pr.code.utils.DBHelper;
 
 public class AddNewMealsActivity extends AppCompatActivity {
@@ -70,8 +69,8 @@ public class AddNewMealsActivity extends AppCompatActivity {
                     String proteins = (mealProteinsText.getText().toString().length()>0) ? mealProteinsText.getText().toString() : "0";
                     String fats = (mealFatsText.getText().toString().length()>0) ? mealFatsText.getText().toString() : "0";
                     String carbs = (mealCarbsText.getText().toString().length()>0) ? mealCarbsText.getText().toString() : "0";
-                    CaloriesCounterNewDayHelper.registerMealConsumption(database,name,calories,mealType,proteins,fats,carbs);
-                    CaloriesCounterNewDayHelper.updateDailyTotal(database);
+                    CaloriesCounterHelper.registerMealConsumption(database,name,calories,mealType,proteins,fats,carbs);
+                    CaloriesCounterHelper.updateDailyTotal(database);
                     finish();
                 }
             }

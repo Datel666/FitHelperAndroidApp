@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +16,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.text.SimpleDateFormat;
@@ -43,8 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.models.StatisticsInfo;
-import pr.code.models.UserInfo;
-import pr.code.utils.CaloriesCounterNewDayHelper;
+import pr.code.utils.CaloriesCounterHelper;
 import pr.code.utils.DBHelper;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -114,7 +106,7 @@ public class HelperStatisticsFragment extends Fragment implements HelperStatisti
         SimpleDateFormat sdfDate = new SimpleDateFormat("MM-dd", Locale.getDefault());
         Date now = new Date();
         String strDate = sdfDate.format(now);
-        CaloriesCounterNewDayHelper.createRecordIfNotExist(database, strDate);
+        CaloriesCounterHelper.createRecordIfNotExist(database, strDate);
 
         registerNewMealsBtn.setOnClickListener(new View.OnClickListener() {
             @Override

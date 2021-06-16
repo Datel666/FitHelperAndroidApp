@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,9 +27,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.adapters.MealsListRecyclerViewAdapter;
-import pr.code.adapters.ShoppingCartRecyclerViewAdapter;
 import pr.code.models.MealsListItem;
-import pr.code.utils.CaloriesCounterNewDayHelper;
+import pr.code.utils.ApiNDialogHelper;
+import pr.code.utils.CaloriesCounterHelper;
 import pr.code.utils.DBHelper;
 
 public class MealsListActivity extends AppCompatActivity implements MealsListView{
@@ -74,6 +75,10 @@ public class MealsListActivity extends AppCompatActivity implements MealsListVie
 
     MealsListPresenter presenter;
     SQLiteDatabase db;
+    List<MealsListItem> brList;
+    List<MealsListItem> lunchList;
+    List<MealsListItem> dinnerList;
+    List<MealsListItem> snacksList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +114,65 @@ public class MealsListActivity extends AppCompatActivity implements MealsListVie
                 startIntentWithMealType("snacks","перекус");
             }
         });
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                removeItem(Integer.valueOf(brList.get(position).getMealID()));
+            }
+        }).attachToRecyclerView(breakfastRview);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                removeItem(Integer.valueOf(lunchList.get(position).getMealID()));
+            }
+        }).attachToRecyclerView(lunchRview);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                removeItem(Integer.valueOf(dinnerList.get(position).getMealID()));
+            }
+        }).attachToRecyclerView(dinnerRview);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                removeItem(Integer.valueOf(lunchList.get(position).getMealID()));
+            }
+        }).attachToRecyclerView(lunchRview);
+
+    }
+
+    private void removeItem(int id){
+        presenter.deleteItem(db,id);
+        CaloriesCounterHelper.updateDailyTotal(db);
+        presenter.getMealsList(db, ApiNDialogHelper.getDate());
     }
 
 
@@ -121,6 +185,11 @@ public class MealsListActivity extends AppCompatActivity implements MealsListVie
     @Override
     public void setMealsInfo(List<MealsListItem> breakfastMealList,List<MealsListItem> lunchMealList
             ,List<MealsListItem> dinnerMealList,List<MealsListItem> snacksMealList) {
+
+        brList = new ArrayList<>(breakfastMealList);
+        lunchList = new ArrayList<>(lunchMealList);
+        dinnerList = new ArrayList<>(dinnerMealList);
+        snacksList = new ArrayList<>(snacksMealList);
 
         int breakfastTotal = calculateTotalByMealType(breakfastMealList);
         int lunchTotal =calculateTotalByMealType(lunchMealList);

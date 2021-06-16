@@ -67,7 +67,7 @@
                     android:orientation="vertical"
                     android:layout_toStartOf="@id/sidesOfConstraintLayout"
                     android:layout_below="@id/belowcaloriesGoal"
-                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
                     >
 
@@ -129,7 +129,7 @@
 
                     android:layout_toEndOf="@id/sidesOfConstraintLayout"
                     android:layout_below="@id/belowcaloriesGoal"
-                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
                     >
 

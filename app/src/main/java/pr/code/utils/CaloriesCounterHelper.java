@@ -13,7 +13,7 @@ import pr.code.models.UserInfo;
  * This utility class implement method that  used to create new daily total food eaten record in database
  * and a method to insert a new record about consumed meal information
  */
-public class CaloriesCounterNewDayHelper {
+public class CaloriesCounterHelper {
 
     public static void createRecordIfNotExist(SQLiteDatabase db, String date) {
         try {

@@ -38,7 +38,7 @@ import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.api.FoodClient;
 import pr.code.models.Meals;
-import pr.code.utils.CaloriesCounterNewDayHelper;
+import pr.code.utils.CaloriesCounterHelper;
 import pr.code.utils.DBHelper;
 import pr.code.utils.ApiNDialogHelper;
 import pr.code.utils.FavoritesListHelper;
@@ -116,7 +116,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
         ButterKnife.bind(this);
-        CaloriesCounterNewDayHelper.createRecordIfNotExist(database, ApiNDialogHelper.getDate());
+        CaloriesCounterHelper.createRecordIfNotExist(database, ApiNDialogHelper.getDate());
 
         voiceInstructionsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -425,37 +425,37 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
                 switch (which) {
                     case 0: // breakfast
                         optionsmenu.findItem(R.id.eatthis).setIcon(R.drawable.ic_check);
-                        CaloriesCounterNewDayHelper.registerMealConsumption(database,getIntent().getStringExtra(RecipesFragment.EXTRA_DETAIL)
+                        CaloriesCounterHelper.registerMealConsumption(database,getIntent().getStringExtra(RecipesFragment.EXTRA_DETAIL)
                         ,calories.getText().toString(),"breakfast",protein.getText().toString(),fats.getText().toString()
                         ,carbs.getText().toString());
-                        CaloriesCounterNewDayHelper.updateDailyTotal(database);
+                        CaloriesCounterHelper.updateDailyTotal(database);
                         eaten = true;
                         maketoast("Данное блюдо было успешно записано в счётчик калорий");
                         break;
                     case 1: // lunch
                         optionsmenu.findItem(R.id.eatthis).setIcon(R.drawable.ic_check);
-                        CaloriesCounterNewDayHelper.registerMealConsumption(database,getIntent().getStringExtra(RecipesFragment.EXTRA_DETAIL)
+                        CaloriesCounterHelper.registerMealConsumption(database,getIntent().getStringExtra(RecipesFragment.EXTRA_DETAIL)
                                 ,calories.getText().toString(),"lunch",protein.getText().toString(),fats.getText().toString()
                                 ,carbs.getText().toString());
-                        CaloriesCounterNewDayHelper.updateDailyTotal(database);
+                        CaloriesCounterHelper.updateDailyTotal(database);
                         eaten = true;
                         maketoast("Данное блюдо было успешно записано в счётчик калорий");
                         break;
                     case 2: // dinner
                         optionsmenu.findItem(R.id.eatthis).setIcon(R.drawable.ic_check);
-                        CaloriesCounterNewDayHelper.registerMealConsumption(database,getIntent().getStringExtra(RecipesFragment.EXTRA_DETAIL)
+                        CaloriesCounterHelper.registerMealConsumption(database,getIntent().getStringExtra(RecipesFragment.EXTRA_DETAIL)
                                 ,calories.getText().toString(),"dinner",protein.getText().toString(),fats.getText().toString()
                                 ,carbs.getText().toString());
-                        CaloriesCounterNewDayHelper.updateDailyTotal(database);
+                        CaloriesCounterHelper.updateDailyTotal(database);
                         eaten = true;
                         maketoast("Данное блюдо было успешно записано в счётчик калорий");
                         break;
                     case 3: // snacks
                         optionsmenu.findItem(R.id.eatthis).setIcon(R.drawable.ic_check);
-                        CaloriesCounterNewDayHelper.registerMealConsumption(database,getIntent().getStringExtra(RecipesFragment.EXTRA_DETAIL)
+                        CaloriesCounterHelper.registerMealConsumption(database,getIntent().getStringExtra(RecipesFragment.EXTRA_DETAIL)
                                 ,calories.getText().toString(),"snacks",protein.getText().toString(),fats.getText().toString()
                                 ,carbs.getText().toString());
-                        CaloriesCounterNewDayHelper.updateDailyTotal(database);
+                        CaloriesCounterHelper.updateDailyTotal(database);
                         eaten = true;
                         maketoast("Данное блюдо было успешно записано в счётчик калорий");
                         break;
