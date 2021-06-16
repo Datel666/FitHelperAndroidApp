@@ -150,13 +150,20 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     }
     void speak(){
+        if(tts.isSpeaking()){
+            tts.stop();
+
+        }
+        else
+        {
             String text = instructions.getText().toString();
             float pitch = 0.8f;
             float speed = 0.8f;
 
             tts.setPitch(pitch);
             tts.setSpeechRate(speed);
-            tts.speak(text,TextToSpeech.QUEUE_FLUSH,null);
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 
     @Override
@@ -381,7 +388,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
             for (String a :
                     meal.getStrMeasures().split(",")) {
                 if (!(a.isEmpty()) && !Character.isWhitespace(a.charAt(0))) {
-                    measures.append("\n : " + a);
+                    measures.append("\n \u2022 " + a);
                 }
             }
         }

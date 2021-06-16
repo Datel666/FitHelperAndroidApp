@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 import pr.code.models.Meals;
 import pr.code.utils.CookWithPresenterReturnClass;
@@ -145,8 +147,12 @@ public class SearchPresenter {
 
             for (String ing : ingredients
             ) {
-                if (defIngredients.contains(ing.trim().toLowerCase())) {
-                    int index = defIngredients.indexOf(ing.trim().toLowerCase());
+                //defIngredients.contains(ing.toLowerCase())
+                if (defIngredients.stream().anyMatch(o -> o.contains(ing.toLowerCase())) ) {
+                    //int index = defIngredients.indexOf(ing.toLowerCase());
+                    int index  = IntStream.range(0, defIngredients.size())
+                            .filter(i -> defIngredients.get(i).contains(ing.toLowerCase()))
+                            .findFirst().getAsInt();
                     String temp = defIngredients.get(index) + " \u2713";
                     defIngredients.set(index, temp);
                     matches[enumerator] = matches[enumerator] +1;
