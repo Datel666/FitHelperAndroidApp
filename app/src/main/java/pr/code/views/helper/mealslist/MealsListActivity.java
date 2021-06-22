@@ -1,4 +1,4 @@
-package pr.code.views.helper;
+package pr.code.views.helper.mealslist;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +33,12 @@ import pr.code.models.MealsListItem;
 import pr.code.utils.ApiNDialogHelper;
 import pr.code.utils.CaloriesCounterHelper;
 import pr.code.utils.DBHelper;
+import pr.code.views.helper.AddNewMealsActivity;
 
+/**
+ * This activity class is responsible for presenting a specialized form that contain
+ * today user mealsList
+ */
 public class MealsListActivity extends AppCompatActivity implements MealsListView{
 
     @BindView(R.id.mealslistToolbar)
@@ -277,7 +282,7 @@ public class MealsListActivity extends AppCompatActivity implements MealsListVie
     }
 
     private void startIntentWithMealType(String mealtype,String ruRUmealtype){
-        Intent intent = new Intent(this,AddNewMealsActivity.class);
+        Intent intent = new Intent(this, AddNewMealsActivity.class);
         intent.putExtra("mealtype",mealtype);
         intent.putExtra("ruRumealtype",ruRUmealtype);
         startActivity(intent);
@@ -300,5 +305,10 @@ public class MealsListActivity extends AppCompatActivity implements MealsListVie
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onErrorLoading(String message) {
+        ApiNDialogHelper.showDialogMessage(this,"Ошибка",message);
     }
 }

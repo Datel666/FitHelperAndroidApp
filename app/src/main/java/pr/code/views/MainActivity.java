@@ -19,7 +19,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 
@@ -43,7 +42,6 @@ import pr.code.utils.ApiNDialogHelper;
 import pr.code.views.Settings.SettingsFragment;
 import pr.code.views.cookwith.CookWithFragment;
 import pr.code.views.favorites.FavoritesFragment;
-import pr.code.views.helper.HelperFragment;
 import pr.code.views.helper.HelperRootFragment;
 import pr.code.views.recipes.RecipesFragment;
 import pr.code.views.shoppingcart.ShoppingCartFragment;

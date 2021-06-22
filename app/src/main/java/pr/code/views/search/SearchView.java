@@ -5,7 +5,7 @@ import java.util.List;
 import pr.code.models.Meals;
 
 /**
- * Implements data display (from the Model), contacts the Presenter for updates, redirects events from the user to the Presenter
+ * View interface that used to contact Presenter for updates
  */
 public interface SearchView {
 
@@ -13,5 +13,6 @@ public interface SearchView {
     void hideloading();
     void setSearchableCollection(List<Meals.Meal> meals,List<String> favlist);
     void setCollection(List<Meals.Meal> meals,int[] matching, List<String> favlist);
+    void onErrorLoading(String message);
 
 }

@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.adapters.ShoppingCartRecyclerViewAdapter;
 import pr.code.models.CartItems;
+import pr.code.utils.ApiNDialogHelper;
 import pr.code.utils.DBHelper;
 
 /**
@@ -222,6 +223,11 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartView{
         adapter.notifyDataSetChanged();
 
 
+    }
+
+    @Override
+    public void onErrorLoading(String message) {
+        ApiNDialogHelper.showDialogMessage(getContext(),"Ошибка",message);
     }
 
     void checkEmpty() {

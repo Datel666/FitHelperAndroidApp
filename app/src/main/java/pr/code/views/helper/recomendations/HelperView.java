@@ -1,17 +1,17 @@
-package pr.code.views.helper;
+package pr.code.views.helper.recomendations;
 
 import pr.code.models.Recomendations;
 import pr.code.models.UserInfo;
 import java.util.List;
 
 /**
- * Implements data display (from the Model), contacts the Presenter for updates, redirects events from the user to the Presenter
+ * View interface that used to contact Presenter for updates
  */
 public interface HelperView {
 
     void setUserInfo(List<UserInfo> userInfoList);
 
     void setRecomendations(List<Recomendations.Recomendation> recomendationsList);
-
+    void onErrorLoading(String message);
 
 }

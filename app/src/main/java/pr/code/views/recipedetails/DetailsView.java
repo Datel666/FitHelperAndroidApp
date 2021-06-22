@@ -3,7 +3,7 @@ package pr.code.views.recipedetails;
 import pr.code.models.Meals;
 
 /**
- * Implements data display (from the Model), contacts the Presenter for updates, redirects events from the user to the Presenter
+ * View interface that used to contact Presenter for updates
  */
 public interface DetailsView {
     void showLoading();

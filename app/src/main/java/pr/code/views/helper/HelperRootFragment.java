@@ -21,17 +21,14 @@ import com.google.android.material.tabs.TabLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
-import pr.code.views.categories.CategoryFragment;
-
-import static android.content.Context.MODE_PRIVATE;
+import pr.code.views.helper.recomendations.HelperFragment;
+import pr.code.views.helper.statistics.HelperStatisticsFragment;
 
 public class HelperRootFragment extends Fragment {
 
     View view;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
-
 
     @BindView(R.id.helpertabLayout)
     TabLayout tabLayout;

@@ -29,6 +29,7 @@ import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.adapters.FilteredRecipesRecyclerViewAdapter;
 import pr.code.models.Meals;
+import pr.code.utils.ApiNDialogHelper;
 import pr.code.utils.DBHelper;
 import pr.code.utils.FavoritesListHelper;
 import pr.code.views.recipedetails.DetailsActivity;
@@ -179,5 +180,10 @@ public class FavoritesFragment extends Fragment implements FavoritesView{
 
     public static void removeFromFavorite(String id){
         FavoritesListHelper.removeFromFavorites(database,id);
+    }
+
+    @Override
+    public void onErrorLoading(String message) {
+        ApiNDialogHelper.showDialogMessage(getContext(),"Ошибка",message);
     }
 }

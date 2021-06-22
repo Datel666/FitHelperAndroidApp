@@ -26,9 +26,7 @@ public class ShoppingCartPresenter {
         try {
             view.setCartItems(loadCartItems(database));
         } catch (Exception ex) {
-
-        } finally {
-
+            view.onErrorLoading("При получении данных произошла ошибка" + ex.getMessage());
         }
     }
 
@@ -55,7 +53,7 @@ public class ShoppingCartPresenter {
                 res.add(tempCartItem);
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
         return res;
     }

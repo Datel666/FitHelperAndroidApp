@@ -6,7 +6,7 @@ import pr.code.models.Categories;
 import pr.code.models.Meals;
 
 /**
- * Implements data display (from the Model), contacts the Presenter for updates, redirects events from the user to the Presenter
+ * View interface that used to contact Presenter for updates
  */
 public interface RecipesView {
     void showLoading();

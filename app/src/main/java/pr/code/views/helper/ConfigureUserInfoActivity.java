@@ -11,7 +11,6 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +29,10 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
+import pr.code.utils.ApiNDialogHelper;
+import pr.code.utils.CaloriesCounterHelper;
 import pr.code.utils.DBHelper;
+import pr.code.views.helper.recomendations.HelperFragment;
 
 /**
  * This activity allows to configure and update user info for Fit-helper
@@ -240,7 +242,7 @@ public class ConfigureUserInfoActivity extends AppCompatActivity {
             cv.put(DBHelper.KEY_USERHEIGHT,heightedit.getText().toString());
             cv.put(DBHelper.KEY_USERWEIGHT,weightedit.getText().toString());
             cv.put(DBHelper.KEY_USERLIFESTYLE,lifestyleSpinner.getSelectedItem().toString());
-            cv.put(DBHelper.KEY_USERINFODATE,getCurrentTimeStamp());
+            cv.put(DBHelper.KEY_USERINFODATE, ApiNDialogHelper.getDate());
             cv.put(DBHelper.KEY_USERGENDER,gender);
             cv.put(DBHelper.KEY_USERGOAL,usergoal);
 
@@ -258,12 +260,7 @@ public class ConfigureUserInfoActivity extends AppCompatActivity {
 
     }
 
-    String getCurrentTimeStamp(){
-        SimpleDateFormat sdfDate = new SimpleDateFormat("MM-dd", Locale.getDefault());
-        Date now = new Date();
-        String strDate = sdfDate.format(now);
-        return strDate;
-    }
+
 
     private void initActionBar(){
         setSupportActionBar(toolbar);

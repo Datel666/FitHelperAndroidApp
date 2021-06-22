@@ -1,4 +1,4 @@
-package pr.code.views.helper;
+package pr.code.views.helper.recomendations;
 
 import android.content.ContentValues;
 
@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,8 +47,10 @@ import pr.code.R;
 import pr.code.adapters.ViewPagerRecomendationsAdapter;
 import pr.code.models.Recomendations;
 import pr.code.models.UserInfo;
+import pr.code.utils.ApiNDialogHelper;
 import pr.code.utils.DBHelper;
 
+import pr.code.views.helper.ConfigureUserInfoActivity;
 import pr.code.views.recipes.RecipesFragment;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -144,17 +145,14 @@ public class HelperFragment extends Fragment implements HelperView{
     public void onResume() {
         super.onResume();
 
-
         boolean decision = isFirstStart();
 
         if(decision){
-
             showAlert();
         }
 
         else{
             presenter.getUserInfo(database);
-
         }
     }
 
@@ -167,7 +165,6 @@ public class HelperFragment extends Fragment implements HelperView{
 
         prefs = this.getActivity().getSharedPreferences("prefs", MODE_PRIVATE);
         boolean firstStart = prefs.getBoolean("firstHelperLaunch", true);
-
         return firstStart;
     }
 
@@ -421,7 +418,7 @@ public class HelperFragment extends Fragment implements HelperView{
     }
 
     void callbaseIntent(){
-        Intent intent = new Intent(getContext(),ConfigureUserInfoActivity.class);
+        Intent intent = new Intent(getContext(), ConfigureUserInfoActivity.class);
         startActivity(intent);
     }
 
@@ -434,8 +431,6 @@ public class HelperFragment extends Fragment implements HelperView{
         intent.putExtra(EXTRA_LIFESTYLE,actualUserInfo.getUserLifeStyle());
         startActivity(intent);
     }
-
-
 
 
     String agePostfix(int agee){
@@ -474,5 +469,10 @@ public class HelperFragment extends Fragment implements HelperView{
         }
 
 
+    }
+
+    @Override
+    public void onErrorLoading(String message) {
+        ApiNDialogHelper.showDialogMessage(getContext(),"Ошибка",message);
     }
 }

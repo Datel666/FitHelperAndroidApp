@@ -1,4 +1,4 @@
-package pr.code.views.helper;
+package pr.code.views.helper.mealslist;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,8 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pr.code.models.MealsListItem;
-import pr.code.models.StatisticsInfo;
 import pr.code.utils.DBHelper;
+
+/**
+ * This presenter class is used to retrieve necessary data from database and send it to the fragment
+ * within this presenter was called
+ */
 
 public class MealsListPresenter {
 
@@ -20,11 +24,17 @@ public class MealsListPresenter {
     }
 
     void getMealsList(SQLiteDatabase db,String date){
-        List<MealsListItem> brList = loadTodayBreakFast(db,date);
-        List<MealsListItem> lunchList = loadTodayLunch(db,date);
-        List<MealsListItem> dinnerList = loadTodayDinner(db,date);
-        List<MealsListItem> snacksList = loadTodaySnacks(db,date);
-        view.setMealsInfo(brList,lunchList,dinnerList,snacksList);
+        try {
+            List<MealsListItem> brList = loadTodayBreakFast(db, date);
+            List<MealsListItem> lunchList = loadTodayLunch(db, date);
+            List<MealsListItem> dinnerList = loadTodayDinner(db, date);
+            List<MealsListItem> snacksList = loadTodaySnacks(db, date);
+            view.setMealsInfo(brList, lunchList, dinnerList, snacksList);
+        }
+        catch (Exception ex){
+            view.onErrorLoading("При получении данных произошла ошибка" + ex.getMessage());
+        }
+
     }
 
     private List<MealsListItem> loadTodayBreakFast(SQLiteDatabase db,String date){
@@ -60,7 +70,7 @@ public class MealsListPresenter {
                 res.add(tempinfo);
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
         return res;
     }
@@ -95,7 +105,7 @@ public class MealsListPresenter {
                 res.add(tempinfo);
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
         return res;
     }
@@ -130,7 +140,7 @@ public class MealsListPresenter {
                 res.add(tempinfo);
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
         return res;
     }
@@ -165,7 +175,7 @@ public class MealsListPresenter {
                 res.add(tempinfo);
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
         return res;
     }
@@ -187,4 +197,6 @@ public class MealsListPresenter {
         }
         return false;
     }
+
+
 }

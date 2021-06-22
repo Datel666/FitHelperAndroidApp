@@ -1,4 +1,4 @@
-package pr.code.views.helper;
+package pr.code.views.helper.statistics;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,10 +36,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.models.StatisticsInfo;
+import pr.code.utils.ApiNDialogHelper;
 import pr.code.utils.CaloriesCounterHelper;
 import pr.code.utils.DBHelper;
+import pr.code.views.helper.mealslist.MealsListActivity;
 
 import static android.content.Context.MODE_PRIVATE;
+
 
 public class HelperStatisticsFragment extends Fragment implements HelperStatisticsView {
 
@@ -337,5 +340,8 @@ public class HelperStatisticsFragment extends Fragment implements HelperStatisti
 
     }
 
-
+    @Override
+    public void onErrorLoading(String message) {
+        ApiNDialogHelper.showDialogMessage(getContext(),"Ошибка",message);
+    }
 }

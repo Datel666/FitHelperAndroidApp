@@ -35,7 +35,7 @@ public class SearchPresenter {
             view.setSearchableCollection(resholder,loadFavoriteIdentifiers(database));
         }
         catch (Exception ex){
-
+            view.onErrorLoading("При получении данных произошла ошибка" + ex.getMessage());
         }
         finally {
             view.hideloading();
@@ -66,7 +66,7 @@ public class SearchPresenter {
              view.setCollection(matchingMoreThan0,array,loadFavoriteIdentifiers(database));
         }
         catch (Exception ex){
-
+            view.onErrorLoading("При получении данных произошла ошибка" + ex.getMessage());
         }
         finally {
             view.hideloading();
@@ -110,7 +110,7 @@ public class SearchPresenter {
 
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
         return res;
     }
@@ -129,7 +129,7 @@ public class SearchPresenter {
 
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
         return res;
     }

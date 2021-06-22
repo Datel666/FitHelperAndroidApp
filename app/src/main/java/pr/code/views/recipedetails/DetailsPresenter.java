@@ -30,7 +30,7 @@ public class DetailsPresenter {
             boolean infavorites = isFavorite(database,tempmeal.getIdMeal());
             view.setMeal(tempmeal, infavorites);
         } catch (Exception ex) {
-            view.onErrorLoading(ex.getMessage());
+            view.onErrorLoading("При получении данных произошла ошибка" + ex.getMessage());
         } finally {
             view.hideLoading();
         }
@@ -67,9 +67,8 @@ public class DetailsPresenter {
             res.setStrCookTime(cursor.getString(cooktime));
             res.setStrIngredients(cursor.getString(ingredients));
             res.setStrMeasures(cursor.getString(measures));
-        } else {
-
         }
+        cursor.close();
         return res;
     }
 
@@ -85,7 +84,7 @@ public class DetailsPresenter {
                 isfavorite = false;
             }
         }
-
+        cursor.close();
         return isfavorite;
 
     }

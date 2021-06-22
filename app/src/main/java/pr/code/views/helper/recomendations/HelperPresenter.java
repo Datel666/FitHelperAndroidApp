@@ -1,4 +1,4 @@
-package pr.code.views.helper;
+package pr.code.views.helper.recomendations;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,11 +28,9 @@ public class HelperPresenter {
             view.setUserInfo(templist);
         }
         catch (Exception ex){
-
+            view.onErrorLoading("При получении данных произошла ошибка" + ex.getMessage());
         }
-        finally {
 
-        }
     }
 
     void getUserRecomendations(SQLiteDatabase database,String goal,String status){
@@ -41,11 +39,9 @@ public class HelperPresenter {
             view.setRecomendations(recs);
         }
         catch (Exception ex){
-
+            view.onErrorLoading("При получении данных произошла ошибка" + ex.getMessage());
         }
-        finally {
 
-        }
     }
 
     List<UserInfo> loadUserInfo(SQLiteDatabase database){
@@ -80,7 +76,7 @@ public class HelperPresenter {
                 res.add(tempuserinfo);
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
         return res;
     }
@@ -109,7 +105,7 @@ public class HelperPresenter {
                 res.add(temprec);
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
 
         return res;

@@ -3,6 +3,7 @@ package pr.code.views.search;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ import butterknife.ButterKnife;
 import pr.code.R;
 import pr.code.adapters.FilteredRecipesRecyclerViewAdapter;
 import pr.code.models.Meals;
+import pr.code.utils.ApiNDialogHelper;
 import pr.code.utils.DBHelper;
 import pr.code.utils.FavoritesListHelper;
 import pr.code.views.recipedetails.DetailsActivity;
@@ -42,6 +45,9 @@ public class SearchActivity extends AppCompatActivity implements SearchView{
 
     @BindView(R.id.searchRecyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.searchToolbar)
+    Toolbar toolbar;
 
     static SQLiteDatabase database;
     static SearchPresenter presenter;
@@ -104,9 +110,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView{
 
     @Override
     protected void onResume() {
-
-
         super.onResume();
+        initActionBar();
     }
 
     @Override
@@ -184,5 +189,29 @@ public class SearchActivity extends AppCompatActivity implements SearchView{
             intent.putExtra(EXTRA_INSTRUCTIONS, meals.get(position).getStrIngredients());
             startActivity(intent);
         }));
+    }
+
+    private void initActionBar(){
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() !=null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void onErrorLoading(String message) {
+        ApiNDialogHelper.showDialogMessage(this, "Ошибка ", message);
     }
 }

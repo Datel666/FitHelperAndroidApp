@@ -31,7 +31,7 @@ public class FavoritesPresenter {
             view.setFavorites(loadFavoriteRecipes(database,inlist),templist);
         }
         catch (Exception ex){
-
+            view.onErrorLoading("При получении данных произошла ошибка" + ex.getMessage());
         }
         finally {
             view.hideLoading();
@@ -76,7 +76,7 @@ public class FavoritesPresenter {
 
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
         return res;
     }
@@ -95,7 +95,7 @@ public class FavoritesPresenter {
 
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
         return res;
     }

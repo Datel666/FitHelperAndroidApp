@@ -34,7 +34,7 @@ public class RecipesPresenter {
             view.setMeal(templist);
         }
         catch(Exception ex){
-            view.onErrorLoading(ex.getMessage());
+            view.onErrorLoading("При получении данных произошла ошибка" + ex.getMessage());
         }
         finally {
             view.hideLoading();
@@ -93,7 +93,7 @@ public class RecipesPresenter {
                 res.add(tempRecipe);
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
         return res;
     }
@@ -124,7 +124,7 @@ public class RecipesPresenter {
 
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
         return res;
     }

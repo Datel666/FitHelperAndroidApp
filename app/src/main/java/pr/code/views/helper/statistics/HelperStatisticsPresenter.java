@@ -1,16 +1,14 @@
-package pr.code.views.helper;
+package pr.code.views.helper.statistics;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import pr.code.models.StatisticsInfo;
-import pr.code.models.UserInfo;
 import pr.code.utils.DBHelper;
-;
+
 
 public class HelperStatisticsPresenter {
     private HelperStatisticsView view;
@@ -26,11 +24,9 @@ public class HelperStatisticsPresenter {
             view.setFormsInfo(templist);
         }
         catch (Exception ex){
-
+            view.onErrorLoading("При получении данных произошла ошибка" + ex.getMessage());
         }
-        finally {
 
-        }
     }
 
     private List<StatisticsInfo> loadFormsInfo(SQLiteDatabase db){
@@ -68,7 +64,7 @@ public class HelperStatisticsPresenter {
                 res.add(tempinfo);
             }
             while (cursor.moveToNext());
-        } else {
+            cursor.close();
         }
         return res;
     }
