@@ -1,7 +1,7 @@
 # FitHelperApp
-FitHelper android application in java /n
-Allows to /n
-Search for recipes by name,category,ingredients, etc /n
-Receive personalized nutritional recommendations based on BMI and user-set goals /n
-Track amount of consumed calories, proteins, fats and carbohydrates /n
-Track your weight
+FitHelper android application in java 
+that allows to:
+search for recipes by name,category,ingredients, etc ,
+receive personalized nutritional recommendations based on BMI and user-set goals ,
+track amount of consumed calories, proteins, fats and carbohydrates ,
+track your weight
