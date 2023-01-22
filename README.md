@@ -6,6 +6,7 @@ receive personalized nutritional recommendations based on BMI and user-set goals
 track amount of consumed calories, proteins, fats and carbohydrates ,
 track your weight
 
+
 ![alt text](https://i.imgur.com/qm6kDQy.png)
 
 ![alt text](https://i.imgur.com/F21bIf1.png)
